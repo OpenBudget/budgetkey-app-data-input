@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { RolesService } from 'etl-server';
 
 @Component({
   selector: 'app-social-service-list',
@@ -11,7 +12,7 @@ export class SocialServiceListComponent implements OnInit {
   @Input() datarecords: any[] = [];
   aggregated = {items: []};
 
-  constructor() { }
+  constructor(public roles: RolesService) { }
 
   aggregate(ptr, header) {
     if (header) {
