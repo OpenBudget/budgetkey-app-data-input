@@ -1,0 +1,95 @@
+:host {
+    h3 {
+        font-size: 18px;
+        font-weight: 700;
+    }
+
+    .field-description {
+        font-size: 12px;
+        margin: 0;
+    }
+    i { 
+        margin-left: 16px;
+    }
+
+    h3 {
+        margin-top: 24px;
+        margin-bottom: 8px;
+    }
+
+    .complete {
+        display: flex;
+        flex-flow: row;
+        align-items: center;
+        input {
+            width: auto;
+            margin: 0 8px;
+        }
+        span {
+            font-weight: 700;
+        }
+    }
+    textarea {
+        width: 90%;
+    }
+
+    .budget {
+        display: flex;
+        flex-flow: row;
+        align-items: flex-start;
+        width: 100%;
+        & > * {
+            flex: 1 1 50%;
+        }
+        > div:nth-child(2) {
+            margin-right: 40px;
+            padding-right: 40px;
+            border-right: 1px dashed #ccc;
+        }
+        .fill-in {
+            display: block;
+            margin-top: 16px;
+            text-decoration: underline;
+        }
+    }
+
+    .tabs {
+        display: flex;
+        flex-flow: row;
+        width: 100%;
+        border-bottom: 1px solid black;
+        margin-top: 40px;
+        
+        .tab {
+            padding: 4px 16px;
+            border-top-left-radius: 4px;
+            border-top-right-radius: 4px;
+            border: 1px solid #ccc;
+            border-bottom: none;
+            font-weight: 300;
+            margin-right: 8px;
+
+            &.active {
+                border-color: black;
+                .name {
+                    font-weight: 700;
+                }
+            }
+
+            .name {
+                font-size: 18px;
+                margin-left: 16px;
+            }
+            
+            .info {
+                margin: 0;
+                padding: 0 16px;
+                border-right: 1px dashed #ccc;
+
+                &.suggested { 
+                    color: red;
+                }
+            }
+        }
+    }
+}

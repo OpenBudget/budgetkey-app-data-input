@@ -1,0 +1,51 @@
+version: "3"
+
+services:
+
+  db:
+    build: ../../datariver/dgp/dgp-app/db/
+    ports:
+      - 55432:5432
+    expose:
+      - 5432
+    volumes: 
+      - dbdata:/var/lib/postgresql/data
+
+  minio:
+    image: minio/minio:edge
+    command:
+      - server
+      - /data
+    environment:
+      MINIO_ACCESS_KEY: access_key
+      MINIO_SECRET_KEY: secret_key
+      MINIO_REGION_NAME: us-east-1
+    expose:
+      - 9000
+    ports:
+      - 9000:9000
+    volumes: 
+      - ./minio-data:/data
+
+  server:
+    build: .
+    environment:
+      EXTERNAL_ADDRESS: http://localhost:5000
+      BUCKET_NAME: dgp-app
+      AWS_ACCESS_KEY_ID: access_key
+      AWS_SECRET_ACCESS_KEY: secret_key
+      S3_ENDPOINT_URL: http://minio:9000
+      DATABASE_URL: postgresql://postgres:postgres@db/auth
+      DATASETS_DATABASE_URL: postgresql://postgres:postgres@db/datasets
+      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql://postgres:postgres@db/airflow
+      ETLS_DATABASE_URL: postgresql://postgres:postgres@db/etls
+      AWS_REGION: us-east-1
+    expose:
+      - 5000
+    ports:
+      - 5000:5000
+    depends_on: 
+      - db
+
+volumes:
+  dbdata: 

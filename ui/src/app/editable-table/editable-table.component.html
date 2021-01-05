@@ -1,0 +1,27 @@
+<!-- <span class='no-info' *ngIf='!record[field] || record[field].length === 0'><i class="fas fa-info-circle"></i>אין מידע</span> -->
+<table *ngIf='record[field] && record[field].length'>
+  <thead>
+    <th *ngFor='let field of config.fields'>
+      <ng-container *ngIf='field.kind !== "button"'>
+        {{field.display}}
+      </ng-container>
+    </th>
+  </thead>
+  <tbody>
+    <tr *ngFor='let row of record[field]'>
+      <td *ngFor='let field of config.fields'>
+        <app-editable-field
+            [kind]='field.kind'
+            [options]='field.options'
+            [record]='row'
+            [field]='field.name'
+            [readonly]='field.readonly' 
+            [placeholder]='field.display'
+            (changed)='emit(row, field)'
+        ></app-editable-field>
+      </td>
+      <td *ngIf='config.rowDelete'><span class='delete' (click)='delete(row)'><i class="fas fa-trash-alt"></i></span></td>
+    </tr>
+  </tbody>
+</table>
+<span class='add' (click)='record[field].push({})' *ngIf='config.rowAdd'><i class="fas fa-plus-circle"></i> הוספת שורה</span>

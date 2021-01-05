@@ -1,0 +1,22 @@
+<label *ngIf='label'>{{label}}:</label>
+<ng-container *ngIf='kind === "text"'>
+  <div class='editable-field' [class.editable]='!readonly' [class.readonly]='readonly'>
+    <ng-container *ngIf='!editing'>
+      <span class='pencil' (click)='editing = true; focus()'><i class="fas fa-edit"></i></span>
+      <span [innerHtml]='toText(record[field])' [style.direction]='direction'></span>
+    </ng-container>
+    <ng-container *ngIf='editing'>
+      <input [(ngModel)]='record[field]' (blur)='blur()' [placeholder]='placeholder' size='1' [style.direction]='direction' #editor>
+    </ng-container>
+  </div>
+</ng-container>
+<ng-container *ngIf='kind === "enum"'>
+  <select [(ngModel)]='record[field]' (change)='onChanged()'>
+    <ng-container *ngFor='let option of options.options'>
+      <option [value]='option.value'>{{ option.show }}</option>
+    </ng-container>
+  </select>
+</ng-container>
+<ng-container *ngIf='kind === "button"'>
+  <button (click)='onChanged()'>{{ placeholder }}</button>
+</ng-container>

@@ -1,0 +1,39 @@
+<ng-container *ngIf='item.header'>
+    <div class='header' [class.open]='open' (click)='open = !open'>
+        <i *ngIf='!open' class="fas fa-caret-left"></i>
+        <i *ngIf='open' class="fas fa-caret-down"></i>
+        <h3>{{item.header}}</h3>
+        <p class='count'>
+            מספר שירותים: {{count.toLocaleString()}}
+            <span *ngIf='incompleteCount'>({{incompleteCount.toLocaleString()}} עדיין בעבודה)</span>
+        </p>
+    </div>
+</ng-container>
+<ng-container *ngIf='item.items && open'>
+    <div class='content'>
+        <app-social-service-list-item *ngFor='let i of item.items' [def]='def' [item]='i'></app-social-service-list-item>
+    </div>
+</ng-container>
+<ng-container *ngIf='item.item'>
+    <div class='content'>
+        <div class='item'>
+            <div class='line'>
+                <a [routerLink]='"/datarecords/" + def.name + "/" + item.id'>{{item.item.name}}</a>
+                <small>{{item.item.description}}</small>
+            </div>
+            <div class='line'>
+                <div class='stat'>
+                    <span class='status complete' *ngIf='item.item.complete'>
+                        <i class="fas fa-check-circle"></i> הסתיים
+                    </span>
+                    <span class='status incomplete' *ngIf='!item.item.complete'>
+                        <i class="fas fa-dot-circle "></i> בעבודה
+                    </span>
+                </div>
+                <div class='stat'>{{yearRange}}</div>
+                <div class='stat'>{{numSuppliers}} מפעילים קשורים</div>
+                <div class='stat'>{{numTenders}} מכרזים קשורים</div>
+            </div>
+        </div>
+    </div>
+</ng-container>

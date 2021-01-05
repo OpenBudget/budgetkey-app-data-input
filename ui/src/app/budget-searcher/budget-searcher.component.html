@@ -1,0 +1,22 @@
+<div class='searchbox'>
+    <input (keyup)='search($event.target.value)' placeholder="שם או מספר של תקנה תקציבית...">
+    <span>
+        <i class="fas fa-search"></i>
+    </span>
+</div>
+<div class='results'>
+    <ng-container *ngFor='let result of (results | async)'>
+        <div class='result'>
+            <div class='info'>
+                <div class='line'>
+                    <div class='code' [innerHtml]='result["nice-code"]'></div>
+                    <div class='title' [innerHtml]='result.title'></div>    
+                </div>
+                <div class='line'>
+                    <div class='breadcrumbs' [innerHtml]='result["nice-breadcrumbs"]'></div>
+                </div>    
+            </div>
+            <div class='selector' (click)='select(result)'><i class="fas fa-chevron-left"></i></div>
+        </div>
+    </ng-container>
+</div>

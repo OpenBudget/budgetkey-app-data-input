@@ -1,0 +1,82 @@
+<h3>מידע כללי</h3>
+<app-editable-field [record]='datarecord' field='name' label='שם השירות'></app-editable-field>
+<app-editable-field [record]='datarecord' field='description' label='תיאור השירות'></app-editable-field>
+<app-editable-field [record]='datarecord' field='office' label='שם המשרד הממשלתי'></app-editable-field>
+<app-editable-field [record]='datarecord' field='unit' label='שיוך ארגוני במשרד'></app-editable-field>
+<app-editable-field [record]='datarecord' field='subunit' label='חלוקה ארגונית (רמה 2)'></app-editable-field>
+<app-editable-field [record]='datarecord' field='subsubunit' label='חלוקה ארגונית (רמה 3)'></app-editable-field>
+
+<h3>סטטוס</h3>
+<p>הערות כלליות (לא לפרסום):</p>
+<textarea [(ngModel)]='datarecord.notes' rows='5' placeholder='הערות כלליות (לא לפרסום)'></textarea> 
+<div class='complete'>
+    <input [(ngModel)]='datarecord.complete' type='checkbox'><span>הסתיים המיפוי של שירות זה</span>
+</div>
+
+<h3>מספר מוטבים</h3>
+<app-editable-table [record]='datarecord' field='beneficiaries' [config]='C.beneficiariesConfig'></app-editable-table>
+
+<div class='budget'>
+    <div>
+        <h3>תקנות</h3>
+        <app-editable-table [record]='datarecord' field='budgetItems' [config]='C.budgetItemsConfig' (change)='refresh()'></app-editable-table>
+        <!-- <a class='fill-in' (click)='fillInBudgets()' *ngIf='datarecord.budgetItems && datarecord.budgetItems.length'><i class="fas fa-magic"></i>השלמת תקנות אוטומטית</a>         -->
+    </div>
+    <div *ngIf='budgetAmounts && budgetAmounts.length'>
+        <h3>סה״כ תקציב מאושר (מחושב)</h3>
+        <app-editable-table [record]='thiz' field='budgetAmounts' [config]='C.budgetAmountsConfig'></app-editable-table>
+    </div>
+</div>
+<h4 [class.open]='showSearch' (click)='showSearch = !showSearch'><i class="fas fa-search"></i>חיפוש והוספה של תקנה תקציבית</h4>
+<app-budget-searcher *ngIf='showSearch' (choose)='addBudgetItem($event)'></app-budget-searcher>
+
+<div class='tabs'>
+    <div class='tab' (click)='tab = "suppliers"' [class.active]='tab === "suppliers"'>
+        <span class='name'>מפעילים</span>
+        <span class='info' *ngIf="statPossible('suppliers')">{{statPossible('suppliers')}} אפשריים</span>
+        <span class='info' *ngIf="statConnected('suppliers')">{{statConnected('suppliers')}} מקושרים</span>
+        <span class='info suggested' *ngIf="statSuggested('suppliers')">{{statSuggested('suppliers')}} מוצעים</span>
+        <span class='info' *ngIf="statNonConnected('suppliers')">{{statConnected('suppliers')}} פסולים</span>
+    </div>
+    <div class='tab' (click)='tab = "tenders"' [class.active]='tab === "tenders"'>
+        <span class='name'>מכרזים</span>
+        <span class='info' *ngIf="statPossible('tenders')">{{statPossible('tenders')}} אפשריים</span>
+        <span class='info' *ngIf="statConnected('tenders')">{{statConnected('tenders')}} מקושרים</span>
+        <span class='info suggested' *ngIf="statSuggested('tenders')">{{statSuggested('tenders')}} מוצעים</span>
+        <span class='info' *ngIf="statNonConnected('tenders')">{{statConnected('tenders')}} פסולים</span>
+    </div>
+</div>
+
+<ng-container *ngIf='tab==="suppliers"'>
+    <ng-container *ngIf='datarecord.suppliers.length'>
+        <h3>מפעילים קשורים</h3>
+        <app-editable-table [record]='datarecord' field='suppliers' [config]='C.suppliersConfig' (changed)='connectSupplier($event)'></app-editable-table>    
+    </ng-container>
+    <ng-container *ngIf='datarecord.non_suppliers.length'>
+        <h3>מפעילים <u>לא</u> קשורים</h3>
+        <app-editable-table [record]='datarecord' field='non_suppliers' [config]='C.suppliersConfig' (changed)='connectSupplier($event)'></app-editable-table>
+    </ng-container>
+    <ng-container *ngIf='possibleSuppliers && possibleSuppliers.length'>
+        <h3>מפעילים אפשריים</h3>
+        <app-editable-table [record]='thiz' field='possibleSuppliers' [config]='C.supplierListConfig' (changed)='connectSupplier($event)'></app-editable-table>
+    </ng-container>    
+</ng-container>
+<ng-container *ngIf='tab==="tenders"'>
+    <ng-container *ngIf='datarecord.tenders.length'>
+        <h3>מכרזים קשורים</h3>
+        <app-editable-table [record]='datarecord' field='tenders' [config]='C.tendersConfig' (changed)='connectTender($event)'></app-editable-table>
+    </ng-container>
+    <ng-container *ngIf='datarecord.non_tenders.length'>
+        <h3>מכרזים <u>לא</u> קשורים</h3>
+        <app-editable-table [record]='datarecord' field='non_tenders' [config]='C.tendersConfig' (changed)='connectTender($event)'></app-editable-table>
+    </ng-container>
+    <ng-container *ngIf='possibleTenders && possibleTenders.length'>
+        <h3>מכרזים אפשריים</h3>
+        <app-editable-table [record]='thiz' field='possibleTenders' [config]='C.tenderListConfig' (changed)='connectTender($event)'></app-editable-table>    
+    </ng-container>
+</ng-container>
+
+
+<!-- <a (click)='fetchSpendingSuppliers()'>רענון רשימת המפעילים</a> -->
+
+<!-- <a (click)='fetchSpendingTenders()'>רענון רשימת המכרזים</a> -->
