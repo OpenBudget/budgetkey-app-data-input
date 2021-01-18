@@ -18,15 +18,15 @@
 <textarea [(ngModel)]='datarecord.notes' rows='5' placeholder='הערות כלליות (לא לפרסום)'></textarea> 
 
 <div class='buttons'>
-    <div *ngIf='roles._.datarecordEditOwn || roles._.datarecordEditAll'  class='save-done button' (click)='save(false)' i18n>
+    <div *ngIf='roles._.datarecordEditOwn || roles._.datarecordEditAll'  class='save-done button' (click)='save(false)'>
       <i class="fas fa-save" aria-hidden="true"></i>
       שמירה וסימון כעדיין בעבודה
     </div>
-    <div *ngIf='roles._.datarecordEditOwn || roles._.datarecordEditAll'  class='save-notdone button' (click)='save(true)' i18n>
+    <div *ngIf='roles._.datarecordEditOwn || roles._.datarecordEditAll'  class='save-notdone button' (click)='save(true)'>
       <i class="fas fa-save" aria-hidden="true"></i>
       שמירה וסימון כהושלם
     </div>
-    <div *ngIf='(roles._.datarecordDeleteOwn ||  roles._.datarecordDeleteAll) && datarecord.id' class='delete button' (click)='delete($event)' i18n>
+    <div *ngIf='(roles._.datarecordDeleteOwn ||  roles._.datarecordDeleteAll) && datarecord.id' class='delete button' (click)='delete($event)'>
       <i class="fas fa-trash" aria-hidden="true"></i>
       מחיקת השירות
     </div>

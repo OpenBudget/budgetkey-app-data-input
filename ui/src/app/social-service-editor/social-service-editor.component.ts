@@ -435,7 +435,7 @@ export class SocialServiceEditorComponent implements OnInit {
   }
 
   delete(e) {
-    this.confirmer.confirm(this.confirmer.ACTION_DELETE_DATARECORD, this.datarecord[this.def.snippet])
+    this.confirmer.confirm(this.confirmer.ACTION_DELETE_DATARECORD, this.datarecord.name)
       .pipe(
         filter((x) => x),
         switchMap(() => this.etlApi.deleteDatarecord(this.def.name, this.datarecord.id))
