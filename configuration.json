@@ -100,6 +100,19 @@
             "admin": true
         },
         {
+            "name": "intervention",
+            "display": "סוג התערבות",
+            "display_plural": "סוגי התערבות",
+            "field": {
+                "name": "name",
+                "kind": "text",
+                "placeholder": "סוג ההתערבות",
+                "options": {}
+            },
+            "edit_component": "simple_list",
+            "admin": true
+        },
+        {
             "name": "geo_region",
             "display": "איזור בארץ",
             "display_plural": "איזורים בארץ",
