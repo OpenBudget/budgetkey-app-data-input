@@ -1,5 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { RolesService } from 'etl-server';
+import { ApiService, RolesService } from 'etl-server';
+import { ReplaySubject } from 'rxjs';
+import { first, map, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-social-service-list',
@@ -11,8 +13,30 @@ export class SocialServiceListComponent implements OnInit {
   @Input() def: any;
   @Input() datarecords: any[] = [];
   aggregated = {items: []};
+  selectedOffice = new ReplaySubject<string>(1);
 
-  constructor(public roles: RolesService) { }
+  constructor(public api: ApiService, public roles: RolesService) {
+    this.api.queryUsers();
+    let designatedOffice = null;
+    this.api.currentUserProfile.pipe(
+      first(),
+      switchMap((profile) => {
+        designatedOffice = profile.permissions?.datarecords?.social_service?.designated_office;
+        return this.api.queryDatarecords('hierarchy');
+      }),
+      map((hierarchies) => {
+        for (const h of hierarchies) {
+          if (h.value.id === designatedOffice) {
+            this.selectedOffice.next(h.value.name);
+            return h.value.name;
+          }
+        }
+        this.selectedOffice.next(null);
+      })
+    ).subscribe((s) => {
+      console.log('SELECTED OFFICE = ', s);
+    });
+  }
 
   aggregate(ptr, header) {
     if (header) {
@@ -28,16 +52,21 @@ export class SocialServiceListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    for (let d of this.datarecords) {
-      let ptr = this.aggregated;
-      d = d.value;
-      const id = d.id;
-      ptr = this.aggregate(ptr, d.office);
-      ptr = this.aggregate(ptr, d.unit);
-      ptr = this.aggregate(ptr, d.subunit);
-      ptr = this.aggregate(ptr, d.subsubunit);
-      ptr.items.push({item: d, id});
-    }
+    this.selectedOffice.pipe(first()).subscribe((selectedOffice) => {
+      this.aggregated = {items: []};
+      for (let d of this.datarecords) {
+        let ptr = this.aggregated;
+        d = d.value;
+        if (selectedOffice === null || selectedOffice === d.office) {
+          const id = d.id;
+          ptr = this.aggregate(ptr, d.office);
+          ptr = this.aggregate(ptr, d.unit);
+          ptr = this.aggregate(ptr, d.subunit);
+          ptr = this.aggregate(ptr, d.subsubunit);
+          ptr.items.push({item: d, id});
+        }
+      }
+    });
   }
 
 }
