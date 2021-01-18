@@ -3,9 +3,9 @@
 <app-editable-field [record]='datarecord' field='description' label='תיאור השירות'></app-editable-field>
 <app-editable-field [record]='datarecord' field='office' label='שם המשרד הממשלתי' kind='enum' [options]='office_options' (changed)='updateHierarchy()'></app-editable-field>
 
-<app-editable-field [record]='datarecord' field='unit' *ngIf='level1_name' [label]='"שם ה" + level1_name' kind='enum' [options]='level1_options' (changed)='updateHierarchy()'></app-editable-field>
-<app-editable-field [record]='datarecord' field='subunit' *ngIf='level2_name' [label]='"שם ה" + level2_name' kind='enum' [options]='level2_options' (changed)='updateHierarchy()'></app-editable-field>
-<app-editable-field [record]='datarecord' field='subsubunit' *ngIf='level3_name' [label]='"שם ה" + level3_name' kind='enum' [options]='level3_options' (changed)='updateHierarchy()'></app-editable-field>
+<app-editable-field [record]='datarecord' field='unit' *ngIf='level1_name && level1_options.length' [label]='"שם ה" + level1_name' kind='enum' [options]='level1_options' (changed)='updateHierarchy()'></app-editable-field>
+<app-editable-field [record]='datarecord' field='subunit' *ngIf='level2_name && level2_options.length' [label]='"שם ה" + level2_name' kind='enum' [options]='level2_options' (changed)='updateHierarchy()'></app-editable-field>
+<app-editable-field [record]='datarecord' field='subsubunit' *ngIf='level3_name && level3_options.length' [label]='"שם ה" + level3_name' kind='enum' [options]='level3_options' (changed)='updateHierarchy()'></app-editable-field>
 
 <app-editable-field [record]='datarecord' field='target_audience' label='קהל יעד' kind='datarecord' [options]='{name: "target_audience"}'></app-editable-field>
 <app-editable-field [record]='datarecord' field='target_age_group' label='קבוצת גיל' kind='datarecord' [options]='{name: "target_age_group"}'></app-editable-field>
