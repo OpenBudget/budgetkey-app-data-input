@@ -1,4 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { ApiService, ConfirmerService, RolesService } from 'etl-server';
+import { filter, switchMap } from 'rxjs/operators';
 import { ObudgetApiService } from '../obudget-api.service';
 import * as configs from './datatypes';
 
@@ -24,7 +27,14 @@ export class SocialServiceEditorComponent implements OnInit {
 
   showSearch = false;
   tab = 'suppliers';
-
+  offices: any[] = [];
+  office_options: any = {options: []};
+  level1_name: string = null;
+  level1_options: any = {options: []};
+  level2_name: string = null;
+  level2_options: any = {options: []};
+  level3_name: string = null;
+  level3_options: any = {options: []};
 
   OFFICE_CONDITION = (p) => `(
     (${p} like 'משרד הבריאות%%') OR
@@ -36,8 +46,13 @@ export class SocialServiceEditorComponent implements OnInit {
     (${p} like 'משרד העלייה והקליטה%%')
   )`;
 
-  constructor(private api: ObudgetApiService) {
+  constructor(private api: ObudgetApiService, private etlApi: ApiService, public roles: RolesService,
+              private confirmer: ConfirmerService, private router: Router) {
     this.thiz = this;
+    this.etlApi.queryDatarecords('hierarchy').subscribe((results) => {
+      this.offices = results.map(x => x.value);
+      this.updateHierarchy();
+    });
   }
 
   ngOnInit() {
@@ -47,6 +62,41 @@ export class SocialServiceEditorComponent implements OnInit {
     this.datarecord.non_tenders = this.datarecord.non_tenders || [];
     this.datarecord.non_suppliers = this.datarecord.non_suppliers || [];
     this.refresh();
+  }
+
+  updateHierarchy() {
+    console.log('updateHierarchy');
+    this.level1_name = null;
+    this.level2_name = null;
+    this.level3_name = null;
+    this.office_options.options = [];
+    for (const office of this.offices) {
+      this.office_options.options.push({value: office.name, show: office.name});
+      if (this.datarecord.office === office.name) {
+        this.level1_name = office.level1_name;
+        this.level1_options.options = [];
+        for (const unit of office.children) {
+          this.level1_options.options.push({value: unit.name, show: unit.name});
+          if (this.datarecord.unit === unit.name) {
+            this.level2_name = office.level2_name;
+            this.level2_options.options = [];
+            for (const subunit of unit.children) {
+              this.level2_options.options.push({value: subunit.name, show: subunit.name});
+              if (this.datarecord.subunit === subunit.name) {
+                this.level3_name = office.level3_name;
+                this.level3_options.options = [];    
+                for (const subsubunit of subunit.children) {
+                  this.level3_options.options.push({value: subsubunit.name, show: subsubunit.name});
+                }    
+              }
+            }    
+          }
+        }
+      }
+    }
+    console.log('LVL1', this.level1_name, this.level1_options);
+    console.log('LVL2', this.level2_name, this.level2_options);
+    console.log('LVL3', this.level3_name, this.level3_options);
   }
 
   deleteAll(str, subst) {
@@ -366,4 +416,35 @@ export class SocialServiceEditorComponent implements OnInit {
     const {possible, connected, non_connected} = this.stat(kind);
     return non_connected ? non_connected.length : 0;
   }
+
+  _save(complete) {
+    this.datarecord.id = this.datarecord.id || this.datarecord[this.def.id];
+    this.datarecord.complete = complete;
+    return this.etlApi.saveDatarecord(this.def.name, this.datarecord);
+  }
+
+  save(complete) {
+    this._save(complete)
+        .subscribe((result) => {
+          if (result.id) {
+            this.router.navigate(['/datarecords/', this.def.name]);
+          } else {
+            console.log('Failed to SAVE Datarecord!', this.def.name);
+          }
+        });
+  }
+
+  delete(e) {
+    this.confirmer.confirm(this.confirmer.ACTION_DELETE_DATARECORD, this.datarecord[this.def.snippet])
+      .pipe(
+        filter((x) => x),
+        switchMap(() => this.etlApi.deleteDatarecord(this.def.name, this.datarecord.id))
+      ).subscribe((result) => {
+        console.log('DELETED DATARECORD', result);
+        this.router.navigate(['/datarecords/', this.def.name]);
+      });
+    e.preventDefault();
+    return false;
+  }
+
 }

@@ -1,0 +1,76 @@
+<ng-container *ngFor='let office of datarecords'>
+    <div class='well'>
+        <app-editable-field kind='text' 
+                            placeholder='שם המשרד'
+                            field='name'
+                            [record]='office'
+                            (changed)='save(office)'></app-editable-field>
+        <div class='line'>
+            <label>שמות הרמות במבנה הארגוני:</label>
+            <app-editable-field kind='text' 
+                                placeholder='שם רמה ראשונה'
+                                field='level1_name'
+                                [record]='office'
+                                (changed)='save(office)'></app-editable-field>
+            /
+            <app-editable-field kind='text' 
+                                placeholder='שם רמה שניה'
+                                field='level2_name'
+                                [record]='office'
+                                (changed)='save(office)'></app-editable-field>    
+            /
+            <app-editable-field kind='text' 
+                                placeholder='שם רמה שלישית'
+                                field='level3_name'
+                                [record]='office'
+                                (changed)='save(office)'></app-editable-field>    
+        </div>
+        <ng-container *ngIf='office.level1_name'>
+            <ng-container *ngFor='let unit of office.children'>
+                <div class='well'>
+                    <div class='line'>
+                        <label>{{office.level1_name}}:</label>
+                        <app-editable-field kind='text' 
+                                            [placeholder]='"שם ה" + office.level1_name'
+                                            field='name'
+                                            [record]='unit'
+                                            (changed)='save(office)'></app-editable-field>
+                    </div>
+                    <ng-container *ngIf='office.level2_name'>
+                        <ng-container *ngFor='let subunit of unit.children'>
+                            <div class='well'>
+                                <div class='line'>
+                                    <label>{{office.level2_name}}:</label>
+                                    <app-editable-field kind='text' 
+                                                        [placeholder]='"שם ה" + office.level2_name'
+                                                        field='name'
+                                                        [record]='subunit'
+                                                        (changed)='save(office)'></app-editable-field>
+                                </div>
+                                <ng-container *ngIf='office.level3_name'>
+                                    <ng-container *ngFor='let subsubunit of subunit.children'>
+                                        <div class='well'>
+                                            <div class='line'>
+                                                <label>{{office.level3_name}}:</label>
+                                                <app-editable-field kind='text' 
+                                                                    [placeholder]='"שם ה" + office.level3_name'
+                                                                    field='name'
+                                                                    [record]='subsubunit'
+                                                                    (changed)='save(office)'></app-editable-field>
+                                            </div>
+                                        </div>                          
+                                    </ng-container>
+                                    <a class='new' (click)='subunit.children.push({children: []})'>הוספת {{office.level3_name}}...</a>    
+                                </ng-container>
+                            </div>            
+            
+                        </ng-container>
+                        <a class='new' (click)='unit.children.push({children: []})'>הוספת {{office.level2_name}}...</a>    
+                    </ng-container>
+                </div>            
+            </ng-container>
+            <a class='new' (click)='office.children.push({children: []})'>הוספת {{office.level1_name}}...</a>    
+        </ng-container>
+    </div>
+</ng-container>
+<a class='new' (click)='datarecords.push({children: []})'>הוספת משרד ממשלתי...</a>

@@ -108,7 +108,11 @@ export const beneficiariesConfig = {
       },
       {
         name: 'geo',
-        display: 'איזור פעילות'
+        kind: 'datarecord',
+        display: 'איזור פעילות',
+        options: {
+          name: 'geo_region'
+        }
       },
     ]
   };

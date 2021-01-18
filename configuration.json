@@ -40,7 +40,6 @@
             "display": "שירות חברתי",
             "display_plural": "שירותים חברתיים",
             "id": "name",
-            "snippet": "name",
             "edit_component": "social_services",
             "fields": [
                 {
@@ -52,6 +51,90 @@
                     "display": "תיאור"
                 }
             ]
+        },
+        {
+            "name": "hierarchy",
+            "display": "מבנה ארגוני",
+            "display_plural": "מבנה ארגוני",
+            "id": "name",
+            "edit_component": "hierarchy",
+            "admin": true
+        },
+        {
+            "name": "subject",
+            "display": "תחום",
+            "display_plural": "תחומים",
+            "field": {
+                "name": "name",
+                "kind": "text",
+                "placeholder": "שם התחום",
+                "options": {}
+            },
+            "edit_component": "simple_list",
+            "admin": true
+        },
+        {
+            "name": "target_audience",
+            "display": "קהל יעד",
+            "display_plural": "קהלי יעד",
+            "field": {
+                "name": "name",
+                "kind": "text",
+                "placeholder": "שם קהל היעד",
+                "options": {}
+            },
+            "edit_component": "simple_list",
+            "admin": true
+        },
+        {
+            "name": "target_age_group",
+            "display": "קבוצת גיל",
+            "display_plural": "קבוצות גיל",
+            "field": {
+                "name": "name",
+                "kind": "text",
+                "placeholder": "שם קבוצת הגיל",
+                "options": {}
+            },
+            "edit_component": "simple_list",
+            "admin": true
+        },
+        {
+            "name": "geo_region",
+            "display": "איזור בארץ",
+            "display_plural": "איזורים בארץ",
+            "field": {
+                "name": "name",
+                "kind": "text",
+                "placeholder": "שם האיזור",
+                "options": {}
+            },
+            "edit_component": "simple_list",
+            "admin": true
+        },
+        {
+            "name": "contact",
+            "display": "איש קשר",
+            "display_plural": "אנשי קשר",
+            "id": "name",
+            "snippet": [
+                "name", "org", "email"
+            ],
+            "fields": [
+                {
+                    "name": "name",
+                    "display": "שם"
+                },
+                {
+                    "name": "org",
+                    "display": "ארגון"
+                },
+                {
+                    "name": "email",
+                    "display": "מייל"
+                }
+            ],
+            "admin": true
         }
     ]
 }

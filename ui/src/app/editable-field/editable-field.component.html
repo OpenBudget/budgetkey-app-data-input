@@ -10,7 +10,7 @@
     </ng-container>
   </div>
 </ng-container>
-<ng-container *ngIf='kind === "enum"'>
+<ng-container *ngIf='kind === "enum" || kind === "datarecord"'>
   <select [(ngModel)]='record[field]' (change)='onChanged()'>
     <ng-container *ngFor='let option of options.options'>
       <option [value]='option.value'>{{ option.show }}</option>

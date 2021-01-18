@@ -13,6 +13,9 @@ import { FormsModule } from '@angular/forms';
 import { SocialServiceListComponent } from './social-service-list/social-service-list.component';
 import { SocialServiceListItemComponent } from './social-service-list-item/social-service-list-item.component';
 import { RouterModule } from '@angular/router';
+import { SimpleListEditorComponent } from './simple-list-editor/simple-list-editor.component';
+import { SocialServiceUserComponent } from './social-service-user/social-service-user.component';
+import { HierarchyEditorComponent } from './hierarchy-editor/hierarchy-editor.component';
 
 
 @NgModule({
@@ -24,6 +27,9 @@ import { RouterModule } from '@angular/router';
     BudgetSearcherComponent,
     SocialServiceListComponent,
     SocialServiceListItemComponent,
+    SimpleListEditorComponent,
+    SocialServiceUserComponent,
+    HierarchyEditorComponent,
   ],
   imports: [
     BrowserModule,
@@ -37,6 +43,13 @@ import { RouterModule } from '@angular/router';
       social_services: {
         detail: SocialServiceEditorComponent,
         list: SocialServiceListComponent,
+        user: SocialServiceUserComponent
+      },
+      simple_list: {
+        list: SimpleListEditorComponent
+      },
+      hierarchy: {
+        list: HierarchyEditorComponent
       }
     }
   }],

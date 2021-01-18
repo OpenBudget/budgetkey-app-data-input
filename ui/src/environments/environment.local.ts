@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  api_endpoint: 'http://data-input.obudget.org/api',
-  auth_endpoint: 'http://data-input.obudget.org'
+  api_endpoint: 'http://localhost:5000/api',
+  auth_endpoint: 'http://localhost:5000'
 };
 
 /*

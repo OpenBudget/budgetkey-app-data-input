@@ -1,0 +1,5 @@
+<label>שיוך המשתמש למשרד: </label>
+<select [(ngModel)]='datarecord.designated_office' (change)='changed()'>
+    <option value='all'>כל המשרדים</option>
+    <option *ngFor='let office of offices' [value]='office.value'>{{ office.show }}</option>
+</select>

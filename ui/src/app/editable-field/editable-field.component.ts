@@ -1,5 +1,7 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { fromEvent } from 'rxjs';
+import { ApiService } from 'etl-server';
+import { from, fromEvent } from 'rxjs';
+import { first, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-editable-field',
@@ -20,13 +22,35 @@ export class EditableFieldComponent implements OnInit {
   @ViewChild('editor', {static: false}) editor: ElementRef;
   _editing = false;
 
-  constructor() { }
+  constructor(private api: ApiService) { }
 
   ngOnInit() {
     this.editing = !this.record[this.field] && this.record[this.field] !== 0;
     this.kind = this.kind || 'text';
     this.options = this.options || {};
     this.placeholder = this.placeholder || this.label;
+    if (this.kind === 'datarecord') {
+      console.log('DTDT', this.options);
+      this.api.configuration.pipe(
+        first(),
+        switchMap((configuration) => {
+          for (let def of (configuration.dataRecords || [])) {
+            if (def.name === this.options.name) {
+              return this.api.queryDatarecords(def.name);
+            }
+          }
+          return from([[]]);
+        }),
+      ).subscribe((records) => {
+        this.options.options = records.map((rec) => {
+          return {
+            value: rec.value.id,
+            show: rec.value.name
+          };
+        });
+        console.log('OPTS', this.options);
+      });
+    }
   }
 
   get editing(): boolean {
@@ -77,7 +101,7 @@ export class EditableFieldComponent implements OnInit {
   }
 
   onChanged() {
-    this.changed.emit();
+    this.changed.emit(null);
   }
 
   processValue(x) {
