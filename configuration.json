@@ -6,6 +6,7 @@
         "primary_dark": "#222",
         "secondary": "#fff"
     },
+    "defaultLocale": "he",
     "schedules": [
         {"name": "@daily", "display": "Daily"},
         {"name": "@weekly", "display": "Weekly"},
