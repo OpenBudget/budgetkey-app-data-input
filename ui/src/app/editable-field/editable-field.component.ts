@@ -17,6 +17,7 @@ export class EditableFieldComponent implements OnInit {
   @Input() kind;
   @Input() options: any = {};
   @Input() readonly = false;
+  @Input() strong = false;
 
   @Output() changed = new EventEmitter<any>();
   @ViewChild('editor', {static: false}) editor: ElementRef;

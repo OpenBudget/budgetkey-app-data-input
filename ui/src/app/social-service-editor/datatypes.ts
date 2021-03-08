@@ -72,7 +72,9 @@ export const beneficiariesConfig = {
       {
         name: 'entity_name',
         display: 'שם המפעיל',
-        readonly: true
+        readonly: true,
+        fullRow: 4,
+        strong: true
       },
       {
         name: 'volume',
@@ -104,14 +106,16 @@ export const beneficiariesConfig = {
       },
       {
         name: 'notes',
-        display: 'תיאור מורחב של המפעיל'
+        display: 'תיאור מורחב של המפעיל',
+        fullRow: 6
       },
       {
         name: 'geo',
         kind: 'datarecord',
         display: 'איזור פעילות',
         options: {
-          name: 'geo_region'
+          name: 'geo_region',
+          multiple: true
         }
       },
     ]
@@ -126,7 +130,9 @@ export const beneficiariesConfig = {
       {
         name: 'entity_name',
         display: 'שם המפעיל',
-        readonly: true
+        readonly: true,
+        fullRow: 4,
+        strong: true
       },
       {
         name: 'volume',
@@ -159,6 +165,11 @@ export const beneficiariesConfig = {
         readonly: true
       },
       {
+        name: 'regulation',
+        display: 'תקנה',
+        readonly: true
+      },
+      {
         name: 'publisher',
         display: 'הגורם המפרסם',
         readonly: true
@@ -166,7 +177,9 @@ export const beneficiariesConfig = {
       {
         name: 'description',
         display: 'תיאור',
-        readonly: true
+        readonly: true,
+        fullRow: 4,
+        strong: true
       },
       {
         name: 'date_range',
@@ -198,7 +211,8 @@ export const beneficiariesConfig = {
       },
       {
         name: 'notes',
-        display: 'תיאור מורחב של המכרז'
+        display: 'תיאור מורחב של המכרז',
+        fullRow: 6
       },
       {
         name: 'pricing',
@@ -212,6 +226,19 @@ export const beneficiariesConfig = {
           ]
         }
       },
+      {
+        name: 'sub_kind',
+        display: 'סוג מכרז',
+        kind: 'enum',
+        options: {
+          options: [
+            { value: '', show: 'לא רלוונטי' },
+            { value: 'closed', show: 'סגור' },
+            { value: 'frame', show: 'מסגרת' },
+            { value: 'pool', show: 'מאגר' },
+          ]
+        }
+      },
     ]
   };
   export const tenderListConfig = {
@@ -219,6 +246,11 @@ export const beneficiariesConfig = {
       {
         name: 'tender_type_he',
         display: 'סוג המכרז',
+        readonly: true
+      },
+      {
+        name: 'regulation',
+        display: 'תקנה',
         readonly: true
       },
       {
@@ -234,7 +266,9 @@ export const beneficiariesConfig = {
       {
         name: 'description',
         display: 'תיאור',
-        readonly: true
+        readonly: true,
+        fullRow: 4,
+        strong: true,
       },
       {
         name: 'date_range',

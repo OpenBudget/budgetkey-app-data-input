@@ -3,7 +3,7 @@
   <div class='editable-field' [class.editable]='!readonly' [class.readonly]='readonly'>
     <ng-container *ngIf='!editing'>
       <span class='pencil' (click)='editing = true; focus()'><i class="fas fa-edit"></i></span>
-      <span [innerHtml]='toText(record[field])' [style.direction]='direction'></span>
+      <span class='value' [innerHtml]='toText(record[field])' [style.direction]='direction' [class.strong]='strong'></span>
     </ng-container>
     <ng-container *ngIf='editing'>
       <input [(ngModel)]='record[field]' (blur)='blur()' [placeholder]='placeholder' size='1' [style.direction]='direction' #editor>
@@ -11,7 +11,7 @@
   </div>
 </ng-container>
 <ng-container *ngIf='kind === "enum" || kind === "datarecord"'>
-  <select [(ngModel)]='record[field]' (change)='onChanged()'>
+  <select [(ngModel)]='record[field]' (change)='onChanged()' [multiple]='options.multiple' [size]='options.multiple ? 3 : "auto"'>
     <ng-container *ngFor='let option of options.options'>
       <option [value]='option.value'>{{ option.show }}</option>
     </ng-container>
