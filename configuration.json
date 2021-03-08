@@ -63,12 +63,12 @@
         },
         {
             "name": "subject",
-            "display": "תחום",
-            "display_plural": "תחומים",
+            "display": "תחום התערבות",
+            "display_plural": "תחומי התערבות",
             "field": {
                 "name": "name",
                 "kind": "text",
-                "placeholder": "שם התחום",
+                "placeholder": "שם תחום ההתערבות",
                 "options": {}
             },
             "edit_component": "simple_list",
@@ -76,12 +76,12 @@
         },
         {
             "name": "target_audience",
-            "display": "קהל יעד",
-            "display_plural": "קהלי יעד",
+            "display": "אוכלוסיית יעד",
+            "display_plural": "אוכלוסיות יעד",
             "field": {
                 "name": "name",
                 "kind": "text",
-                "placeholder": "שם קהל היעד",
+                "placeholder": "שם אוכלוסיית היעד",
                 "options": {}
             },
             "edit_component": "simple_list",
@@ -102,12 +102,12 @@
         },
         {
             "name": "intervention",
-            "display": "סוג התערבות",
-            "display_plural": "סוגי התערבות",
+            "display": "אופן התערבות",
+            "display_plural": "אופני התערבות",
             "field": {
                 "name": "name",
                 "kind": "text",
-                "placeholder": "סוג ההתערבות",
+                "placeholder": "אופן ההתערבות",
                 "options": {}
             },
             "edit_component": "simple_list",
