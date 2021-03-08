@@ -200,6 +200,18 @@ export const beneficiariesConfig = {
         name: 'notes',
         display: 'תיאור מורחב של המכרז'
       },
+      {
+        name: 'pricing',
+        display: 'מודל תמחור',
+        kind: 'enum',
+        options: {
+          options: [
+            { value: 'fixed', show: 'מחיר קבוע (תעריף)' },
+            { value: 'proposal', show: 'הצעת מחיר' },
+            { value: 'combined', show: 'משולב' },
+          ]
+        }
+      },
     ]
   };
   export const tenderListConfig = {
