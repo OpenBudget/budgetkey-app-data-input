@@ -20,7 +20,8 @@ export class SimpleListEditorComponent implements OnInit {
   query() {
     this.api.queryDatarecords(this.def.name).subscribe((results) => {
       const f = this.def.field.name;
-      this.datarecords = results.sort((a, b) => a.value[f] > b.value[f] ? 1 : a.value[f] < b.value[f] ? -1 : 0);
+      // this.datarecords = results.sort((a, b) => a.value[f] > b.value[f] ? 1 : a.value[f] < b.value[f] ? -1 : 0);
+      this.datarecords = results;
     })
   }
 

@@ -35,6 +35,17 @@ export class SocialServiceEditorComponent implements OnInit {
   level2_options: any = {options: []};
   level3_name: string = null;
   level3_options: any = {options: []};
+  virtue_of_options = {options: [
+    {
+      value: 'חוק', show: 'חוק',
+    },
+    {
+      value: 'החלטת ממשלה', show: 'החלטת ממשלה',
+    },
+    {
+      value: 'נוהל/חוזר משרדי', show: 'נוהל/חוזר משרדי',
+    },
+  ]};
 
   OFFICE_CONDITION = (p) => `(
     (${p} like 'משרד הבריאות%%') OR

@@ -13,6 +13,10 @@
 <app-editable-field [record]='datarecord' field='intervention' label='אופן ההתערבות' kind='datarecord' [options]='{name: "intervention"}'></app-editable-field>
 <app-editable-field [record]='datarecord' field='contact' label='איש קשר' kind='datarecord' [options]='{name: "contact"}'></app-editable-field>
 
+<app-editable-field [record]='datarecord' field='virtue_of' label='ניתן מכוח' kind='enum' [options]='virtue_of_options'></app-editable-field>
+<app-editable-field [record]='datarecord' field='virtue_of_details' label='קישור לחוק / החלטה'></app-editable-field>
+
+
 <h3>תיעוד מקורות המידע</h3>
 <p>(מידע זה מיועד למנהלי/ות הרכש שיזינו מידע בעתיד. הוא לא יוצג בממשק המשתמש הרגיל)</p>
 <textarea [(ngModel)]='datarecord.notes' rows='5' placeholder='הערות כלליות (לא לפרסום)'></textarea> 
