@@ -60,6 +60,14 @@ export const beneficiariesConfig = {
           number: true
         }
       },
+      {
+        name: 'net_executed',
+        display: 'ביצוע תקציב ב-₪',
+        readonly: true,
+        options: {
+          number: true
+        }
+      },
     ]
   };
   export const suppliersConfig = {
