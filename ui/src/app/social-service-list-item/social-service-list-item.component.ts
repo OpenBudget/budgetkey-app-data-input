@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
-import { min } from 'rxjs/operators';
+import { ListStateService } from '../list-state.service';
 
 @Component({
   selector: 'app-social-service-list-item',
@@ -10,11 +10,11 @@ export class SocialServiceListItemComponent implements OnChanges {
 
   @Input() item: any = {};
   @Input() def: any = {};
-  open = false;
   count = 0;
   incompleteCount = 0;
+  _open = false;
 
-  constructor() { }
+  constructor(private listState: ListStateService) { }
 
   _count(item) {
     if (item.item) {
@@ -45,7 +45,16 @@ export class SocialServiceListItemComponent implements OnChanges {
   ngOnChanges(): void {
     this.count = this._count(this.item);
     this.incompleteCount = this._incompleteCount(this.item);
-    this.open = !this.item.header;
+    this._open = !this.item.header || this.listState.get(this.item.header);
+  }
+
+  set open(value: boolean) {
+    this.listState.set(this.item.header, value);
+    this._open = value;
+  }
+
+  get open(): boolean {
+    return this._open;
   }
 
   get yearRange() {
