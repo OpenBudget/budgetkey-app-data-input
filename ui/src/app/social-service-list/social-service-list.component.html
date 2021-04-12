@@ -1,7 +1,12 @@
-<div *ngIf='roles._.datarecordNew' class='add-new'>
-    <a [routerLink]='"/datarecords/" + def.name + "/new"'>
-        <i class="fas fa-plus-circle" aria-hidden="true"></i>
-        יצירת שירות חברתי חדש
-    </a>
-</div>  
+<div class='info'>
+    <p>הרשאות גישה: יש לך גישה לשירותים של {{offices[designatedOffice] || "כל המשרדים"}}</p>
+    <div *ngIf='roles._.datarecordNew' class='add-new'>
+        <a [routerLink]='"/datarecords/" + def.name + "/new"'>
+            <i class="fas fa-plus-circle" aria-hidden="true"></i>
+            יצירת שירות חברתי חדש
+        </a>
+    </div>
+</div>
+
 <app-social-service-list-item [def]='def' [item]='aggregated'></app-social-service-list-item>
+

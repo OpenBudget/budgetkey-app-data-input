@@ -14,19 +14,20 @@ export class SocialServiceListComponent implements OnInit {
   @Input() datarecords: any[] = [];
   aggregated = {items: []};
   selectedOffice = new ReplaySubject<string>(1);
+  designatedOffice = null;
+  offices: any = {};
 
   constructor(public api: ApiService, public roles: RolesService) {
     this.api.queryUsers();
-    let designatedOffice = null;
     this.api.currentUserProfile.pipe(
       first(),
       switchMap((profile) => {
-        designatedOffice = profile.permissions?.datarecords?.social_service?.designated_office;
+        this.designatedOffice = profile.permissions?.datarecords?.social_service?.designated_office;
         return this.api.queryDatarecords('hierarchy');
       }),
       map((hierarchies) => {
         for (const h of hierarchies) {
-          if (h.value.id === designatedOffice) {
+          if (h.value.id === this.designatedOffice) {
             this.selectedOffice.next(h.value.name);
             return h.value.name;
           }
@@ -35,6 +36,11 @@ export class SocialServiceListComponent implements OnInit {
       })
     ).subscribe((s) => {
       console.log('SELECTED OFFICE = ', s);
+    });
+    api.queryDatarecords('hierarchy').subscribe((results) => {
+      results.map(x => x.value).forEach((el) => {
+        this.offices[el.id] = el.name;
+      });
     });
   }
 

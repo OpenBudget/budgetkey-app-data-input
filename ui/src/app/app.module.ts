@@ -42,8 +42,9 @@ import { HierarchyEditorComponent } from './hierarchy-editor/hierarchy-editor.co
     useValue: {
       social_services: {
         detail: SocialServiceEditorComponent,
-        list: SocialServiceListComponent,
-        user: SocialServiceUserComponent
+        dashboard: SocialServiceListComponent,
+        user: SocialServiceUserComponent,
+        list: false
       },
       simple_list: {
         list: SimpleListEditorComponent

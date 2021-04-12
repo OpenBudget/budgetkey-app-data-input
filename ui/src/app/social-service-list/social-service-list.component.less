@@ -1,9 +1,18 @@
 :host {
-    .add-new {
-        align-self: flex-end;
-        margin-bottom: 16px;
-        a {
-            text-decoration: none;
+    display: flex;
+    flex-flow: column;
+    .info {
+        margin: 16px 0;
+        padding: 16px 0;
+        border-top: solid 1px #444;
+        font-weight: bold;
+        display: flex;
+        flex-flow: row;
+        justify-content: space-between;
+        .add-new {
+            a {
+                text-decoration: none;
+            }
         }
     }
 }
