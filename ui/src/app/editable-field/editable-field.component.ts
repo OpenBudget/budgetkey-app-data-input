@@ -1,14 +1,15 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { ApiService } from 'etl-server';
-import { from, fromEvent } from 'rxjs';
+import { from, fromEvent, Subscription } from 'rxjs';
 import { first, switchMap } from 'rxjs/operators';
+import { FieldVerifyerService } from '../field-verifyer.service';
 
 @Component({
   selector: 'app-editable-field',
   templateUrl: './editable-field.component.html',
   styleUrls: ['./editable-field.component.less']
 })
-export class EditableFieldComponent implements OnInit {
+export class EditableFieldComponent implements OnInit, OnDestroy {
 
   @Input() record: any;
   @Input() field: string;
@@ -18,12 +19,15 @@ export class EditableFieldComponent implements OnInit {
   @Input() options: any = {};
   @Input() readonly = false;
   @Input() strong = false;
+  @Input() required = false;
 
   @Output() changed = new EventEmitter<any>();
   @ViewChild('editor', {static: false}) editor: ElementRef;
   _editing = false;
+  _verificationSubscription: Subscription;
+  valid = true;
 
-  constructor(private api: ApiService) { }
+  constructor(private api: ApiService, private verifier: FieldVerifyerService) { }
 
   ngOnInit() {
     this.editing = !this.record[this.field] && this.record[this.field] !== 0;
@@ -31,7 +35,6 @@ export class EditableFieldComponent implements OnInit {
     this.options = this.options || {};
     this.placeholder = this.placeholder || this.label;
     if (this.kind === 'datarecord') {
-      console.log('DTDT', this.options);
       this.api.configuration.pipe(
         first(),
         switchMap((configuration) => {
@@ -43,14 +46,32 @@ export class EditableFieldComponent implements OnInit {
           return from([[]]);
         }),
       ).subscribe((records) => {
-        this.options.options = records.map((rec) => {
-          return {
-            value: rec.value.id,
-            show: rec.value.name
-          };
-        });
-        console.log('OPTS', this.options);
+        this.options.options = records
+          .sort((a, b) => a.value.order - b.value.order)
+          .map((rec) => {
+            return {
+              order: rec.value.order,
+              value: rec.value.id,
+              show: rec.value.name
+            };
+          });
       });
+    }
+    if (this.required) {
+      this.verifier.update(this.label, false);
+      this._verificationSubscription = this.verifier.verificationRequested.subscribe(() => {
+        this.valid = this.record[this.field] && this.record[this.field].length > 0;
+        this.verifier.update(this.label, this.valid);
+      });
+    }
+  }
+
+  ngOnDestroy() {
+    if (this._verificationSubscription) {
+      console.log('VALID-DEREG', this.label);
+      this.verifier.update(this.label, true);
+      this._verificationSubscription.unsubscribe();
+      this._verificationSubscription = null;
     }
   }
 

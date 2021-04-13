@@ -1,7 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService, ConfirmerService, RolesService } from 'etl-server';
-import { filter, switchMap } from 'rxjs/operators';
+import { filter, switchMap, tap } from 'rxjs/operators';
+import { FieldVerifyerService } from '../field-verifyer.service';
 import { ObudgetApiService } from '../obudget-api.service';
 import * as configs from './datatypes';
 
@@ -25,8 +26,11 @@ export class SocialServiceEditorComponent implements OnInit {
   possibleTenders = [];
   lookupTable: any[] = [];
 
-  showSearch = false;
-  tab = 'suppliers';
+  modalActive = false;
+  showSearch: string = '';
+  valid = true;
+
+  tab = 'org';
   offices: any[] = [];
   office_options: any = {options: []};
   level1_name: string = null;
@@ -36,6 +40,9 @@ export class SocialServiceEditorComponent implements OnInit {
   level3_name: string = null;
   level3_options: any = {options: []};
   virtue_of_options = {options: [
+    {
+      value: '', show: '',
+    },
     {
       value: 'חוק', show: 'חוק',
     },
@@ -58,7 +65,7 @@ export class SocialServiceEditorComponent implements OnInit {
   )`;
 
   constructor(private api: ObudgetApiService, private etlApi: ApiService, public roles: RolesService,
-              private confirmer: ConfirmerService, private router: Router) {
+              private confirmer: ConfirmerService, private router: Router, private verifyer: FieldVerifyerService) {
     this.thiz = this;
     this.etlApi.queryDatarecords('hierarchy').subscribe((results) => {
       this.offices = results.map(x => x.value);
@@ -67,7 +74,6 @@ export class SocialServiceEditorComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.showSearch = !this.datarecord.budgetItems || this.datarecord.budgetItems.length === 0;
     this.datarecord.tenders = this.datarecord.tenders || [];
     this.datarecord.suppliers = this.datarecord.suppliers || [];
     this.datarecord.non_tenders = this.datarecord.non_tenders || [];
@@ -75,11 +81,21 @@ export class SocialServiceEditorComponent implements OnInit {
     this.refresh();
   }
 
-  updateHierarchy() {
-    console.log('updateHierarchy');
+  updateHierarchy(clear?: number) {
     this.level1_name = null;
     this.level2_name = null;
     this.level3_name = null;
+    if (clear) {
+      if (clear <= 3) {
+        this.datarecord.subsubunit = null;
+      }
+      if (clear <= 2) {
+        this.datarecord.subunit = null;
+      }
+      if (clear <= 1) {
+        this.datarecord.unit = null;
+      }
+    }
     this.office_options.options = [];
     for (const office of this.offices) {
       this.office_options.options.push({value: office.name, show: office.name});
@@ -105,9 +121,6 @@ export class SocialServiceEditorComponent implements OnInit {
         }
       }
     }
-    console.log('LVL1', this.level1_name, this.level1_options);
-    console.log('LVL2', this.level2_name, this.level2_options);
-    console.log('LVL3', this.level3_name, this.level3_options);
   }
 
   deleteAll(str, subst) {
@@ -138,7 +151,8 @@ export class SocialServiceEditorComponent implements OnInit {
       }  
     }
     this.fillInBudgets();
-    this.showSearch = false;
+    this.modalActive = false;
+    this.showSearch = '';
   }
 
   fillInBudgets() {
@@ -238,7 +252,7 @@ export class SocialServiceEditorComponent implements OnInit {
     const budgetCodesStr = budgetCodes.map(x => `'${x}'`).join(', ');
     const sql = `      
     WITH a AS
-      (SELECT (((tender_key->>0)::JSON)->>0)::integer AS publication_id,
+      (SELECT (((tender_key->>0)::JSON)->>0) AS publication_id,
               ((tender_key->>0)::JSON)->>1 AS tender_type,
               ((tender_key->>0)::JSON)->>2 AS tender_id,
               sum(volume) AS volume,
@@ -277,13 +291,15 @@ export class SocialServiceEditorComponent implements OnInit {
   fetchSpendingSuppliers() {
     const sql = `
       SELECT entity_id, case when entity_name is null then supplier_name->>0 else entity_name end as entity_name,
+             kind as entity_kind, kind_he as entity_kind_he,
              sum(volume) as volume, sum(executed) as executed,
              array_agg(distinct purchase_method->>0) as purchase_methods
       FROM contract_spending
+      LEFT JOIN entities on (contract_spending.entity_id=entities.id)
       WHERE budget_code in ('${this.getBudgetCodes().join("','")}')
           AND ${this.OFFICE_CONDITION('publisher_name')}
-      GROUP BY 1, 2
-      ORDER BY 3 desc nulls last
+      GROUP BY 1, 2, 3, 4
+      ORDER BY 5 desc nulls last
     `;
     this.api.query(sql)
       .subscribe((records: any) => {
@@ -316,11 +332,10 @@ export class SocialServiceEditorComponent implements OnInit {
   connectTender({row, field}) {
     row.related = row.related || 'yes';
     const tender_key = row.tender_key;
+    this.datarecord.tenders = this.datarecord.tenders.filter((x) => x.tender_key !== tender_key);
+    this.datarecord.non_tenders = this.datarecord.non_tenders.filter((x) => x.tender_key !== tender_key);
     if (row.related === 'yes') {
-      if (this.datarecord.tenders.filter(x => x.tender_key === tender_key).length === 0) {
-        this.datarecord.tenders.push(row);
-      }
-      this.datarecord.non_tenders = this.datarecord.non_tenders.filter((x) => x.tender_key !== tender_key);
+      this.datarecord.tenders.push(row);
       this.possibleTenders = this.possibleTenders.filter((x) => x.tender_key !== tender_key);
       for (const item of this.lookupTable) {
         if (item.tender_key === tender_key) {
@@ -337,21 +352,20 @@ export class SocialServiceEditorComponent implements OnInit {
       }  
     } else if (row.related === 'no') {
       this.datarecord.non_tenders.push(row);
-      this.datarecord.tenders = this.datarecord.tenders.filter((x) => x.tender_key !== tender_key);
     } else if (row.related === 'suggestion') {
       this.datarecord.tenders.push(row);
-      this.datarecord.non_tenders = this.datarecord.non_tenders.filter((x) => x.tender_key !== tender_key);
     }
+    this.showSearch = '';
+    this.modalActive = false;
   }
 
   connectSupplier({row, field}) {
     row.related = row.related || 'yes';
     const entity_id = row.entity_id;
+    this.datarecord.suppliers = this.datarecord.suppliers.filter((x) => x.entity_id !== entity_id);
+    this.datarecord.non_suppliers = this.datarecord.non_suppliers.filter((x) => x.entity_id !== entity_id);
     if (row.related === 'yes') {
-      if (this.datarecord.suppliers.filter(x => x.entity_id === entity_id).length === 0) {
-        this.datarecord.suppliers.push(row);
-      }
-      this.datarecord.non_suppliers = this.datarecord.non_suppliers.filter((x) => x.entity_id !== entity_id);
+      this.datarecord.suppliers.push(row);
       this.possibleSuppliers = this.possibleSuppliers.filter((x) => x.entity_id !== entity_id);
       for (const item of this.lookupTable) {
         if (item.entity_id === entity_id) {
@@ -368,10 +382,8 @@ export class SocialServiceEditorComponent implements OnInit {
       }  
     } else if (row.related === 'no') {
       this.datarecord.non_suppliers.push(row);
-      this.datarecord.suppliers = this.datarecord.suppliers.filter((x) => x.entity_id !== entity_id);
     } else if (row.related === 'suggestion') {
       this.datarecord.suppliers.push(row);
-      this.datarecord.non_suppliers = this.datarecord.non_suppliers.filter((x) => x.entity_id !== entity_id);
     }
   }
 
@@ -436,14 +448,21 @@ export class SocialServiceEditorComponent implements OnInit {
   }
 
   save(complete) {
-    this._save(complete)
+    if (complete) {
+      this.verifyer.verify();
+      this.valid = this.verifyer.valid();
+      if (this.valid) {
+        this._save(complete)
         .subscribe((result) => {
           if (result.id) {
-            this.router.navigate(['/datarecords/', this.def.name]);
+            this.router.navigate(['/dashboard']);
           } else {
             console.log('Failed to SAVE Datarecord!', this.def.name);
           }
         });
+      }
+    }
+
   }
 
   delete(e) {
@@ -453,8 +472,33 @@ export class SocialServiceEditorComponent implements OnInit {
         switchMap(() => this.etlApi.deleteDatarecord(this.def.name, this.datarecord.id))
       ).subscribe((result) => {
         console.log('DELETED DATARECORD', result);
-        this.router.navigate(['/datarecords/', this.def.name]);
+        this.router.navigate(['/dashboard']);
       });
+    e.preventDefault();
+    return false;
+  }
+
+  fakeDelete(e) {
+    this.confirmer.confirm(this.confirmer.ACTION_DELETE_DATARECORD, this.datarecord.name)
+      .pipe(
+        filter((x) => x),
+        tap(() => {
+          this.datarecord.deleted = true;
+        }),
+        switchMap(() => {
+          return this._save(this.datarecord.complete);
+        })
+      ).subscribe((result) => {
+        console.log('FAKE DELETED DATARECORD', result);
+        this.router.navigate(['/dashboard']);
+      });
+    e.preventDefault();
+    return false;
+  }
+
+  restore(e) {
+    this.datarecord.deleted = false;
+    this.save(this.datarecord.complete);
     e.preventDefault();
     return false;
   }

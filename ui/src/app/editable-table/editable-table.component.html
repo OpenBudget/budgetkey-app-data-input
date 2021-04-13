@@ -3,7 +3,7 @@
   <thead>
     <th *ngFor='let header of headers'>
       <ng-container *ngIf='header.kind !== "button"'>
-        {{header.display}}
+        {{header.display}}<ng-container *ngIf='header.explanation'>&nbsp;<i [title]='header.explanation' class="fas fa-xs fa-question-circle"></i></ng-container>
       </ng-container>
     </th>
   </thead>

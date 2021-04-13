@@ -23,12 +23,19 @@
             </div>
             <div class='line'>
                 <div class='stat'>
-                    <span class='status complete' *ngIf='item.item.complete'>
-                        <i class="fas fa-check-circle"></i> הסתיים
-                    </span>
-                    <span class='status incomplete' *ngIf='!item.item.complete'>
-                        <i class="fas fa-dot-circle "></i> בעבודה
-                    </span>
+                    <ng-container *ngIf='!item.item.deleted'>
+                        <span class='status complete' *ngIf='item.item.complete'>
+                            <i class="fas fa-check-circle"></i> הסתיים
+                        </span>
+                        <span class='status incomplete' *ngIf='!item.item.complete'>
+                            <i class="fas fa-dot-circle "></i> בעבודה
+                        </span>    
+                    </ng-container>
+                    <ng-container *ngIf='item.item.deleted'>
+                        <span class='status deleted'>
+                            <i class="fas fa-times-circle"></i> מחוקה
+                        </span>
+                    </ng-container>
                 </div>
                 <div class='stat'>{{yearRange}}</div>
                 <div class='stat'>{{numSuppliers}} מפעילים קשורים</div>

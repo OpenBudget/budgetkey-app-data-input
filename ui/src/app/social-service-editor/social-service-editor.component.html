@@ -1,76 +1,122 @@
-<h3>מידע כללי</h3>
-<app-editable-field [record]='datarecord' field='name' label='שם השירות'></app-editable-field>
-<app-editable-field [record]='datarecord' field='description' label='תיאור השירות'></app-editable-field>
-<app-editable-field [record]='datarecord' field='office' label='שם המשרד הממשלתי' kind='enum' [options]='office_options' (changed)='updateHierarchy()'></app-editable-field>
-
-<app-editable-field [record]='datarecord' field='unit' *ngIf='level1_name && level1_options.options.length' [label]='"שם ה" + level1_name' kind='enum' [options]='level1_options' (changed)='updateHierarchy()'></app-editable-field>
-<app-editable-field [record]='datarecord' field='subunit' *ngIf='level2_name && level2_options.options.length' [label]='"שם ה" + level2_name' kind='enum' [options]='level2_options' (changed)='updateHierarchy()'></app-editable-field>
-<app-editable-field [record]='datarecord' field='subsubunit' *ngIf='level3_name && level3_options.options.length' [label]='"שם ה" + level3_name' kind='enum' [options]='level3_options' (changed)='updateHierarchy()'></app-editable-field>
-
-<app-editable-field [record]='datarecord' field='target_audience' label='אוכלוסיית יעד' kind='datarecord' [options]='{name: "target_audience", multiple: true}'></app-editable-field>
-<app-editable-field [record]='datarecord' field='target_age_group' label='קבוצת גיל' kind='datarecord' [options]='{name: "target_age_group", multiple: true}'></app-editable-field>
-<app-editable-field [record]='datarecord' field='subject' label='תחום ההתערבות' kind='datarecord' [options]='{name: "subject", multiple: true}'></app-editable-field>
-<app-editable-field [record]='datarecord' field='intervention' label='אופן ההתערבות' kind='datarecord' [options]='{name: "intervention", multiple: true}'></app-editable-field>
-<app-editable-field [record]='datarecord' field='contact' label='איש קשר' kind='datarecord' [options]='{name: "contact"}'></app-editable-field>
-
-<app-editable-field [record]='datarecord' field='virtue_of' label='ניתן מכוח' kind='enum' [options]='virtue_of_options'></app-editable-field>
-<app-editable-field [record]='datarecord' field='virtue_of_details' label='קישור לחוק / החלטה'></app-editable-field>
-
-
-<h3>תיעוד מקורות המידע</h3>
-<p>(מידע זה מיועד למנהלי/ות הרכש שיזינו מידע בעתיד. הוא לא יוצג בממשק המשתמש הרגיל)</p>
-<textarea [(ngModel)]='datarecord.notes' rows='5' placeholder='הערות כלליות (לא לפרסום)'></textarea> 
-
-<div class='buttons'>
-    <div *ngIf='roles._.datarecordEditOwn || roles._.datarecordEditAll'  class='save-done button' (click)='save(false)'>
-      <i class="fas fa-save" aria-hidden="true"></i>
-      שמירה וסימון כעדיין בעבודה
-    </div>
-    <div *ngIf='roles._.datarecordEditOwn || roles._.datarecordEditAll'  class='save-notdone button' (click)='save(true)'>
-      <i class="fas fa-save" aria-hidden="true"></i>
-      שמירה וסימון כהושלם
-    </div>
-    <div *ngIf='(roles._.datarecordDeleteOwn ||  roles._.datarecordDeleteAll) && datarecord.id' class='delete button' (click)='delete($event)'>
-      <i class="fas fa-trash" aria-hidden="true"></i>
-      מחיקת השירות
-    </div>
-</div>
-  
-<h3>מספר מוטבים</h3>
-<app-editable-table [record]='datarecord' field='beneficiaries' [config]='C.beneficiariesConfig'></app-editable-table>
-
-<div class='budget'>
-    <div>
-        <h3>תקנות</h3>
-        <app-editable-table [record]='datarecord' field='budgetItems' [config]='C.budgetItemsConfig' (change)='refresh()'></app-editable-table>
-        <!-- <a class='fill-in' (click)='fillInBudgets()' *ngIf='datarecord.budgetItems && datarecord.budgetItems.length'><i class="fas fa-magic"></i>השלמת תקנות אוטומטית</a>         -->
-    </div>
-    <div *ngIf='budgetAmounts && budgetAmounts.length'>
-        <h3>סה״כ תקציב מאושר (מחושב)</h3>
-        <app-editable-table [record]='thiz' field='budgetAmounts' [config]='C.budgetAmountsConfig'></app-editable-table>
-    </div>
-</div>
-<h4 [class.open]='showSearch' (click)='showSearch = !showSearch'><i class="fas fa-search"></i>חיפוש והוספה של תקנה תקציבית</h4>
-<app-budget-searcher *ngIf='showSearch' (choose)='addBudgetItem($event)'></app-budget-searcher>
+<app-editable-field [record]='datarecord' field='name' label='שם השירות' [required]='true'></app-editable-field>
+<div class='explanation'>שם השירות כפי שנקרא במערכות המידע ו/או ביחידות המקצועיות של המשרד. שם השירות צריך לבטא את מהות השירות הניתן ולהיות ברור לקורא מן החוץ.</div>
+<app-editable-field [record]='datarecord' field='description' label='תיאור השירות' [required]='true'></app-editable-field>
+<div class='explanation'>מהות השירות ומה ניתן באמצעותו בשניים עד שלושה משפטים. השתמשו בתבנית הבאה:<br/>
+     מתן (מה ניתן בשירות) עבור (סוג מקבלי השירות) על מנת (מטרת השירות). פועל באמצעות (אופן הפעלת השירות) ומתמקד/מאופיין ב(מרכיב מרכזי או ייחודי בשירות).<br/>
+     הימנעו מלהשתמש במילים: משרד, שירות/ים, ונסו לתאר את השירות כך שיהיה מובן גם לציבור הרחב.
+     לדוגמה: מתן ייעוץ, בדיקה ואבחון רפואי ופסיכו-דיאגנוסטי של ילדים המיועדים לאימוץ בישראל, על מנת להבטיח אימוץ מיטבי. פועל באמצעות מרכזים רפואיים ומאופיין בליווי רציף והוליסטי של הילדים.</div>
 
 <div class='tabs'>
+    <div class='tab' (click)='tab = "org"' [class.active]='tab === "org"'>
+        <span class='name'>שיוך ארגוני</span>
+    </div>
+    <div class='tab' (click)='tab = "properties"' [class.active]='tab === "properties"'>
+        <span class='name'>מאפיינים</span>
+    </div>
+    <div class='tab' (click)='tab = "beneficiaries"' [class.active]='tab === "beneficiaries"'>
+        <span class='name'>מוטבים</span>
+    </div>
+    <div class='tab' (click)='tab = "budget"' [class.active]='tab === "budget"'>
+        <span class='name'>תקנות תקציביות</span>
+    </div>
     <div class='tab' (click)='tab = "suppliers"' [class.active]='tab === "suppliers"'>
         <span class='name'>מפעילים</span>
         <span class='info' *ngIf="statPossible('suppliers')">{{statPossible('suppliers')}} אפשריים</span>
         <span class='info' *ngIf="statConnected('suppliers')">{{statConnected('suppliers')}} מקושרים</span>
         <span class='info suggested' *ngIf="statSuggested('suppliers')">{{statSuggested('suppliers')}} מוצעים</span>
-        <span class='info' *ngIf="statNonConnected('suppliers')">{{statConnected('suppliers')}} פסולים</span>
+        <span class='info' *ngIf="statNonConnected('suppliers')">{{statNonConnected('suppliers')}} פסולים</span>
     </div>
     <div class='tab' (click)='tab = "tenders"' [class.active]='tab === "tenders"'>
         <span class='name'>מכרזים</span>
         <span class='info' *ngIf="statPossible('tenders')">{{statPossible('tenders')}} אפשריים</span>
         <span class='info' *ngIf="statConnected('tenders')">{{statConnected('tenders')}} מקושרים</span>
         <span class='info suggested' *ngIf="statSuggested('tenders')">{{statSuggested('tenders')}} מוצעים</span>
-        <span class='info' *ngIf="statNonConnected('tenders')">{{statConnected('tenders')}} פסולים</span>
+        <span class='info' *ngIf="statNonConnected('tenders')">{{statNonConnected('tenders')}} פסולים</span>
     </div>
 </div>
 
-<ng-container *ngIf='tab==="suppliers"'>
+<div class='tab-contents' [class.visible]='tab=="org"'>
+    <app-editable-field [record]='datarecord' field='office' label='שם המשרד הממשלתי' kind='enum' [required]='true'
+                        [options]='office_options' (changed)='updateHierarchy(1)'></app-editable-field>
+    <div class='explanation'>שם המשרד אשר נותן את השירות</div>
+    <ng-container *ngIf='level1_name && level1_options.options.length'>
+        <app-editable-field [record]='datarecord' field='unit' [required]='true'
+                            [label]='"שם ה" + level1_name' kind='enum' [options]='level1_options' (changed)='updateHierarchy(2)'></app-editable-field>
+        <div class='explanation'>שם ה{{level1_name}} אשר אחראי על מתן השירות</div>
+    </ng-container>
+    <ng-container *ngIf='level2_name && level2_options.options.length'>
+        <app-editable-field [record]='datarecord' field='subunit' [required]='true'
+                        [label]='"שם ה" + level2_name' kind='enum' [options]='level2_options' (changed)='updateHierarchy(3)'></app-editable-field>
+        <div class='explanation'>שם ה{{level2_name}} אשר אחראים למתן השירות</div>
+    </ng-container>
+    <ng-container *ngIf='level3_name && level3_options.options.length'>
+        <app-editable-field [record]='datarecord' field='subsubunit' [required]='true'
+                            [label]='"שם ה" + level3_name' kind='enum' [options]='level3_options' (changed)='updateHierarchy()'></app-editable-field>
+        <div class='explanation'>שם ה{{level3_name}} אשר אחראים למתן השירות</div>
+    </ng-container>
+</div>
+
+<div class='tab-contents tab-properties' [class.visible]='tab=="properties"'>
+    <app-editable-field [record]='datarecord' field='target_audience' label='אוכלוסיית יעד' kind='datarecord' [required]='true'
+                        [options]='{name: "target_audience", multiple: true}'></app-editable-field>
+    <div class='explanation'>אוכלוסיות היעד של השירות. שימו לב כי ניתן לבצע בחירה מרובה של עד 4 אוכלוסיות יעד, בחרו את אלה העיקריות ביותר. אם השירות אינו מיועד לאוכלוסיה ספציפית, סמנו "אוכלוסיה כללית".</div>
+
+    <app-editable-field [record]='datarecord' field='target_age_group' label='קבוצת גיל' kind='datarecord' [required]='true'
+                        [options]='{name: "target_age_group", multiple: true}'></app-editable-field>
+    <div class='explanation'>קבוצת הגיל לה מיועד השירות. שימו לב כי ניתן לבצע בחירה מרובה של עד 4 קבוצות גיל, בחרו את אלה העיקריות ביותר. במידה והשירות אינו מיועד לקבוצת גיל מסוימת, סמנו "כל הגילאים".</div>
+
+    <app-editable-field [record]='datarecord' field='subject' label='תחום ההתערבות' kind='datarecord' [required]='true'
+                        [options]='{name: "subject", multiple: true}'></app-editable-field>
+    <div class='explanation'>עולם התוכן או הנושא בו עוסק השירות. שימו לב כי ניתן לבצע בחירה מרובה של עד 4 תחומים, בחרו את אלה העיקריים ביותר.</div>
+
+    <app-editable-field [record]='datarecord' field='intervention' label='אופן ההתערבות' kind='datarecord' [required]='true'
+                        [options]='{name: "intervention", multiple: true}'></app-editable-field>
+    <div class='explanation'>הדרך או הצורה באמצעותה ניתן השירות. שימו לב כי ניתן לבצע בחירה מרובה של עד 4 אופני התערבות, בחרו את אלה העיקריים ביותר.</div>
+
+    <app-editable-field [record]='datarecord' field='contact' label='איש.ת קשר' kind='datarecord' [required]='true'
+                        [options]='{name: "contact"}'></app-editable-field>
+    <div class='explanation'>תיבת הדואר המשרדית של האתר, אשר אליה יגיעו פניות במידה ויש שאלות על המופיע בו</div>
+    
+    <app-editable-field [record]='datarecord' field='virtue_of' label='ניתן מכוח' kind='enum' [options]='virtue_of_options'></app-editable-field>
+    <div class='explanation'>האם השירות ניתן מכוח חוק, החלטת ממשלה או חוזר/נוהל משרדי?</div>
+
+    <app-editable-field [record]='datarecord' field='virtue_of_details' label='קישור לחוק / החלטה'></app-editable-field>
+    <div class='explanation'>במידה והשירות ניתן מכוח חוק, החלטת ממשלה או חוזר משרדי, הכניסו קישור לפרסום של המסמך הרלוונטי.</div>
+
+    <h3>תיעוד מקורות המידע</h3>
+    <textarea [(ngModel)]='datarecord.notes' rows='5' placeholder='הערות כלליות (לא לפרסום)'></textarea> 
+    <div class='explanation'>מידע אודות תהליך ההזנה, האופן בו התבצע והגורמים שלקחו חלק.<br/>
+        המידע מיועד לסייע לגורמים הבאים אחריכם שיזינו את הנתונים במערכת, ולסייע בידם להגיע למידע, הוא לא יוצג בממשק המשתמש הרגיל.</div>
+</div>
+
+<div class='tab-contents' [class.visible]='tab=="beneficiaries"'>
+    <div class='explanation'>
+        המספר השנתי של מקבלי השירות אשר קיבלו בפועל את השירות. שימו לב כי מדובר במקבלי שירות מקרב אוכלוסיית היעד ולא ברשויות מקומיות, בתי ספר וכדומה.<br/>
+         במידה ויש צורך, בצעו הערכה של מספר מקבלי השירות על פי מפתח קבוע. לדוגמה, אם השירות ניתן למספר כיתות, בצעו חישוב על פי המספר הממוצע של תלמידים בכיתה.</div>
+    <app-editable-table [record]='datarecord' field='beneficiaries' [config]='C.beneficiariesConfig'></app-editable-table>
+</div>
+
+<div class='tab-contents' [class.visible]='tab=="budget"'>
+    <div class='explanation'></div>
+    <div class='budget'>
+        <div>
+            <h4 class='clickable' (click)='modalActive = true; showSearch = "budget"'><i class="fas fa-search"></i>חיפוש והוספה של תקנה תקציבית</h4>
+            <div class='explanation'>מספר התקנה התקציבית ממנה ניתן תקציב השירות. על התקנה לכלול 8 ספרות, כולל מספר המשרד</div>
+            <app-editable-table [record]='datarecord' field='budgetItems' [config]='C.budgetItemsConfig' (change)='refresh()'></app-editable-table>
+            <!-- <a class='fill-in' (click)='fillInBudgets()' *ngIf='datarecord.budgetItems && datarecord.budgetItems.length'><i class="fas fa-magic"></i>השלמת תקנות אוטומטית</a>         -->
+        </div>
+        <div *ngIf='budgetAmounts && budgetAmounts.length'>
+            <h3>סה״כ תקציב מאושר (מחושב)</h3>
+            <div class='explanation'>
+                התקציב השנתי המאושר לשירות (מתוך סך התקציב בתקנה התקציבית) והתקציב השנתי שבוצע בפועל בשירות. הזינו את הסכום או בדקו שהסכום המופיע אכן נכון.
+            </div>
+            <app-editable-table [record]='thiz' field='budgetAmounts' [config]='C.budgetAmountsConfig'></app-editable-table>
+        </div>
+    </div>        
+</div>
+
+<div class='tab-contents' [class.visible]='tab==="suppliers"'>
+    <div class='explanation'>מפעילים אשר רלוונטיים להליך המכרזי ולשירות. סמנו או לחילופין הזינו את המידע אודות המפעילים הרלוונטיים לשירות.</div>
     <ng-container *ngIf='datarecord.suppliers.length'>
         <h3>מפעילים קשורים</h3>
         <app-editable-table [record]='datarecord' field='suppliers' [config]='C.suppliersConfig' (changed)='connectSupplier($event)'></app-editable-table>    
@@ -82,9 +128,12 @@
     <ng-container *ngIf='possibleSuppliers && possibleSuppliers.length'>
         <h3>מפעילים אפשריים</h3>
         <app-editable-table [record]='thiz' field='possibleSuppliers' [config]='C.supplierListConfig' (changed)='connectSupplier($event)'></app-editable-table>
-    </ng-container>    
-</ng-container>
-<ng-container *ngIf='tab==="tenders"'>
+    </ng-container>
+    <h4 class='clickable' (click)='modalActive = true; showSearch = "supplier"'><i class="fas fa-search"></i>חיפוש והוספה של מפעיל</h4>
+</div>
+
+<div class='tab-contents' [class.visible]='tab==="tenders"'>
+    <div class='explanation'>המכרזים אשר במסגרתם מסופק השירות. סמנו את המכרזים הרלוונטים, או לחילופין הזינו את המידע אודות המכרזים שבשירות.</div>
     <ng-container *ngIf='datarecord.tenders.length'>
         <h3>מכרזים קשורים</h3>
         <app-editable-table [record]='datarecord' field='tenders' [config]='C.tendersConfig' (changed)='connectTender($event)'></app-editable-table>
@@ -97,10 +146,44 @@
         <h3>מכרזים אפשריים</h3>
         <app-editable-table [record]='thiz' field='possibleTenders' [config]='C.tenderListConfig' (changed)='connectTender($event)'></app-editable-table>    
     </ng-container>
-</ng-container>
+    <h4 class='clickable' (click)='modalActive = true; showSearch = "tender"'><i class="fas fa-search"></i>חיפוש והוספה של מכרז</h4>
+</div>
 
 
-
-<!-- <a (click)='fetchSpendingSuppliers()'>רענון רשימת המפעילים</a> -->
-
-<!-- <a (click)='fetchSpendingTenders()'>רענון רשימת המכרזים</a> -->
+<div class='buttons'>
+    <div *ngIf='roles._.datarecordEditOwn || roles._.datarecordEditAll'  class='save-done button' (click)='save(false)'>
+      <i class="fas fa-save" aria-hidden="true"></i>
+      שמירה וסימון כעדיין בעבודה
+    </div>
+    <div *ngIf='roles._.datarecordEditOwn || roles._.datarecordEditAll'  class='save-notdone button' (click)='save(true)'>
+      <i class="fas fa-save" aria-hidden="true"></i>
+      שמירה וסימון כהושלם
+    </div>
+    <ng-container *ngIf='(roles._.datarecordDeleteOwn ||  roles._.datarecordDeleteAll) && datarecord.id' >
+        <ng-container *ngIf='datarecord.deleted' >
+            <div class='restore button' (click)='restore($event)'>
+                <i class="fas fa-trash" aria-hidden="true"></i>
+                שחזור השירות
+            </div>          
+            <div class='delete button' (click)='delete($event)'>
+                <i class="fas fa-trash" aria-hidden="true"></i>
+                מחיקה סופית של השירות
+            </div>
+        </ng-container>
+        <ng-container *ngIf='!datarecord.deleted' >
+            <div class='fake-delete button' (click)='fakeDelete($event)'>
+                <i class="fas fa-trash" aria-hidden="true"></i>
+                מחיקת השירות
+            </div>          
+        </ng-container>
+    </ng-container>
+</div>
+  
+<div class='modal' *ngIf='modalActive'>
+    <div class='dialog'>
+        <div class='close' (click)='modalActive=false'>סגירה</div>
+        <app-budget-searcher *ngIf='showSearch === "budget"' (choose)='addBudgetItem($event)'></app-budget-searcher>
+        <app-tender-searcher *ngIf='showSearch === "tender"' (choose)='connectTender({row: $event})'></app-tender-searcher>
+        <app-supplier-searcher *ngIf='showSearch === "supplier"' (choose)='connectSupplier({row: $event})'></app-supplier-searcher>
+    </div>
+</div>

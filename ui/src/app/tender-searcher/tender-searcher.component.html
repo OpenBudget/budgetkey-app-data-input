@@ -1,5 +1,5 @@
 <div class='searchbox'>
-    <input (keyup)='search($event.target.value)' placeholder="שם או מספר של תקנה תקציבית...">
+    <input (keyup)='search($event.target.value)' placeholder="שם של מכרז או מספר מכרז...">
     <span>
         <i class="fas fa-search"></i>
     </span>
@@ -9,11 +9,12 @@
         <div class='result' (click)='select(result)'>
             <div class='info'>
                 <div class='line'>
-                    <div class='code' [innerHtml]='result["nice-code"]'></div>
-                    <div class='title' [innerHtml]='result.title'></div>    
+                    <div class='type' [innerHtml]='result.tender_type_he'></div>
+                    <div class='id' *ngIf='result.tender_id !== "none"' [innerHtml]='result.tender_id'></div>    
+                    <div class='dates' [innerHtml]='result.last_update_date'></div>    
                 </div>
                 <div class='line'>
-                    <div class='breadcrumbs' [innerHtml]='result["nice-breadcrumbs"]'></div>
+                    <div class='title' [innerHtml]='result.page_title'></div>
                 </div>    
             </div>
             <div class='selector'><i class="fas fa-chevron-left"></i></div>

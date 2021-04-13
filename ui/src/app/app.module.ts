@@ -8,6 +8,8 @@ import { SocialServiceEditorComponent} from './social-service-editor/social-serv
 import { EditableTableComponent} from './editable-table/editable-table.component';
 import { EditableFieldComponent } from './editable-field/editable-field.component';
 import { BudgetSearcherComponent } from './budget-searcher/budget-searcher.component';
+import { TenderSearcherComponent } from './tender-searcher/tender-searcher.component';
+import { SupplierSearcherComponent } from './supplier-searcher/supplier-searcher.component';
 import { environment } from 'src/environments/environment';
 import { FormsModule } from '@angular/forms';
 import { SocialServiceListComponent } from './social-service-list/social-service-list.component';
@@ -25,6 +27,8 @@ import { HierarchyEditorComponent } from './hierarchy-editor/hierarchy-editor.co
     EditableTableComponent,
     EditableFieldComponent,
     BudgetSearcherComponent,
+    TenderSearcherComponent,
+    SupplierSearcherComponent,
     SocialServiceListComponent,
     SocialServiceListItemComponent,
     SimpleListEditorComponent,

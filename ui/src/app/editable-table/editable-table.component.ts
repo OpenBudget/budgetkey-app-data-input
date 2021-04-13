@@ -1,4 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ConfirmerService } from 'etl-server';
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-editable-table',
@@ -17,7 +19,7 @@ export class EditableTableComponent implements OnInit {
   defaultRowIndex = 5;
   rows: any = {};
 
-  constructor() { }
+  constructor(private confirmer: ConfirmerService) { }
 
   ngOnInit() {
     this.record[this.field] = this.record[this.field] || [];
@@ -32,7 +34,6 @@ export class EditableTableComponent implements OnInit {
     this.rows[this.defaultRowIndex] = this.headers;
     this.colspan = this.headers.length;
     this.rows = Object.keys(this.rows).sort().map((k) => this.rows[k]);
-    console.log('ROWS', this.colspan, this.rows)
   }
 
   emit(row, field) {
@@ -40,6 +41,11 @@ export class EditableTableComponent implements OnInit {
   }
 
   delete(row) {
-    this.record[this.field] = this.record[this.field].filter((x) => x !== row);
+    let which = this.config.rowDeleteFields.map((f) => row[f]).join('/');
+    this.confirmer.confirm(this.confirmer.ACTION_DELETE_DATARECORD, which).pipe(first()).subscribe((result) => {
+      if (result) {
+        this.record[this.field] = this.record[this.field].filter((x) => x !== row);
+      }
+    });
   }
 }

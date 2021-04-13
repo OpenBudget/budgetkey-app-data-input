@@ -1,4 +1,4 @@
-<label *ngIf='label'>{{label}}:</label>
+<label *ngIf='label' [class.invalid]='!valid'>{{label}}:</label>
 <ng-container *ngIf='kind === "text"'>
   <div class='editable-field' [class.editable]='!readonly' [class.readonly]='readonly'>
     <ng-container *ngIf='!editing'>
@@ -11,11 +11,20 @@
   </div>
 </ng-container>
 <ng-container *ngIf='kind === "enum" || kind === "datarecord"'>
-  <select [(ngModel)]='record[field]' (change)='onChanged()' [multiple]='options.multiple' [size]='options.multiple ? 3 : "auto"'>
-    <ng-container *ngFor='let option of options.options'>
-      <option [value]='option.value'>{{ option.show }}</option>
-    </ng-container>
-  </select>
+  <ng-container *ngIf='options.multiple'>
+    <select [(ngModel)]='record[field]' (change)='onChanged()' [multiple]='true' [size]='3'>
+      <ng-container *ngFor='let option of options.options'>
+        <option [value]='option.value'>{{ option.show }}</option>
+      </ng-container>
+    </select>  
+  </ng-container>
+  <ng-container *ngIf='!options.multiple'>
+    <select [(ngModel)]='record[field]' (change)='onChanged()'>
+      <ng-container *ngFor='let option of options.options'>
+        <option [value]='option.value'>{{ option.show }}</option>
+      </ng-container>
+    </select>  
+  </ng-container>
 </ng-container>
 <ng-container *ngIf='kind === "button"'>
   <button (click)='onChanged()'>{{ placeholder }}</button>

@@ -1,12 +1,20 @@
-<app-editable-field *ngFor='let row of datarecords'
-    [kind]='def.field.kind'
-    [options]='def.field.options'
-    [placeholder]='def.field.placeholder'
-    [field]='def.field.name'
-    [record]='row.value'
-    [readonly]='false' 
-    (changed)='save(row.value)'
-></app-editable-field>
+<div class='row' *ngFor='let row of datarecords; let idx=index'>
+    <span>{{idx + 1}}.&nbsp;</span>
+    <div class='controls'>
+        <i class="fas fa-chevron-up" (click)='switch(idx-1)'></i>
+        <i class="fas fa-chevron-down" (click)='switch(idx)'></i>
+        <i class="fas fa-trash" (click)='delete(row.value)'></i>
+    </div>
+    <app-editable-field
+        [kind]='def.field.kind'
+        [options]='def.field.options'
+        [placeholder]='def.field.placeholder'
+        [field]='def.field.name'
+        [record]='row.value'
+        [readonly]='false' 
+        (changed)='save(row.value)'
+    ></app-editable-field>    
+</div>
 <div class='new'>
     <i class="fas fa-plus-circle" aria-hidden="true"></i>
     <label>הוספת {{def.display}}:</label>

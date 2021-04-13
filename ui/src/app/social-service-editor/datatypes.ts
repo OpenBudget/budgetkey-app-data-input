@@ -16,6 +16,7 @@ export const beneficiariesConfig = {
       }
     ],
     rowDelete: true,
+    rowDeleteFields: ['year'],
     rowAdd: true
   };
   export const budgetItemsConfig = {
@@ -43,7 +44,8 @@ export const beneficiariesConfig = {
         display: 'אחוז'
       },
     ],
-    rowDelete: true
+    rowDelete: true,
+    rowDeleteFields: ['year', 'title']
   };
   export const budgetAmountsConfig = {
     fields: [
@@ -72,6 +74,11 @@ export const beneficiariesConfig = {
   };
   export const suppliersConfig = {
     fields: [
+      {
+        name: 'entity_kind_he',
+        display: 'סוג תאגיד',
+        readonly: true
+      },
       {
         name: 'entity_id',
         display: 'מספר תאגיד',
@@ -121,6 +128,7 @@ export const beneficiariesConfig = {
         name: 'geo',
         kind: 'datarecord',
         display: 'איזור פעילות',
+        explanation: 'במקרה של מכרז שבו המפעילים נבחרו לפי חלוקה גיאוגרפית, ציינו מהו האזור הגיאוגרפי שבו זכה המפעיל מתוך הרשימה. שימו לב כי ניתן לבצע בחירה מרובה. במידה והמכרז לא כלל חלוקה גיאוגרפית, סמנו "ארצי". החלוקה הגיאוגרפית אינה מקבליה לחלוטין למחוזות (בשל השונות בין המשרדים). אנא סמנו את האזור שתואם באופן הקרוב ביותר לחלוקה הפנים משרדית. למשל מחוז חיפה יכנס תחת אזור צפון. ',
         options: {
           name: 'geo_region',
           multiple: true
@@ -130,6 +138,11 @@ export const beneficiariesConfig = {
   };
   export const supplierListConfig = {
     fields: [
+      {
+        name: 'entity_kind_he',
+        display: 'סוג תאגיד',
+        readonly: true
+      },
       {
         name: 'entity_id',
         display: 'מספר תאגיד',
@@ -225,6 +238,7 @@ export const beneficiariesConfig = {
       {
         name: 'pricing',
         display: 'מודל תמחור',
+        explanation: 'מודל התמחור של ההליך המכרזי מתוך הרשימה',
         kind: 'enum',
         options: {
           options: [
@@ -238,6 +252,7 @@ export const beneficiariesConfig = {
         name: 'sub_kind',
         display: 'סוג מכרז',
         kind: 'enum',
+        explanation: 'במידה ומדובר במכרז, ציינו מה סוג המכרז מתוך הרשימה. לחילופין, בדקו כי המידע המופיע אכן מדויק ותקנו במידת הצורך',
         options: {
           options: [
             { value: '', show: 'לא רלוונטי' },
