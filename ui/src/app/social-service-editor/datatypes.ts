@@ -3,6 +3,7 @@ export const beneficiariesConfig = {
       {
         name: 'year',
         display: 'שנה',
+        required: true,
         options: {
           integer: true
         }
@@ -10,6 +11,7 @@ export const beneficiariesConfig = {
       {
         name: 'num_beneficiaries',
         display: 'מספר מוטבים',
+        required: true,
         options: {
           number: true
         }
@@ -41,7 +43,8 @@ export const beneficiariesConfig = {
       },
       {
         name: 'percent',
-        display: 'אחוז'
+        display: 'אחוז',
+        required: true,
       },
     ],
     rowDelete: true,
@@ -129,6 +132,7 @@ export const beneficiariesConfig = {
         kind: 'datarecord',
         display: 'איזור פעילות',
         explanation: 'במקרה של מכרז שבו המפעילים נבחרו לפי חלוקה גיאוגרפית, ציינו מהו האזור הגיאוגרפי שבו זכה המפעיל מתוך הרשימה. שימו לב כי ניתן לבצע בחירה מרובה. במידה והמכרז לא כלל חלוקה גיאוגרפית, סמנו "ארצי". החלוקה הגיאוגרפית אינה מקבליה לחלוטין למחוזות (בשל השונות בין המשרדים). אנא סמנו את האזור שתואם באופן הקרוב ביותר לחלוקה הפנים משרדית. למשל מחוז חיפה יכנס תחת אזור צפון. ',
+        required: true,
         options: {
           name: 'geo_region',
           multiple: true
@@ -240,6 +244,7 @@ export const beneficiariesConfig = {
         display: 'מודל תמחור',
         explanation: 'מודל התמחור של ההליך המכרזי מתוך הרשימה',
         kind: 'enum',
+        required: true,
         options: {
           options: [
             { value: 'fixed', show: 'מחיר קבוע (תעריף)' },
@@ -253,6 +258,7 @@ export const beneficiariesConfig = {
         display: 'סוג מכרז',
         kind: 'enum',
         explanation: 'במידה ומדובר במכרז, ציינו מה סוג המכרז מתוך הרשימה. לחילופין, בדקו כי המידע המופיע אכן מדויק ותקנו במידת הצורך',
+        required: true,
         options: {
           options: [
             { value: '', show: 'לא רלוונטי' },

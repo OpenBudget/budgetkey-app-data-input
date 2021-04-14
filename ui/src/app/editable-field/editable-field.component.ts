@@ -25,6 +25,7 @@ export class EditableFieldComponent implements OnInit, OnDestroy {
   @ViewChild('editor', {static: false}) editor: ElementRef;
   _editing = false;
   _verificationSubscription: Subscription;
+  _verifierId = null;
   valid = true;
 
   constructor(private api: ApiService, private verifier: FieldVerifyerService) { }
@@ -58,18 +59,18 @@ export class EditableFieldComponent implements OnInit, OnDestroy {
       });
     }
     if (this.required) {
-      this.verifier.update(this.label, false);
+      this._verifierId = this.verifier.register();
+      this.verifier.update(this._verifierId, false);
       this._verificationSubscription = this.verifier.verificationRequested.subscribe(() => {
         this.valid = this.record[this.field] && this.record[this.field].length > 0;
-        this.verifier.update(this.label, this.valid);
+        this.verifier.update(this._verifierId, this.valid);
       });
     }
   }
 
   ngOnDestroy() {
     if (this._verificationSubscription) {
-      console.log('VALID-DEREG', this.label);
-      this.verifier.update(this.label, true);
+      this.verifier.deregister(this._verifierId);
       this._verificationSubscription.unsubscribe();
       this._verificationSubscription = null;
     }
@@ -93,7 +94,12 @@ export class EditableFieldComponent implements OnInit, OnDestroy {
 
   toText(x: any) {
     if (this.options.number) {
-      return (x as number).toLocaleString(this.options.format || {});
+      const num = x as number;
+      console.log('NUMNNUM', num);
+      if (isNaN(num)) {
+        return '';
+      }
+      return num.toLocaleString(this.options.format || {});
     }
     if (this.options.link) {
       return `<a href='${x}' target='_blank'>קישור</a>`;
@@ -128,7 +134,11 @@ export class EditableFieldComponent implements OnInit, OnDestroy {
 
   processValue(x) {
     if (this.options.number || this.options.integer) {
-      return parseInt(x, 10);
+      const num = parseInt(x, 10);
+      if (isNaN(num)) {
+        return null;
+      }
+      return num;
     }
     return x;
   }

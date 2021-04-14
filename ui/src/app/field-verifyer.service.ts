@@ -9,8 +9,18 @@ export class FieldVerifyerService {
   public verificationRequested = new Subject<void>();
 
   _validity: any = {};
+  idx = 0;
 
   constructor() { }
+
+  register() {
+    this.idx++
+    return 'v' + this.idx;
+  }
+
+  deregister(reg) {
+    delete this._validity[reg];
+  }
 
   verify() {
     this.verificationRequested.next();

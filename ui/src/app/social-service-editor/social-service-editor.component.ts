@@ -29,6 +29,7 @@ export class SocialServiceEditorComponent implements OnInit {
   modalActive = false;
   showSearch: string = '';
   valid = true;
+  errorMsg: string = '';
 
   tab = 'org';
   offices: any[] = [];
@@ -448,19 +449,32 @@ export class SocialServiceEditorComponent implements OnInit {
   }
 
   save(complete) {
+    let proceed = true;
+    this.errorMsg = '';
     if (complete) {
       this.verifyer.verify();
       this.valid = this.verifyer.valid();
-      if (this.valid) {
-        this._save(complete)
-        .subscribe((result) => {
-          if (result.id) {
-            this.router.navigate(['/dashboard']);
-          } else {
-            console.log('Failed to SAVE Datarecord!', this.def.name);
-          }
-        });
+      if (!this.valid) {
+        this.errorMsg = 'יש למלא ערכים בכל השדות המסומנים!';
+      } else if (!this.datarecord.budgetItems || this.datarecord.budgetItems.length === 0) {
+        this.errorMsg = 'יש לחבר לשירות לפחות תקנה תקציבית אחת!';
+      } else if (!this.datarecord.tenders || this.datarecord.tenders.length === 0) {
+        this.errorMsg = 'יש לחבר לשירות לפחות מכרז אחד!';
+      } else if (!this.datarecord.suppliers || this.datarecord.suppliers.length === 0) {
+        this.errorMsg = 'יש לחבר לשירות לפחות מפעיל אחד!';
       }
+      this.valid = this.valid && this.errorMsg.length === 0;
+      proceed = this.valid ;
+    }
+    if (proceed) {
+      this._save(complete)
+      .subscribe((result) => {
+        if (result.id) {
+          this.router.navigate(['/dashboard']);
+        } else {
+          console.log('Failed to SAVE Datarecord!', this.def.name);
+        }
+      });
     }
 
   }
