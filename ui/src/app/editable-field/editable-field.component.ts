@@ -62,7 +62,11 @@ export class EditableFieldComponent implements OnInit, OnDestroy {
       this._verifierId = this.verifier.register();
       this.verifier.update(this._verifierId, false);
       this._verificationSubscription = this.verifier.verificationRequested.subscribe(() => {
-        this.valid = this.record[this.field] && this.record[this.field].length > 0;
+        const val = this.record[this.field];
+        this.valid = Number.isFinite(val) || (val && val.length > 0);
+        if (this.options.multiple) {
+          this.valid = this.valid && val.length <= 4;
+        }
         this.verifier.update(this._verifierId, this.valid);
       });
     }
@@ -95,7 +99,6 @@ export class EditableFieldComponent implements OnInit, OnDestroy {
   toText(x: any) {
     if (this.options.number) {
       const num = x as number;
-      console.log('NUMNNUM', num);
       if (isNaN(num)) {
         return '';
       }

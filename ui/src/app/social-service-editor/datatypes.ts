@@ -45,6 +45,12 @@ export const beneficiariesConfig = {
         name: 'percent',
         display: 'אחוז',
         required: true,
+      },      {
+        name: 'manual',
+        display: 'תקציב ידני',
+        options: {
+          number: true
+        }
       },
     ],
     rowDelete: true,
@@ -261,7 +267,7 @@ export const beneficiariesConfig = {
         required: true,
         options: {
           options: [
-            { value: '', show: 'לא רלוונטי' },
+            { value: 'na', show: 'לא רלוונטי' },
             { value: 'closed', show: 'סגור' },
             { value: 'frame', show: 'מסגרת' },
             { value: 'pool', show: 'מאגר' },

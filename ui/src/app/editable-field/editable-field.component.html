@@ -12,14 +12,16 @@
 </ng-container>
 <ng-container *ngIf='kind === "enum" || kind === "datarecord"'>
   <ng-container *ngIf='options.multiple'>
-    <select [(ngModel)]='record[field]' (change)='onChanged()' [multiple]='true' [size]='3'>
+    <!-- <select [(ngModel)]='record[field]' [class.invalid]='!valid' (change)='onChanged()' [multiple]='true' [size]='3'>
       <ng-container *ngFor='let option of options.options'>
         <option [value]='option.value'>{{ option.show }}</option>
       </ng-container>
-    </select>  
+    </select>   -->
+    <app-editable-field-multiple-selection [value]='record[field]' [options]='options.options' [invalid]='!valid'
+            (modified)='record[field]=$event; onChanged()'></app-editable-field-multiple-selection>
   </ng-container>
   <ng-container *ngIf='!options.multiple'>
-    <select [(ngModel)]='record[field]' (change)='onChanged()'>
+    <select [(ngModel)]='record[field]' [class.invalid]='!valid' (change)='onChanged()'>
       <ng-container *ngFor='let option of options.options'>
         <option [value]='option.value'>{{ option.show }}</option>
       </ng-container>

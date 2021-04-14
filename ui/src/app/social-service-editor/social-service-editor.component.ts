@@ -210,7 +210,7 @@ export class SocialServiceEditorComponent implements OnInit {
         conditions.push(' OR ');
       }
       conditions.push(condition);
-      percents[line.code + ':' + line.title + ':' + line.year] = line.percent;
+      percents[line.code + ':' + line.title + ':' + line.year] = line
     }
     const sql = `
       SELECT code, title, year, net_revised, net_executed from raw_budget
@@ -221,10 +221,18 @@ export class SocialServiceEditorComponent implements OnInit {
       .subscribe((records: any) => {
         let budget = null;
         for (const row of records) {
-          const percent = parseInt(percents[row.code + ':' + row.title + ':' + row.year], 10);
+          const line = percents[row.code + ':' + row.title + ':' + row.year];
+          const manual = isFinite(line.manual) ? line.manual : null;
           if (!budget || budget.year !== row.year) {
             budget = {year: row.year, net_revised: 0, net_executed: 0};
             budgets.push(budget);
+          }
+          let percent = 0;
+          if (manual !== null) {
+            line.percent = Math.round(10000 * manual / row.net_revised) / 100;
+            percent = 100 * manual / row.net_revised
+          } else {
+            percent = parseInt(line.percent, 10);
           }
           budget.net_revised += row.net_revised * percent / 100;
           budget.net_executed += row.net_executed * percent / 100;

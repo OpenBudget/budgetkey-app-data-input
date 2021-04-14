@@ -23,7 +23,6 @@ export class SocialServiceUserComponent implements OnInit {
   }
 
   changed() {
-    console.log('CHANGED', this.datarecord);
     this.updated.emit()
   }
 

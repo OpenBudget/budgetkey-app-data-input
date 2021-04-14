@@ -1,0 +1,40 @@
+:host {
+    width: 100%;
+    margin-bottom: 8px;
+}
+
+.selection {
+    display: flex;
+    flex-flow: column;
+    max-height: 75px;
+    overflow-y: scroll;
+    width: 100%;
+    padding: 0 8px;
+    // border: 1px solid #888;
+    box-shadow: inset 0 0px 4px 0 rgba(0, 0, 0, 0.25);
+
+    .option {
+        display: flex;
+        flex-flow: row;
+        align-items: center;
+        input {
+            width: auto;
+            margin: 0;
+        }
+        label {
+            margin: 0;
+            margin-right: 16px;
+            white-space: nowrap;
+        }
+    }
+
+    &.invalid {
+        background-color: lightgoldenrodyellow;
+    }
+}
+
+.error-msg {
+    color: darkred;
+    font-weight: 700;
+    font-size: 14px;
+}

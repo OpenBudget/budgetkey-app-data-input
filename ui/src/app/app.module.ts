@@ -18,6 +18,7 @@ import { RouterModule } from '@angular/router';
 import { SimpleListEditorComponent } from './simple-list-editor/simple-list-editor.component';
 import { SocialServiceUserComponent } from './social-service-user/social-service-user.component';
 import { HierarchyEditorComponent } from './hierarchy-editor/hierarchy-editor.component';
+import { EditableFieldMultipleSelectionComponent } from './editable-field-multiple-selection/editable-field-multiple-selection.component';
 
 
 @NgModule({
@@ -34,6 +35,7 @@ import { HierarchyEditorComponent } from './hierarchy-editor/hierarchy-editor.co
     SimpleListEditorComponent,
     SocialServiceUserComponent,
     HierarchyEditorComponent,
+    EditableFieldMultipleSelectionComponent,
   ],
   imports: [
     BrowserModule,

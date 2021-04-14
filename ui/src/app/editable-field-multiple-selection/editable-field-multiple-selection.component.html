@@ -1,0 +1,7 @@
+<div class='selection' [class.invalid]='invalid'>
+    <div class='option' *ngFor='let option of options'>
+        <input type='checkbox' (change)='changed(option.value, $event)' [checked]='_value[option.value]'/>
+        <label>{{ option.show }}</label>    
+    </div>
+</div>
+<div class='error-msg' *ngIf='invalid && value.length > 4'>יש לבחור לכל היותר 4 ערכים</div>
