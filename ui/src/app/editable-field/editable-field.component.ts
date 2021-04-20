@@ -99,7 +99,7 @@ export class EditableFieldComponent implements OnInit, OnDestroy {
   toText(x: any) {
     if (this.options.number) {
       const num = x as number;
-      if (isNaN(num)) {
+      if (!Number.isFinite(num)) {
         return '';
       }
       return num.toLocaleString(this.options.format || {});

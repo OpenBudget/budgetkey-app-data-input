@@ -394,6 +394,8 @@ export class SocialServiceEditorComponent implements OnInit {
     } else if (row.related === 'suggestion') {
       this.datarecord.suppliers.push(row);
     }
+    this.showSearch = '';
+    this.modalActive = false;
   }
 
   fetchLookupTable() {

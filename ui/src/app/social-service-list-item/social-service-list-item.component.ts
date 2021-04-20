@@ -66,7 +66,7 @@ export class SocialServiceListItemComponent implements OnChanges {
       Math.max(...(this.item.item.budgetItems || []).map(x => x.year)),
       Math.max(...(this.item.item.beneficiaries || []).map(x => x.year)),      
     );
-    if (isFinite(minYear) && isFinite(maxYear)) {
+    if (Number.isFinite(minYear) && Number.isFinite(maxYear)) {
       return `${minYear} - ${maxYear}`;
     } else {
       return '-';
