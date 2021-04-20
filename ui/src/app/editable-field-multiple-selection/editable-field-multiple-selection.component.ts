@@ -24,7 +24,8 @@ export class EditableFieldMultipleSelectionComponent implements OnInit, OnChange
       for (const option of this.options) {
         this._value[option.value] = false;
       }
-      for (const key of this.value) {
+      const value = this.value || [];
+      for (const key of value) {
         this._value[key] = true;
       }  
     }
