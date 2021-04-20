@@ -152,8 +152,7 @@ export class SocialServiceEditorComponent implements OnInit {
       }  
     }
     this.fillInBudgets();
-    this.modalActive = false;
-    this.showSearch = '';
+    this.modal(null);
   }
 
   fillInBudgets() {
@@ -364,8 +363,7 @@ export class SocialServiceEditorComponent implements OnInit {
     } else if (row.related === 'suggestion') {
       this.datarecord.tenders.push(row);
     }
-    this.showSearch = '';
-    this.modalActive = false;
+    this.modal(null);
   }
 
   connectSupplier({row, field}) {
@@ -394,8 +392,7 @@ export class SocialServiceEditorComponent implements OnInit {
     } else if (row.related === 'suggestion') {
       this.datarecord.suppliers.push(row);
     }
-    this.showSearch = '';
-    this.modalActive = false;
+    this.modal(null);
   }
 
   fetchLookupTable() {
@@ -525,6 +522,30 @@ export class SocialServiceEditorComponent implements OnInit {
     this.save(this.datarecord.complete);
     e.preventDefault();
     return false;
+  }
+
+  modalKeyup(event: KeyboardEvent) {
+    if (event.key === 'Escape') {
+      this.modal(null);
+    }
+    event.stopPropagation();
+    return false;
+  }  
+  
+  modalClick(event: MouseEvent) {
+    this.modal(null);
+    event.stopPropagation();
+    return false;
+  }
+
+  modal(kind) {
+    if (kind) {
+      this.modalActive = true;
+      this.showSearch = kind;
+    } else {
+      this.modalActive = false;
+      this.showSearch = '';    
+    }
   }
 
 }

@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
@@ -8,13 +8,14 @@ import { map, switchMap } from 'rxjs/operators';
   templateUrl: './budget-searcher.component.html',
   styleUrls: ['./budget-searcher.component.less']
 })
-export class BudgetSearcherComponent implements OnInit, OnDestroy {
+export class BudgetSearcherComponent implements OnInit, OnDestroy, AfterViewInit {
 
   results = new Subject<any[]>();
   query = new Subject<string>();
   qsub: Subscription;
 
   @Output() choose = new EventEmitter<any>();
+  @ViewChild('input') input: ElementRef;
 
   constructor(private http: HttpClient) {
   }
@@ -40,6 +41,10 @@ export class BudgetSearcherComponent implements OnInit, OnDestroy {
     ).subscribe((results) => {
       this.results.next(results);
     });
+  }
+
+  ngAfterViewInit() {
+    this.input.nativeElement.focus();
   }
 
   ngOnDestroy() {

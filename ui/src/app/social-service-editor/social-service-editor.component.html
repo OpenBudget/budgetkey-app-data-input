@@ -100,7 +100,7 @@
     <div class='explanation'></div>
     <div class='budget'>
         <div>
-            <h4 class='clickable' (click)='modalActive = true; showSearch = "budget"'><i class="fas fa-search"></i>חיפוש והוספה של תקנה תקציבית</h4>
+            <h4 class='clickable' (click)='modal("budget")'><i class="fas fa-search"></i>חיפוש והוספה של תקנה תקציבית</h4>
             <div class='explanation'>מספר התקנה התקציבית ממנה ניתן תקציב השירות. על התקנה לכלול 8 ספרות, כולל מספר המשרד</div>
             <app-editable-table [record]='datarecord' field='budgetItems' [config]='C.budgetItemsConfig' (change)='refresh()'></app-editable-table>
             <!-- <a class='fill-in' (click)='fillInBudgets()' *ngIf='datarecord.budgetItems && datarecord.budgetItems.length'><i class="fas fa-magic"></i>השלמת תקנות אוטומטית</a>         -->
@@ -129,7 +129,7 @@
         <h3>מפעילים אפשריים</h3>
         <app-editable-table [record]='thiz' field='possibleSuppliers' [config]='C.supplierListConfig' (changed)='connectSupplier($event)'></app-editable-table>
     </ng-container>
-    <h4 class='clickable' (click)='modalActive = true; showSearch = "supplier"'><i class="fas fa-search"></i>חיפוש והוספה של מפעיל</h4>
+    <h4 class='clickable' (click)='modal("supplier")'><i class="fas fa-search"></i>חיפוש והוספה של מפעיל</h4>
 </div>
 
 <div class='tab-contents' [class.visible]='tab==="tenders"'>
@@ -146,7 +146,7 @@
         <h3>מכרזים אפשריים</h3>
         <app-editable-table [record]='thiz' field='possibleTenders' [config]='C.tenderListConfig' (changed)='connectTender($event)'></app-editable-table>    
     </ng-container>
-    <h4 class='clickable' (click)='modalActive = true; showSearch = "tender"'><i class="fas fa-search"></i>חיפוש והוספה של מכרז</h4>
+    <h4 class='clickable' (click)='modal("tender")'><i class="fas fa-search"></i>חיפוש והוספה של מכרז</h4>
 </div>
 
 
@@ -180,9 +180,9 @@
     </ng-container>
 </div>
   
-<div class='modal' *ngIf='modalActive'>
-    <div class='dialog'>
-        <div class='close' (click)='modalActive=false'>סגירה</div>
+<div class='modal' *ngIf='modalActive' (keyup)='modalKeyup($event)' (click)='modalClick($event)'>
+    <div class='dialog' (click)='$event.stopPropagation()'>
+        <div class='close' (click)='modal(null)'>סגירה</div>
         <app-budget-searcher *ngIf='showSearch === "budget"' (choose)='addBudgetItem($event)'></app-budget-searcher>
         <app-tender-searcher *ngIf='showSearch === "tender"' (choose)='connectTender({row: $event})'></app-tender-searcher>
         <app-supplier-searcher *ngIf='showSearch === "supplier"' (choose)='connectSupplier({row: $event})'></app-supplier-searcher>
