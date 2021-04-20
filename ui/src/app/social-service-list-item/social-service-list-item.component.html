@@ -16,7 +16,7 @@
 </ng-container>
 <ng-container *ngIf='item.item'>
     <div class='content'>
-        <div class='item'>
+        <div class='item' [class.deleted]='item.item.deleted'>
             <div class='line'>
                 <a [routerLink]='"/datarecords/" + def.name + "/" + item.id'>{{item.item.name}}</a>
                 <small>{{item.item.description}}</small>
