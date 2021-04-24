@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, ErrorHandler, NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { EtlServerModule, EXTRA_MAPPING } from 'etl-server';
@@ -14,12 +14,13 @@ import { environment } from 'src/environments/environment';
 import { FormsModule } from '@angular/forms';
 import { SocialServiceListComponent } from './social-service-list/social-service-list.component';
 import { SocialServiceListItemComponent } from './social-service-list-item/social-service-list-item.component';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { SimpleListEditorComponent } from './simple-list-editor/simple-list-editor.component';
 import { SocialServiceUserComponent } from './social-service-user/social-service-user.component';
 import { HierarchyEditorComponent } from './hierarchy-editor/hierarchy-editor.component';
 import { EditableFieldMultipleSelectionComponent } from './editable-field-multiple-selection/editable-field-multiple-selection.component';
 
+import * as Sentry from "@sentry/angular";
 
 @NgModule({
   declarations: [
@@ -59,6 +60,22 @@ import { EditableFieldMultipleSelectionComponent } from './editable-field-multip
         list: HierarchyEditorComponent
       }
     }
+  },
+  {
+    provide: ErrorHandler,
+    useValue: Sentry.createErrorHandler({
+      showDialog: true,
+    }),
+  },
+  {
+    provide: Sentry.TraceService,
+    deps: [Router],
+  },
+  {
+    provide: APP_INITIALIZER,
+    useFactory: () => () => {},
+    deps: [Sentry.TraceService],
+    multi: true,
   }],
   entryComponents: [
     SocialServiceEditorComponent,

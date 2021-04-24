@@ -479,7 +479,7 @@ export class SocialServiceEditorComponent implements OnInit {
         if (result.id) {
           this.router.navigate(['/dashboard']);
         } else {
-          console.log('Failed to SAVE Datarecord!', this.def.name);
+          console.log('Failed to SAVE Datarecord!', this.def.name, result);
         }
       });
     }
