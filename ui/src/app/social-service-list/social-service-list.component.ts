@@ -18,7 +18,6 @@ export class SocialServiceListComponent implements OnInit {
   offices: any = {};
 
   constructor(public api: ApiService, public roles: RolesService) {
-    this.api.queryUsers();
     this.api.currentUserProfile.pipe(
       first(),
       switchMap((profile) => {
