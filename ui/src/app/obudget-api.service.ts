@@ -36,7 +36,8 @@ export class ObudgetApiService {
   }
 
   query(sql) {
-    sql = encodeURIComponent(sql);
+    // sql = encodeURIComponent(sql);
+    sql = btoa(unescape(encodeURIComponent(sql)));
     return this.http.get('https://next.obudget.org/api/query?query=' + sql + '&num_rows=10000')
       .pipe(
         catchError((err) => {
