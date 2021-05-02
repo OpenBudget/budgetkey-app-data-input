@@ -65,7 +65,7 @@ export class SocialServiceEditorComponent implements OnInit {
     (${p} like 'משרד העלייה והקליטה%%')
   )`;
 
-  constructor(private api: ObudgetApiService, private etlApi: ApiService, public roles: RolesService,
+  constructor(public api: ObudgetApiService, private etlApi: ApiService, public roles: RolesService,
               private confirmer: ConfirmerService, private router: Router, private verifyer: FieldVerifyerService) {
     this.thiz = this;
     this.etlApi.queryDatarecords('hierarchy').subscribe((results) => {
