@@ -130,18 +130,26 @@
             "name": "contact",
             "display": "איש קשר",
             "display_plural": "אנשי קשר",
-            "id": "name",
+            "id": "office",
             "snippet": [
                 "name", "org", "email"
             ],
             "fields": [
                 {
-                    "name": "name",
-                    "display": "שם"
+                    "name": "office",
+                    "display": "משרד",
+                    "options": {
+                        "options": [
+                            { "value": "education", "show": "החינוך" },
+                            { "value": "welfare", "show": "הרווחה" },
+                            { "value": "health", "show": "הבריאות" },
+                            { "value": "immigration", "show": "העליה והקליטה" }
+                        ]
+                    }
                 },
                 {
-                    "name": "org",
-                    "display": "ארגון"
+                    "name": "name",
+                    "display": "שם"
                 },
                 {
                     "name": "email",

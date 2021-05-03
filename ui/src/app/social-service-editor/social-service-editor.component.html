@@ -72,10 +72,6 @@
     <app-editable-field [record]='datarecord' field='intervention' label='אופן ההתערבות' kind='datarecord' [required]='true'
                         [options]='{name: "intervention", multiple: true}'></app-editable-field>
     <div class='explanation'>הדרך או הצורה באמצעותה ניתן השירות. שימו לב כי ניתן לבצע בחירה מרובה של עד 4 אופני התערבות, בחרו את אלה העיקריים ביותר.</div>
-
-    <app-editable-field [record]='datarecord' field='contact' label='איש.ת קשר' kind='datarecord' [required]='true'
-                        [options]='{name: "contact"}'></app-editable-field>
-    <div class='explanation'>תיבת הדואר המשרדית של האתר, אשר אליה יגיעו פניות במידה ויש שאלות על המופיע בו</div>
     
     <app-editable-field [record]='datarecord' field='virtue_of' label='ניתן מכוח' kind='enum' [options]='virtue_of_options'></app-editable-field>
     <div class='explanation'>האם השירות ניתן מכוח חוק, החלטת ממשלה או חוזר/נוהל משרדי?</div>
