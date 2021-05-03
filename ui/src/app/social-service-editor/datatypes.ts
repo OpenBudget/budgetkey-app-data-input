@@ -21,7 +21,37 @@ export const beneficiariesConfig = {
     rowDeleteFields: ['year'],
     rowAdd: true
   };
-  export const budgetItemsConfig = {
+export const virtueOfConfig = {
+    fields: [
+      {
+        name: 'kind',
+        display: 'סוג',
+        kind: 'enum',
+        required: true,
+        options: {
+          options: [
+            {
+              value: 'חוק', show: 'חוק',
+            },
+            {
+              value: 'החלטת ממשלה', show: 'החלטת ממשלה',
+            },
+            {
+              value: 'נוהל/חוזר משרדי', show: 'נוהל/חוזר משרדי',
+            },
+        ]}
+      },
+      {
+        name: 'details',
+        display: 'קישור',
+        required: true
+      }
+    ],
+    rowDelete: true,
+    rowDeleteFields: ['details'],
+    rowAdd: true
+  };  
+export const budgetItemsConfig = {
     fields: [
       {
         name: 'code',
@@ -56,7 +86,7 @@ export const beneficiariesConfig = {
     rowDelete: true,
     rowDeleteFields: ['year', 'title']
   };
-  export const budgetAmountsConfig = {
+export const budgetAmountsConfig = {
     fields: [
       {
         name: 'year',
@@ -81,7 +111,7 @@ export const beneficiariesConfig = {
       },
     ]
   };
-  export const suppliersConfig = {
+export const suppliersConfig = {
     fields: [
       {
         name: 'entity_kind_he',
@@ -146,7 +176,7 @@ export const beneficiariesConfig = {
       },
     ]
   };
-  export const supplierListConfig = {
+export const supplierListConfig = {
     fields: [
       {
         name: 'entity_kind_he',
@@ -188,7 +218,7 @@ export const beneficiariesConfig = {
       },
     ]
   };
-  export const tendersConfig = {
+export const tendersConfig = {
     fields: [
       {
         name: 'tender_type_he',
@@ -276,7 +306,7 @@ export const beneficiariesConfig = {
       },
     ]
   };
-  export const tenderListConfig = {
+export const tenderListConfig = {
     fields: [
       {
         name: 'tender_type_he',
