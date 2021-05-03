@@ -374,3 +374,176 @@ export const tenderListConfig = {
       }
     ]
   };
+export const tendersTenderConfig = {
+  fields: [
+    {
+      name: 'description',
+      display: 'תיאור',
+      readonly: true,
+      fullRow: 4,
+      strong: true
+    },
+    {
+      name: 'tender_type_he',
+      display: 'סוג המכרז',
+      readonly: true
+    },
+    {
+      name: 'sub_kind',
+      display: 'סוג מכרז',
+      kind: 'enum',
+      explanation: 'ציינו מה סוג המכרז מתוך הרשימה. לחילופין, בדקו כי המידע המופיע אכן מדויק ותקנו במידת הצורך',
+      required: true,
+      options: {
+        options: [
+          { value: 'regular', show: 'רגיל' },
+          { value: 'closed', show: 'סגור' },
+          { value: 'frame', show: 'מסגרת' },
+          { value: 'pool', show: 'מאגר' },
+        ]
+      }
+    },
+    {
+      name: 'publisher',
+      display: 'הגורם המפרסם',
+      readonly: true
+    },
+    {
+      name: 'page_url',
+      display: 'קישור לפרסום',
+      readonly: true,
+      options: {
+        link: true
+      }
+    },
+    {
+      name: 'end_date',
+      display: 'תוקף'
+    },
+    {
+      name: 'option_num',
+      display: 'מספר אופציות',
+      kind: 'enum',
+      options: {
+        options: [
+          { value: '0', show: '0' },
+          { value: '1', show: '1' },
+          { value: '2', show: '2' },
+          { value: '3', show: '3' },
+          { value: '4', show: '4' },
+          { value: '5', show: '5' },
+          { value: '6', show: '6' },
+          { value: '7', show: '7' },
+          { value: '8', show: '8' },
+        ]
+      }
+    },
+    {
+      name: 'option_duration',
+      display: 'משך אופציות',
+      kind: 'enum',
+      options: {
+        options: [
+          { value: '', show: '' },
+          { value: '1', show: 'שנה' },
+          { value: '2', show: 'שנתיים' },
+        ]
+      }
+    },
+    {
+      name: 'pricing',
+      display: 'מודל תמחור',
+      explanation: 'מודל התמחור של ההליך המכרזי מתוך הרשימה',
+      kind: 'enum',
+      required: true,
+      options: {
+        options: [
+          { value: 'fixed', show: 'מחיר קבוע (תעריף)' },
+          { value: 'proposal', show: 'הצעת מחיר' },
+          { value: 'combined', show: 'משולב' },
+        ]
+      }
+    },    
+    {
+      name: 'related',
+      display: 'סימון כמכרז קשור',
+      kind: 'enum',
+      options: {
+        options: [
+          { value: 'yes', show: 'קשור' },
+          { value: 'no', show: 'לא קשור' },
+          { value: 'suggestion', show: 'כנראה קשור' },
+        ]
+      }
+    },
+    {
+      name: 'notes',
+      display: 'תיאור מורחב של המכרז',
+      fullRow: 6
+    },
+  ]
+};
+export const tendersExemptionConfig = {
+  fields: [
+    {
+      name: 'description',
+      display: 'תיאור',
+      readonly: true,
+      fullRow: 4,
+      strong: true
+    },
+    {
+      name: 'tender_type_he',
+      display: 'סוג המכרז',
+      readonly: true
+    },
+    {
+      name: 'regulation',
+      display: 'תקנה',
+      readonly: true
+    },
+    {
+      name: 'publisher',
+      display: 'הגורם המפרסם',
+      readonly: true
+    },
+    {
+      name: 'page_url',
+      display: 'קישור לפרסום',
+      readonly: true,
+      options: {
+        link: true
+      }
+    },
+    {
+      name: 'date_range',
+      display: 'תוקף',
+      readonly: true,
+      options: {
+        date: true
+      }
+    },
+    {
+      name: 'supplier',
+      display: 'מפעיל',
+      readonly: true,
+    },
+    {
+      name: 'related',
+      display: 'סימון כמכרז קשור',
+      kind: 'enum',
+      options: {
+        options: [
+          { value: 'yes', show: 'קשור' },
+          { value: 'no', show: 'לא קשור' },
+          { value: 'suggestion', show: 'כנראה קשור' },
+        ]
+      }
+    },
+    {
+      name: 'notes',
+      display: 'תיאור מורחב של המכרז',
+      fullRow: 6
+    },
+  ]
+};

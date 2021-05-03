@@ -258,6 +258,7 @@ export class SocialServiceEditorComponent implements OnInit {
       ORDER BY 4 DESC nulls LAST)
     SELECT a.volume, a.executed,
           a.publication_id || ':' || a.tender_type || ':' || a.tender_id as tender_key,
+          tender_type,
           tender_type_he,
           publisher,
           decision,
@@ -350,6 +351,31 @@ export class SocialServiceEditorComponent implements OnInit {
       this.datarecord.tenders.push(row);
     }
     this.modal(null);
+  }
+
+  get tendersTender(): any[] {
+    const ret: any[] = [];
+    if (this.datarecord.tenders) {
+      for (const t of this.datarecord.tenders) {
+        if (t.tender_type !== 'exemptions') {
+          ret.push(t);
+        }
+      }
+    }
+    return ret;
+  }
+
+  get tendersExemption(): any[] {
+    const ret: any[] = [];
+    if (this.datarecord.tenders) {
+      for (const t of this.datarecord.tenders) {
+        console.log('tendersExemption', t);
+        if (t.tender_type === 'exemptions') {
+          ret.push(t);
+        }
+      }
+    }
+    return ret;
   }
 
   connectSupplier({row, field}) {

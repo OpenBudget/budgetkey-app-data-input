@@ -54,6 +54,7 @@ export class TenderSearcherComponent implements OnInit, OnDestroy, AfterViewInit
       volume: null,
       executed: null,
       tender_key: `${item.publication_id}:${item.tender_type}:${item.tender_id}`,
+      tender_type: item.tender_type,
       tender_type_he: item.tender_type_he,
       publisher: item.publisher,
       decision: item.decision,

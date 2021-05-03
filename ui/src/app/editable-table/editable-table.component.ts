@@ -22,7 +22,9 @@ export class EditableTableComponent implements OnInit {
   constructor(private confirmer: ConfirmerService) { }
 
   ngOnInit() {
-    this.record[this.field] = this.record[this.field] || [];
+    if (!this.record[this.field]) {
+      this.record[this.field] = [];
+    }
     for (const f of this.config.fields) {
       f.fullRow = f.fullRow || this.defaultRowIndex;
       if (f.fullRow !== this.defaultRowIndex) {
