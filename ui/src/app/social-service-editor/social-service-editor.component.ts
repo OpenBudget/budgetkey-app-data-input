@@ -350,7 +350,7 @@ export class SocialServiceEditorComponent implements OnInit {
     } else if (row.related === 'suggestion') {
       this.datarecord.tenders.push(row);
     }
-    this.modal(null);
+    // this.modal(null);
   }
 
   get tendersTender(): any[] {
@@ -369,7 +369,6 @@ export class SocialServiceEditorComponent implements OnInit {
     const ret: any[] = [];
     if (this.datarecord.tenders) {
       for (const t of this.datarecord.tenders) {
-        console.log('tendersExemption', t);
         if (t.tender_type === 'exemptions') {
           ret.push(t);
         }

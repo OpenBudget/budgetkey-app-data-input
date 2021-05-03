@@ -1,3 +1,4 @@
+<div class='already' *ngIf='already'>{{ already }} תוצאות כבר מופיעות במסך השירות</div>
 <div class='searchbox'>
     <input (keyup)='search($event.target.value)' placeholder="שם של מכרז או מספר מכרז..." #input>
     <span>

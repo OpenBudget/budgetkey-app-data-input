@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
-import { AfterViewInit, Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { ApiService } from 'etl-server';
-import { Subject, Subscription } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { BehaviorSubject, Subject, Subscription } from 'rxjs';
+import { filter, map, switchMap } from 'rxjs/operators';
 import { ObudgetApiService } from '../obudget-api.service';
 
 @Component({
@@ -13,9 +13,12 @@ import { ObudgetApiService } from '../obudget-api.service';
 export class TenderSearcherComponent implements OnInit, OnDestroy, AfterViewInit {
 
   results = new Subject<any[]>();
-  query = new Subject<string>();
+  query = new BehaviorSubject<string>(null);
   qsub: Subscription;
+  already = 0;
 
+  @Input() office: string;
+  @Input() existing: any[];
   @Output() choose = new EventEmitter<any>();
   @ViewChild('input') input: ElementRef;
 
@@ -24,10 +27,30 @@ export class TenderSearcherComponent implements OnInit, OnDestroy, AfterViewInit
 
   ngOnInit(): void {
     this.qsub = this.query.pipe(
+      filter((query) => query !== null),
       switchMap((query) => {
-        return this.api.search('tenders', query, [{
-          publisher: ['הבריאות', 'החינוך', 'לאזרחים ותיקים', 'הרווחה', 'העבודה הרווחה', 'לקליטת העליה', 'העלייה והקליטה']
-        }])
+        let publisher = ['הבריאות', 'החינוך', 'לאזרחים ותיקים', 'הרווחה', 'העבודה הרווחה', 'לקליטת העליה', 'העלייה והקליטה'];
+        publisher = {
+          'משרד הרווחה':
+             ['הרווחה', 'העבודה הרווחה', 'לאזרחים ותיקים'],
+          'משרד העליה והקליטה':
+             ['לקליטת העליה', 'העלייה והקליטה'],
+          'משרד החינוך':
+             ['החינוך'],
+          'משרד הבריאות':
+             ['הבריאות'],
+        }[this.office] || publisher;
+        return this.api.search('tenders', query, [{publisher}])
+      })
+    ).pipe(
+      map((results) => {
+        const tender_keys = this.existing ? this.existing.map((x) => x.tender_key) : [];
+        results.forEach((item) => {
+          item.tender_key = `${item.publication_id}:${item.tender_type}:${item.tender_id}`;
+        });
+        const ret = results.filter((x) => tender_keys.indexOf(x.tender_key) < 0);
+        this.already = results.length - ret.length;
+        return ret;
       })
     ).subscribe((results) => {
       this.results.next(results);
@@ -53,7 +76,7 @@ export class TenderSearcherComponent implements OnInit, OnDestroy, AfterViewInit
     const row = {
       volume: null,
       executed: null,
-      tender_key: `${item.publication_id}:${item.tender_type}:${item.tender_id}`,
+      tender_key: item.tender_key,
       tender_type: item.tender_type,
       tender_type_he: item.tender_type_he,
       publisher: item.publisher,
@@ -63,6 +86,7 @@ export class TenderSearcherComponent implements OnInit, OnDestroy, AfterViewInit
       regulation: item.regulation,
       page_url: item.page_url,
     }
+    this.query.next(this.query.getValue());
     this.choose.emit(row);
   }
 }
