@@ -138,6 +138,7 @@
                 {
                     "name": "office",
                     "display": "משרד",
+                    "kind": "enum",
                     "options": {
                         "options": [
                             { "value": "education", "show": "החינוך" },
