@@ -65,6 +65,9 @@ export class SocialServiceEditorComponent implements OnInit {
     this.datarecord.suppliers = this.datarecord.suppliers || [];
     this.datarecord.non_tenders = this.datarecord.non_tenders || [];
     this.datarecord.non_suppliers = this.datarecord.non_suppliers || [];
+    if (!this.datarecord.virtue_of_table || this.datarecord.virtue_of_table.length === 0) {
+      this.datarecord.virtue_of_table = [{}];
+    }
     this.refresh();
   }
 
