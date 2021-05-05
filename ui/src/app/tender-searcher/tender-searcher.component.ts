@@ -77,6 +77,7 @@ export class TenderSearcherComponent implements OnInit, OnDestroy, AfterViewInit
       volume: null,
       executed: null,
       tender_key: item.tender_key,
+      tender_id: item.tender_id,
       tender_type: item.tender_type,
       tender_type_he: item.tender_type_he,
       publisher: item.publisher,
@@ -84,6 +85,7 @@ export class TenderSearcherComponent implements OnInit, OnDestroy, AfterViewInit
       description: item.description,
       date_range: `${item.start_date || ''}&nbsp;-<br/>${item.end_date || ''}`,
       regulation: item.regulation,
+      supplier: item.supplier,
       page_url: item.page_url,
     }
     this.query.next(this.query.getValue());

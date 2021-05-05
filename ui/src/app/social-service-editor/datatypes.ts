@@ -221,6 +221,11 @@ export const supplierListConfig = {
 export const tendersConfig = {
     fields: [
       {
+        name: 'tender_id',
+        display: 'מספר המכרז',
+        readonly: true
+      },
+      {
         name: 'tender_type_he',
         display: 'סוג המכרז',
         readonly: true
@@ -309,8 +314,13 @@ export const tendersConfig = {
 export const tenderListConfig = {
     fields: [
       {
+        name: 'tender_id',
+        display: 'מספר המכרז',
+        readonly: true
+      },
+      {
         name: 'tender_type_he',
-        display: 'סוג המכרז',
+        display: 'סוג ההליך התחרותי',
         readonly: true
       },
       {
@@ -384,8 +394,13 @@ export const tendersTenderConfig = {
       strong: true
     },
     {
+      name: 'tender_id',
+      display: 'מספר המכרז',
+      readonly: true
+    },
+    {
       name: 'tender_type_he',
-      display: 'סוג המכרז',
+      display: 'סוג ההליך התחרותי',
       readonly: true
     },
     {
@@ -494,7 +509,7 @@ export const tendersExemptionConfig = {
     },
     {
       name: 'tender_type_he',
-      display: 'סוג המכרז',
+      display: 'סוג ההליך התחרותי',
       readonly: true
     },
     {

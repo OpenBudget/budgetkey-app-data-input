@@ -180,6 +180,7 @@ export class SocialServiceEditorComponent implements OnInit {
     this.fetchSpendingSuppliers();
     this.fetchSpendingTenders();
     this.fetchLookupTable();
+    this.refreshExistingTenders();
   }
 
   fetchBudgetAmounts() {
@@ -258,6 +259,7 @@ export class SocialServiceEditorComponent implements OnInit {
       ORDER BY 4 DESC nulls LAST)
     SELECT a.volume, a.executed,
           a.publication_id || ':' || a.tender_type || ':' || a.tender_id as tender_key,
+          tender_id,
           tender_type,
           tender_type_he,
           publisher,
@@ -321,6 +323,45 @@ export class SocialServiceEditorComponent implements OnInit {
         this.possibleSuppliers = this.possibleSuppliers.filter((x) => connectedEntityIds.indexOf(x.entity_id) < 0);
 
         this.possibleSuppliers.sort((a, b) => b.volume - a.volume);
+      });
+  }
+
+  refreshExistingTenders() {
+    const connectedTenders = [
+      ...(this.datarecord.tenders || []),
+      ...(this.datarecord.non_tenders || [])
+    ];
+    const connectedTenderKeys = connectedTenders.map(x => x.tender_key);
+    if (connectedTenderKeys.length === 0) {
+      return;
+    }
+    const connectedTenderKeysStr = connectedTenderKeys.map(x => `'${x}'`).join(', ');
+    const sql = `
+    SELECT tender_id,
+           tender_type,
+           tender_type_he,
+           publication_id || ':' || tender_type || ':' || tender_id as tender_key,
+           publisher,
+           decision,
+           description,
+           start_date || '&nbsp;-<br/>' || end_date as date_range,
+           regulation,
+           page_url,
+           supplier
+    FROM
+     procurement_tenders_processed 
+    WHERE (publication_id || ':' || tender_type || ':' || tender_id) IN (${connectedTenderKeysStr})
+    `;
+    this.api.query(sql)
+      .subscribe((records: any) => {
+        const rm = {};
+        for (const record of records) {
+          rm[record.tender_key] = record;
+        }
+        for (const ct of connectedTenders) {
+          const tender = rm[ct.tender_key] || {};
+          Object.assign(ct, tender);
+        }
       });
   }
 
