@@ -6,7 +6,8 @@
       <span class='value' [innerHtml]='toText(record[field])' [style.direction]='direction' [class.strong]='strong'></span>
     </ng-container>
     <ng-container *ngIf='editing'>
-      <input [class.invalid]='!valid' [(ngModel)]='record[field]' (blur)='blur()' [placeholder]='placeholder' size='1' [style.direction]='direction' #editor>
+      <input [class.invalid]='!valid' [(ngModel)]='record[field]' (blur)='blur()' [placeholder]='placeholder' size='1' [style.direction]='direction' 
+             [type]='inputType()' #editor>
     </ng-container>
   </div>
 </ng-container>

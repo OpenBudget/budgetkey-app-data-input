@@ -433,7 +433,10 @@ export const tendersTenderConfig = {
     },
     {
       name: 'end_date',
-      display: 'תוקף'
+      display: 'תוקף',
+      options: {
+        date: true
+      }
     },
     {
       name: 'option_num',

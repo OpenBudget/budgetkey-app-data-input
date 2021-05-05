@@ -145,4 +145,14 @@ export class EditableFieldComponent implements OnInit, OnDestroy {
     }
     return x;
   }
+
+  inputType() {
+    if (this.options.number || this.options.integer) {
+      return 'number';
+    }
+    if (this.options.date) {
+      return 'date';
+    }
+    return 'text';
+  }
 }
