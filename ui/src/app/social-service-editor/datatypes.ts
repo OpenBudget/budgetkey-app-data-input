@@ -440,11 +440,28 @@ export const tendersTenderConfig = {
     },
     {
       name: 'option_num',
-      display: 'מספר אופציות',
+      display: 'מספר אופציות להארכה',
+      explanation: 'מספר ההארכות האפשריות',
       kind: 'enum',
       options: {
         options: [
-          { value: '0', show: '0' },
+          { value: '', show: 'ללא אופציית הארכה' },
+          { value: '1', show: '1' },
+          { value: '2', show: '2' },
+          { value: '3', show: '3' },
+          { value: '4', show: '4' },
+          { value: '5', show: '5' },
+        ]
+      }
+    },
+    {
+      name: 'option_duration',
+      display: 'סך משך ההארכה',
+      explanation: 'סך השנים המקסימלי להארכה במימוש כל האופציות',
+      kind: 'enum',
+      options: {
+        options: [
+          { value: '', show: 'ללא אופציית הארכה' },
           { value: '1', show: '1' },
           { value: '2', show: '2' },
           { value: '3', show: '3' },
@@ -453,18 +470,8 @@ export const tendersTenderConfig = {
           { value: '6', show: '6' },
           { value: '7', show: '7' },
           { value: '8', show: '8' },
-        ]
-      }
-    },
-    {
-      name: 'option_duration',
-      display: 'משך אופציות',
-      kind: 'enum',
-      options: {
-        options: [
-          { value: '', show: '' },
-          { value: '1', show: 'שנה' },
-          { value: '2', show: 'שנתיים' },
+          { value: '9', show: '9' },
+          { value: '10', show: '10' },
         ]
       }
     },

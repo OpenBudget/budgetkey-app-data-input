@@ -270,7 +270,8 @@ export class SocialServiceEditorComponent implements OnInit {
           description,
           start_date || '&nbsp;-<br/>' || end_date as date_range,
           regulation,
-          page_url
+          page_url,
+          coalesce(supplier, entity_name) as supplier
     FROM a
     JOIN procurement_tenders_processed USING (publication_id,
                                               tender_id,
@@ -350,7 +351,7 @@ export class SocialServiceEditorComponent implements OnInit {
            start_date || '&nbsp;-<br/>' || end_date as date_range,
            regulation,
            page_url,
-           supplier
+           coalesce(supplier, entity_name) as supplier
     FROM
      procurement_tenders_processed 
     WHERE (publication_id || ':' || tender_type || ':' || tender_id) IN (${connectedTenderKeysStr})
