@@ -31,7 +31,6 @@ export class SocialServiceEditorComponent implements OnInit {
   valid = true;
   errorMsg: string = '';
 
-  tab = 'org';
   offices: any[] = [];
   office_options: any = {options: []};
   level1_name: string = null;
@@ -68,7 +67,16 @@ export class SocialServiceEditorComponent implements OnInit {
     if (!this.datarecord.virtue_of_table || this.datarecord.virtue_of_table.length === 0) {
       this.datarecord.virtue_of_table = [{}];
     }
+    this.datarecord.__tab = this.datarecord.__tab || 'org';
     this.refresh();
+  }
+
+  get tab(): string {
+    return this.datarecord.__tab || 'org';
+  }
+
+  set tab(value) {
+    this.datarecord.__tab = value;
   }
 
   updateHierarchy(clear?: number) {
