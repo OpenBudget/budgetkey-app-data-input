@@ -138,12 +138,12 @@
                 {
                     "name": "office",
                     "display": "משרד",
-                    "kind": "enum",
+                    "type": "enum",
                     "options": [
-                        { "value": "education", "show": "החינוך" },
-                        { "value": "welfare", "show": "הרווחה" },
-                        { "value": "health", "show": "הבריאות" },
-                        { "value": "immigration", "show": "העליה והקליטה" }
+                        { "value": "education", "display": "החינוך" },
+                        { "value": "welfare", "display": "הרווחה" },
+                        { "value": "health", "display": "הבריאות" },
+                        { "value": "immigration", "display": "העליה והקליטה" }
                     ]
                 },
                 {
