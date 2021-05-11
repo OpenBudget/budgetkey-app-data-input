@@ -173,7 +173,7 @@ export class SocialServiceEditorComponent implements OnInit {
     const sql = `
       SELECT code, title, year from raw_budget
       where (${conditions.join('')}) and net_revised != 0
-      order by year, code
+      order by year desc, code
     `;
     this.api.query(sql)
       .subscribe((records: any) => {
@@ -198,6 +198,9 @@ export class SocialServiceEditorComponent implements OnInit {
     if (!this.datarecord.budgetItems || this.datarecord.budgetItems.length === 0) {
       return;
     }
+    this.datarecord.budgetItems = (this.datarecord.budgetItems as any[]).sort(
+      (a, b) => b.year - a.year
+    );
     const conditions = [];
     const percents = {};
     const budgets = [];
