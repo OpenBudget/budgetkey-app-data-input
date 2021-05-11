@@ -50,7 +50,7 @@
         <div class='explanation'>שם ה{{level2_name}} אשר אחראים למתן השירות</div>
     </ng-container>
     <ng-container *ngIf='level3_name && level3_options.options.length'>
-        <app-editable-field [record]='datarecord' field='subsubunit' [required]='true'
+        <app-editable-field [record]='datarecord' field='subsubunit' [required]='false'
                             [label]='"שם ה" + level3_name' kind='enum' [options]='level3_options' (changed)='updateHierarchy()'></app-editable-field>
         <div class='explanation'>שם ה{{level3_name}} אשר אחראים למתן השירות</div>
     </ng-container>
