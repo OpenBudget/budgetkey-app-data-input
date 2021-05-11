@@ -16,4 +16,8 @@ export class ListStateService {
   get(x) {
     return !!this.state[x];
   }
+
+  clear() {
+    this.state = {};
+  }
 }

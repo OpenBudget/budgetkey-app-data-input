@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { ListStateService } from '../list-state.service';
 
 @Component({
@@ -10,6 +10,10 @@ export class SocialServiceListItemComponent implements OnChanges {
 
   @Input() item: any = {};
   @Input() def: any = {};
+  @Input() search: string;
+
+  @Output() found = new EventEmitter<void>();
+
   count = 0;
   incompleteCount = 0;
   _open = false;
@@ -45,7 +49,33 @@ export class SocialServiceListItemComponent implements OnChanges {
   ngOnChanges(): void {
     this.count = this._count(this.item);
     this.incompleteCount = this._incompleteCount(this.item);
-    this._open = !this.item.header || this.listState.get(this.item.header);
+    if (!this.item.id && !this.item.header) { // root
+      this._open = true;
+      if (this.search) {
+        this.listState.clear();
+      }
+    } else if (this.item.header) { // inner node
+        if (this.search) {
+          this._open = false;
+          if (this.item.header.indexOf(this.search) >= 0) {
+            this.onfound();
+          }
+        } else {
+          this._open = this.listState.get(this.item.header);
+        }
+    } else { // leaf
+      if (this.search) {
+        this._open = false;
+        if (
+          (this.item.item.name && this.item.item.name.indexOf(this.search) >= 0) ||
+          (this.item.item.description && this.item.item.description.indexOf(this.search) >= 0)
+        ) {
+          this.onfound();
+        }
+      } else {
+        this._open = true;
+      }
+    }
   }
 
   set open(value: boolean) {
@@ -79,5 +109,14 @@ export class SocialServiceListItemComponent implements OnChanges {
 
   get numTenders() {
     return (this.item.item.tenders || []).filter(x => x.related === 'yes').length.toLocaleString();
+  }
+
+  onfound() {
+    if (!this._open) {
+      this._open = true;
+      setTimeout(() => {
+        this.found.emit();
+      }, 0);
+    }
   }
 }

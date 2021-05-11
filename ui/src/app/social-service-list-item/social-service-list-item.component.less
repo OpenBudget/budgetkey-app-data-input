@@ -1,6 +1,9 @@
 :host {
     display: block;
-    margin-top: 8px;
+
+    > .padding {
+        margin-top: 8px;
+    }
 
     .header {
         display: flex;
@@ -21,6 +24,12 @@
 
     .content {
         padding-right: 16px;
+
+        display: none;
+        &.visible {
+            display: flex;
+            flex-flow: column;
+        }
 
         .item {
             border: #ccc 1px solid;

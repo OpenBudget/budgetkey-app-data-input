@@ -8,6 +8,7 @@
     </div>
 </div>
 
-<app-social-service-list-item [def]='def' [item]='aggregated'></app-social-service-list-item>
+<input (keyup)='search($event)' class='search' placeholder='חיפוש שרות...'>
+<app-social-service-list-item [def]='def' [item]='aggregated' [search]='query'></app-social-service-list-item>
 
 <div class='version'>גירסא: {{ VERSION }}</div>

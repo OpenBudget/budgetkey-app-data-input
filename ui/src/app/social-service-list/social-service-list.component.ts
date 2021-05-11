@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ApiService, RolesService } from 'etl-server';
-import { ReplaySubject } from 'rxjs';
-import { first, map, switchMap } from 'rxjs/operators';
+import { ReplaySubject, Subject } from 'rxjs';
+import { debounceTime, first, map, switchMap } from 'rxjs/operators';
 import { VERSION } from '../version';
 
 @Component({
@@ -13,10 +13,13 @@ export class SocialServiceListComponent implements OnInit {
 
   @Input() def: any;
   @Input() datarecords: any[] = [];
+
   aggregated = {items: []};
   selectedOffice = new ReplaySubject<string>(1);
   designatedOffice = null;
   offices: any = {};
+  searchStream = new Subject<string>();
+  query = '';
   VERSION = VERSION;
 
   constructor(public api: ApiService, public roles: RolesService) {
@@ -43,6 +46,11 @@ export class SocialServiceListComponent implements OnInit {
         this.offices[el.id] = el.name;
       });
     });
+    this.searchStream.pipe(
+      debounceTime(500)
+    ).subscribe((query) => {
+      this.query = query;
+    })
   }
 
   aggregate(ptr, header) {
@@ -74,6 +82,10 @@ export class SocialServiceListComponent implements OnInit {
         }
       }
     });
+  }
+
+  search(event: KeyboardEvent) {
+    this.searchStream.next((event.target as HTMLInputElement).value);
   }
 
 }

@@ -1,7 +1,8 @@
+<div class='padding' *ngIf='!item.item || _open'></div>
 <ng-container *ngIf='item.header'>
-    <div class='header' [class.open]='open' (click)='open = !open'>
-        <i *ngIf='!open' class="fas fa-caret-left"></i>
-        <i *ngIf='open' class="fas fa-caret-down"></i>
+    <div class='header' [class.open]='_open' (click)='open = !open'>
+        <i *ngIf='!_open' class="fas fa-caret-left"></i>
+        <i *ngIf='_open' class="fas fa-caret-down"></i>
         <h3>{{item.header}}</h3>
         <p class='count'>
             מספר שירותים: {{count.toLocaleString()}}
@@ -9,13 +10,11 @@
         </p>
     </div>
 </ng-container>
-<ng-container *ngIf='item.items && open'>
-    <div class='content'>
-        <app-social-service-list-item *ngFor='let i of item.items' [def]='def' [item]='i'></app-social-service-list-item>
-    </div>
-</ng-container>
+<div class='content' [class.visible]='item.items && _open'>
+    <app-social-service-list-item *ngFor='let i of item.items' [def]='def' [item]='i' [search]='search' (found)='onfound()'></app-social-service-list-item>
+</div>
 <ng-container *ngIf='item.item'>
-    <div class='content'>
+    <div class='content' [class.visible]='_open'>
         <div class='item' [class.deleted]='item.item.deleted'>
             <div class='line'>
                 <a [routerLink]='"/datarecords/" + def.name + "/" + item.id'>{{item.item.name}}</a>
