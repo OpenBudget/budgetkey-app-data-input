@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ApiService, RolesService } from 'etl-server';
 import { ReplaySubject } from 'rxjs';
 import { first, map, switchMap } from 'rxjs/operators';
+import { VERSION } from '../version';
 
 @Component({
   selector: 'app-social-service-list',
@@ -16,7 +17,7 @@ export class SocialServiceListComponent implements OnInit {
   selectedOffice = new ReplaySubject<string>(1);
   designatedOffice = null;
   offices: any = {};
-  VERSION = '1.2.0';
+  VERSION = VERSION;
 
   constructor(public api: ApiService, public roles: RolesService) {
     this.api.currentUserProfile.pipe(
