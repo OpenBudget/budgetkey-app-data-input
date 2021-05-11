@@ -16,7 +16,7 @@ export class SocialServiceListComponent implements OnInit {
   selectedOffice = new ReplaySubject<string>(1);
   designatedOffice = null;
   offices: any = {};
-  VERSION = '1.1.0';
+  VERSION = '1.2.0';
 
   constructor(public api: ApiService, public roles: RolesService) {
     this.api.currentUserProfile.pipe(
