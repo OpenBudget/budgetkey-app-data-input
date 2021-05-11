@@ -212,7 +212,7 @@ export class SocialServiceEditorComponent implements OnInit {
     const sql = `
       SELECT code, title, year, net_revised, net_executed from raw_budget
       where (${conditions.join('')}) and net_revised != 0
-      order by year, code
+      order by year desc, code
     `;
     this.api.query(sql)
       .subscribe((records: any) => {
