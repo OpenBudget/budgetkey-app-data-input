@@ -30,6 +30,7 @@ export class SocialServiceEditorComponent implements OnInit {
   showSearch: string = '';
   valid = true;
   errorMsg: string = '';
+  saveConfirm: boolean;
 
   offices: any[] = [];
   office_options: any = {options: []};
@@ -546,6 +547,11 @@ export class SocialServiceEditorComponent implements OnInit {
         if (result.id) {
           if (complete) {
             this.router.navigate(['/dashboard']);
+          } else {
+            this.saveConfirm = true;
+            setTimeout(() => {
+              this.saveConfirm = false;
+            }, 2000);
           }
         } else {
           console.log('Failed to SAVE Datarecord!', this.def.name, result);

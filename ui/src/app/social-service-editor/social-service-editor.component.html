@@ -153,8 +153,9 @@
 
 
 <div class='buttons'>
-    <div *ngIf='roles._.datarecordEditOwn || roles._.datarecordEditAll'  class='save-done button' (click)='save(false)'>
-      <i class="fas fa-save" aria-hidden="true"></i>
+    <div *ngIf='roles._.datarecordEditOwn || roles._.datarecordEditAll'  class='save-done button' [class.confirm]='saveConfirm' (click)='save(false)'>
+      <i class="fas fa-save" aria-hidden="true" *ngIf='!saveConfirm'></i>
+      <i class="fas fa-check-circle" aria-hidden="true" *ngIf='saveConfirm'></i>
       שמירה והמשך עבודה
     </div>
     <div *ngIf='roles._.datarecordEditOwn || roles._.datarecordEditAll'  class='save-notdone button' (click)='save(true)'>
