@@ -1,9 +1,6 @@
 :host {
     display: block;
-
-    > .padding {
-        margin-top: 8px;
-    }
+    margin-top: 8px;
 
     .header {
         display: flex;
@@ -29,6 +26,13 @@
         &.visible {
             display: flex;
             flex-flow: column;
+        }
+
+        &.highlighted {
+            .item {
+                background: yellow;
+                border-width: 2px;
+            }
         }
 
         .item {
