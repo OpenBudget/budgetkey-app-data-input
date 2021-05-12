@@ -382,10 +382,14 @@ export class SocialServiceEditorComponent implements OnInit {
   }
 
   connectTender({row, field}) {
-    row.related = row.related || 'yes';
     const tender_key = row.tender_key;
     this.datarecord.tenders = this.datarecord.tenders.filter((x) => x.tender_key !== tender_key);
     this.datarecord.non_tenders = this.datarecord.non_tenders.filter((x) => x.tender_key !== tender_key);
+    if (row.delete) {
+      return;
+    }
+
+    row.related = row.related || 'yes';
     if (row.related === 'yes') {
       this.datarecord.tenders.push(row);
       this.possibleTenders = this.possibleTenders.filter((x) => x.tender_key !== tender_key);

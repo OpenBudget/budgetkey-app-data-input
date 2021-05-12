@@ -47,6 +47,7 @@ export class SupplierSearcherComponent implements OnInit, OnDestroy, AfterViewIn
   }
 
   select(item) {
+    item = this.api.cleanHighlights(item);
     const row = {
       entity_id: item.id,
       entity_name: item.name,

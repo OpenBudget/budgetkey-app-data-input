@@ -72,8 +72,6 @@ export class SocialServiceListItemComponent implements OnChanges {
         ) {
           this.onfound();
         }
-      } else {
-        this._open = true;
       }
     }
   }

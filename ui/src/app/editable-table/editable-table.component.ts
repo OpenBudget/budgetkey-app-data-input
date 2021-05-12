@@ -35,6 +35,9 @@ export class EditableTableComponent implements OnInit {
     }
     this.rows[this.defaultRowIndex] = this.headers;
     this.colspan = this.headers.length;
+    if (this.config.rowDelete) {
+      this.colspan++;
+    }
     this.rows = Object.keys(this.rows).sort().map((k) => this.rows[k]);
   }
 

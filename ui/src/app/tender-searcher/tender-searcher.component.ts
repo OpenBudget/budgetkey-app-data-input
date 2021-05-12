@@ -73,6 +73,7 @@ export class TenderSearcherComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   select(item) {
+    item = this.api.cleanHighlights(item);
     const row = {
       volume: null,
       executed: null,

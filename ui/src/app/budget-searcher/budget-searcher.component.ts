@@ -50,6 +50,6 @@ export class BudgetSearcherComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   select(item) {
-    this.choose.emit(item);
+    this.choose.emit(this.api.cleanHighlights(item));
   }
 }

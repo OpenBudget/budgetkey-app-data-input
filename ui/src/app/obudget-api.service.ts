@@ -76,4 +76,17 @@ export class ObudgetApiService {
       })
     );
   }
+
+  cleanHighlights(item) {
+    const ret = {};
+    for (const k of Object.keys(item)) {
+      let v = item[k];
+      if (v && v.replace) {
+        v = v.replace('<em>', '').replace('</em>', '');
+      }
+      ret[k] = v;
+    }
+    return ret;
+  }
+
 }

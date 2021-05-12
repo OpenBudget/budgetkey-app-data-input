@@ -221,18 +221,8 @@ export const supplierListConfig = {
 export const tendersConfig = {
     fields: [
       {
-        name: 'tender_id',
-        display: 'מספר המכרז',
-        readonly: true
-      },
-      {
         name: 'tender_type_he',
         display: 'סוג המכרז',
-        readonly: true
-      },
-      {
-        name: 'regulation',
-        display: 'תקנה',
         readonly: true
       },
       {
@@ -246,14 +236,6 @@ export const tendersConfig = {
         readonly: true,
         fullRow: 4,
         strong: true
-      },
-      {
-        name: 'date_range',
-        display: 'תוקף',
-        readonly: true,
-        options: {
-          date: true
-        }
       },
       {
         name: 'page_url',
@@ -275,41 +257,9 @@ export const tendersConfig = {
           ]
         }
       },
-      {
-        name: 'notes',
-        display: 'תיאור מורחב של המכרז',
-        fullRow: 6
-      },
-      {
-        name: 'pricing',
-        display: 'מודל תמחור',
-        explanation: 'מודל התמחור של ההליך המכרזי מתוך הרשימה',
-        kind: 'enum',
-        required: true,
-        options: {
-          options: [
-            { value: 'fixed', show: 'מחיר קבוע (תעריף)' },
-            { value: 'proposal', show: 'הצעת מחיר' },
-            { value: 'combined', show: 'משולב' },
-          ]
-        }
-      },
-      {
-        name: 'sub_kind',
-        display: 'סוג מכרז',
-        kind: 'enum',
-        explanation: 'במידה ומדובר במכרז, ציינו מה סוג המכרז מתוך הרשימה. לחילופין, בדקו כי המידע המופיע אכן מדויק ותקנו במידת הצורך',
-        required: true,
-        options: {
-          options: [
-            { value: 'na', show: 'לא רלוונטי' },
-            { value: 'closed', show: 'סגור' },
-            { value: 'frame', show: 'מסגרת' },
-            { value: 'pool', show: 'מאגר' },
-          ]
-        }
-      },
-    ]
+    ],
+    rowDelete: true,
+    rowDeleteFields: ['description'],
   };
 export const tenderListConfig = {
     fields: [
