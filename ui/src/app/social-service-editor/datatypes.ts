@@ -425,7 +425,7 @@ export const tendersTenderConfig = {
     },
     {
       name: 'option_num',
-      display: 'מספר אופציות להארכה',
+      display: 'מספר אופציות',
       explanation: 'מספר ההארכות האפשריות',
       kind: 'enum',
       options: {
@@ -441,7 +441,7 @@ export const tendersTenderConfig = {
     },
     {
       name: 'option_duration',
-      display: 'סך משך ההארכה',
+      display: 'סך משך האופציות',
       explanation: 'סך השנים המקסימלי להארכה במימוש כל האופציות',
       kind: 'enum',
       options: {
