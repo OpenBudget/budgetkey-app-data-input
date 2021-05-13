@@ -121,7 +121,7 @@
     </ng-container>
     <ng-container *ngIf='datarecord.non_suppliers.length'>
         <h3>מפעילים <u>לא</u> קשורים</h3>
-        <app-editable-table [record]='datarecord' field='non_suppliers' [config]='C.suppliersConfig' (changed)='connectSupplier($event)'></app-editable-table>
+        <app-editable-table [record]='datarecord' field='non_suppliers' [config]='C.nonSuppliersConfig' (changed)='connectSupplier($event)'></app-editable-table>
     </ng-container>
     <ng-container *ngIf='possibleSuppliers && possibleSuppliers.length'>
         <h3>מפעילים אפשריים</h3>

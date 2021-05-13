@@ -77,12 +77,38 @@ export class ObudgetApiService {
     );
   }
 
+  fetchEntity(entity_kind, entity_id) {
+    return this.http.get(`https://next.obudget.org/get/org/${entity_kind}/${entity_id}`).pipe(
+      catchError((err) => {
+        this.errors.next('שגיאה באיתור המידע');
+        Sentry.captureMessage(`ObudgetApiService::fetchSupplier: entity=${entity_kind}/${entity_id}`);
+        Sentry.captureMessage('ObudgetApiService::fetchSupplier: GOT ERROR=' + JSON.stringify(err));
+        return from([{}]);
+      }),
+      map((result: any) => {
+        if (result && result.value) {
+          return {
+            entity_id: result.value.id,
+            entity_name: result.value.name,
+            entity_kind: result.value.kind,
+            entity_kind_he: result.value.kind_he,
+            volume: null,
+            executed: null,
+            purchase_methods: null
+          };
+        } else {
+          return null;
+        }
+      })
+    );
+  }
+
   cleanHighlights(item) {
     const ret = {};
     for (const k of Object.keys(item)) {
       let v = item[k];
       if (v && v.replace) {
-        v = v.replace('<em>', '').replace('</em>', '');
+        v = v.split('<em>').join('').split('</em>').join('');
       }
       ret[k] = v;
     }

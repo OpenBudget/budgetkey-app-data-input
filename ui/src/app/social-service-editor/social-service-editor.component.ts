@@ -283,7 +283,8 @@ export class SocialServiceEditorComponent implements OnInit {
           start_date || '&nbsp;-<br/>' || end_date as date_range,
           regulation,
           page_url,
-          coalesce(supplier, entity_name) as supplier
+          coalesce(supplier, entity_name) as supplier,
+          entity_id
     FROM a
     JOIN procurement_tenders_processed USING (publication_id,
                                               tender_id,
@@ -405,7 +406,18 @@ export class SocialServiceEditorComponent implements OnInit {
             }
           }
         }
-      }  
+      }
+      if (row.entity_id && row.entity_kind) {
+        // If the row contains an entity that isn't connected yet
+        if (this.datarecord.suppliers.map((x) => x.entity_id).filter((x) => x.entity_id === row.entity_id).length === 0) {
+          this.api.fetchEntity(row.entity_kind, row.entity_id).subscribe((row) => {
+            if (row) {
+              const field = null;
+              this.connectSupplier({row, field}, false);
+            }
+          })
+        }
+      }
     } else if (row.related === 'no') {
       this.datarecord.non_tenders.push(row);
     } else if (row.related === 'suggestion') {
@@ -438,7 +450,7 @@ export class SocialServiceEditorComponent implements OnInit {
     return ret;
   }
 
-  connectSupplier({row, field}) {
+  connectSupplier({row, field}, clearModal=true) {
     row.related = row.related || 'yes';
     const entity_id = row.entity_id;
     this.datarecord.suppliers = this.datarecord.suppliers.filter((x) => x.entity_id !== entity_id);
@@ -464,7 +476,9 @@ export class SocialServiceEditorComponent implements OnInit {
     } else if (row.related === 'suggestion') {
       this.datarecord.suppliers.push(row);
     }
-    this.modal(null);
+    if (clearModal) {
+      this.modal(null);
+    }
   }
 
   fetchLookupTable() {

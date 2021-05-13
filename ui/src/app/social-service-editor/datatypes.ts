@@ -176,6 +176,41 @@ export const suppliersConfig = {
       },
     ]
   };
+export const nonSuppliersConfig = {
+    fields: [
+      {
+        name: 'entity_kind_he',
+        display: 'סוג תאגיד',
+        readonly: true
+      },
+      {
+        name: 'entity_id',
+        display: 'מספר תאגיד',
+        readonly: true
+      },
+      {
+        name: 'entity_name',
+        display: 'שם המפעיל',
+        readonly: true,
+        fullRow: 4,
+        strong: true
+      },
+      {
+        name: 'related',
+        display: 'סימון כמפעיל קשור',
+        kind: 'enum',
+        options: {
+          options: [
+            { value: 'yes', show: 'קשור' },
+            { value: 'no', show: 'לא קשור' },
+            { value: 'suggestion', show: 'כנראה קשור' },
+          ]
+        }
+      },
+    ],
+    rowDelete: true,
+    rowDeleteFields: ['entity_name']
+  };
 export const supplierListConfig = {
     fields: [
       {
