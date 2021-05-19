@@ -284,7 +284,7 @@ export const tendersConfig = {
       },
       {
         name: 'related',
-        display: 'סימון כמכרז קשור',
+        display: 'סימון כקשור',
         kind: 'enum',
         options: {
           options: [
@@ -366,7 +366,7 @@ export const tenderListConfig = {
       // },
       {
         name: 'related',
-        display: 'סימון כמכרז קשור',
+        display: 'סימון כקשור',
         kind: 'button'
       }
     ]
@@ -478,7 +478,7 @@ export const tendersTenderConfig = {
     },    
     {
       name: 'related',
-      display: 'סימון כמכרז קשור',
+      display: 'סימון כקשור',
       kind: 'enum',
       options: {
         options: [
@@ -542,7 +542,7 @@ export const tendersExemptionConfig = {
     },
     {
       name: 'related',
-      display: 'סימון כמכרז קשור',
+      display: 'סימון כקשור',
       kind: 'enum',
       options: {
         options: [
