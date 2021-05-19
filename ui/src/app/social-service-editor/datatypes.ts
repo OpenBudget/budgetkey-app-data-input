@@ -39,12 +39,14 @@ export const virtueOfConfig = {
             {
               value: 'נוהל/חוזר משרדי', show: 'נוהל/חוזר משרדי',
             },
+            {
+              value: 'לא רלוונטי', show: 'לא רלוונטי',
+            },
         ]}
       },
       {
         name: 'details',
         display: 'קישור',
-        required: true
       }
     ],
     rowDelete: true,
