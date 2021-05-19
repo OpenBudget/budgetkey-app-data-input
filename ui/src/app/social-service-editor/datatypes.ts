@@ -73,21 +73,51 @@ export const budgetItemsConfig = {
         display: 'שנה',
         readonly: true
       },
+      // {
+      //   name: 'percent',
+      //   display: 'אחוז',
+      //   required: true,
+      // },      
+      // {
+      //   name: 'manual',
+      //   display: 'תקציב מאושר',
+      //   explanation: 'התקציב השנתי המאושר לשירות (מתוך סך התקנה התקציבית)',
+      //   options: {
+      //     number: true
+      //   }
+      // },
+    ],
+    rowDelete: true,
+    rowDeleteFields: ['year', 'title']
+  };
+  export const manualBudgetConfig = {
+    fields: [
       {
-        name: 'percent',
-        display: 'אחוז',
-        required: true,
-      },      {
-        name: 'manual',
-        display: 'תקציב ידני',
+        name: 'year',
+        display: 'שנה',
+        readonly: true
+      },
+      {
+        name: 'approved',
+        display: 'תקציב מאושר',
+        explanation: 'התקציב השנתי המאושר לשירות (מתוך סך התקנה התקציבית)',
+        options: {
+          number: true
+        }
+      },
+      {
+        name: 'executed',
+        display: 'תקציב ביצוע בפועל',
+        explanation: 'התקציב השנתי התקציב השנתי שבוצע בפועל בשירות',
         options: {
           number: true
         }
       },
     ],
     rowDelete: true,
-    rowDeleteFields: ['year', 'title']
+    rowDeleteFields: ['year']
   };
+
 export const budgetAmountsConfig = {
     fields: [
       {

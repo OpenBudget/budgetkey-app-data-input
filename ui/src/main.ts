@@ -11,7 +11,7 @@ if (environment.production) {
     dsn: "https://76f33daa392a4284b5d6dd930d6498da@o367221.ingest.sentry.io/5734503",
     integrations: [
       new Integrations.BrowserTracing({
-        tracingOrigins: ["localhost", "https://data-input.obudget.org/"],
+        tracingOrigins: ["https://data-input.obudget.org/"],
         routingInstrumentation: Sentry.routingInstrumentation,
       }),
     ],

@@ -202,6 +202,20 @@ export class SocialServiceEditorComponent implements OnInit {
     this.datarecord.budgetItems = (this.datarecord.budgetItems as any[]).sort(
       (a, b) => b.year - a.year
     );
+    this.datarecord.manualBudget = this.datarecord.manualBudget || [];
+    const existingManualYears = this.datarecord.manualBudget.map(x => x.year);
+    this.datarecord.budgetItems.forEach((item) => {
+      const year = item.year;
+      if (existingManualYears.indexOf(year) < 0) {
+        this.datarecord.manualBudget.push({year: year, approved: null, executed: null});
+        existingManualYears.push(year);
+      }
+    });
+
+    this.datarecord.manualBudget = (this.datarecord.manualBudget as any[]).sort(
+      (a, b) => b.year - a.year
+    );
+
     const conditions = [];
     const percents = {};
     const budgets = [];

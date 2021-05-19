@@ -42,12 +42,22 @@
         align-items: flex-start;
         width: 100%;
         & > * {
-            flex: 1 1 50%;
-        }
-        > div:nth-child(2) {
+            flex: 1 1 25%;
             margin-right: 40px;
             padding-right: 40px;
             border-right: 1px dashed #ccc;
+            &:first-child {
+                flex-basis: 50%;
+                margin-right: 0;
+                padding-right: 0;
+                border-right: none;
+            }
+            .explanation {
+                min-height: 50px;
+            }
+            ::ng-deep th {
+                white-space: nowrap;
+            }
         }
         .fill-in {
             display: block;

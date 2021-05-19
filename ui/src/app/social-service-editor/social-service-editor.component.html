@@ -99,15 +99,26 @@
     <div class='explanation'></div>
     <div class='budget'>
         <div>
-            <h4 class='clickable' (click)='modal("budget")'><i class="fas fa-search"></i>חיפוש והוספה של תקנה תקציבית</h4>
-            <div class='explanation'>מספר התקנה התקציבית ממנה ניתן תקציב השירות. על התקנה לכלול 8 ספרות, כולל מספר המשרד</div>
+            <h3>תקנות תקציביות</h3>
+            <div class='explanation'>
+                התקנות התקציביות מהן מתוקצב השירות.
+            </div>
             <app-editable-table [record]='datarecord' field='budgetItems' [config]='C.budgetItemsConfig' (change)='refresh()'></app-editable-table>
             <!-- <a class='fill-in' (click)='fillInBudgets()' *ngIf='datarecord.budgetItems && datarecord.budgetItems.length'><i class="fas fa-magic"></i>השלמת תקנות אוטומטית</a>         -->
+            <h4 class='clickable' (click)='modal("budget")'><i class="fas fa-search"></i>חיפוש והוספה של תקנה תקציבית</h4>
+            <div class='explanation'>מספר התקנה התקציבית ממנה ניתן תקציב השירות. על התקנה לכלול 8 ספרות, כולל מספר המשרד</div>
+        </div>
+        <div *ngIf='datarecord.manualBudget && datarecord.manualBudget.length'>
+            <h3>תקציב השירות</h3>
+            <div class='explanation'>
+                תקציב השירות המאושר והביצוע בפועל, לכל שנת תקציב.
+            </div>
+            <app-editable-table [record]='datarecord' field='manualBudget' [config]='C.manualBudgetConfig'></app-editable-table>
         </div>
         <div *ngIf='budgetAmounts && budgetAmounts.length'>
-            <h3>סה״כ תקציב מאושר (מחושב)</h3>
+            <h3>נתונים מספר התקציב</h3>
             <div class='explanation'>
-                התקציב השנתי המאושר לשירות (מתוך סך התקציב בתקנה התקציבית) והתקציב השנתי שבוצע בפועל בשירות. הזינו את הסכום או בדקו שהסכום המופיע אכן נכון.
+                תקציב התקנה כפי שמופיע בספר התקציב. אנא בדקו כי תקציב השירות המאושר ותקציב הביצוע בפועל אינם חורגים מתקציב התקנה.
             </div>
             <app-editable-table [record]='thiz' field='budgetAmounts' [config]='C.budgetAmountsConfig'></app-editable-table>
         </div>
