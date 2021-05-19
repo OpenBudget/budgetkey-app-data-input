@@ -203,12 +203,21 @@ export class SocialServiceEditorComponent implements OnInit {
       (a, b) => b.year - a.year
     );
     this.datarecord.manualBudget = this.datarecord.manualBudget || [];
-    const existingManualYears = this.datarecord.manualBudget.map(x => x.year);
+    
+    const existingManualYears = {};
+    this.datarecord.manualBudget.forEach(x => {
+      existingManualYears[x.year] = x;
+    });
     this.datarecord.budgetItems.forEach((item) => {
       const year = item.year;
-      if (existingManualYears.indexOf(year) < 0) {
-        this.datarecord.manualBudget.push({year: year, approved: null, executed: null});
-        existingManualYears.push(year);
+      if (!existingManualYears[year]) {
+        const rec = {year: year, approved: null, executed: null};
+        this.datarecord.manualBudget.push(rec);
+        existingManualYears[year] = rec;
+      }
+      if (item.manual) {
+        const amount = (existingManualYears[year].approved || 0) + item.manual;
+        existingManualYears[year].approved = amount;
       }
     });
 

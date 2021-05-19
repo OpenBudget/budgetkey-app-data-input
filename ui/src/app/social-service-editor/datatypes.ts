@@ -101,6 +101,7 @@ export const budgetItemsConfig = {
         name: 'approved',
         display: 'תקציב מאושר',
         explanation: 'התקציב השנתי המאושר לשירות (מתוך סך התקנה התקציבית)',
+        required: true,
         options: {
           number: true
         }
@@ -109,6 +110,7 @@ export const budgetItemsConfig = {
         name: 'executed',
         display: 'תקציב ביצוע בפועל',
         explanation: 'התקציב השנתי התקציב השנתי שבוצע בפועל בשירות',
+        required: true,
         options: {
           number: true
         }
