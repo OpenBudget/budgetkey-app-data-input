@@ -111,7 +111,8 @@
         <div *ngIf='datarecord.manualBudget && datarecord.manualBudget.length'>
             <h3>תקציב השירות</h3>
             <div class='explanation'>
-                תקציב השירות המאושר והביצוע בפועל, לכל שנת תקציב.
+                תקציב השירות המאושר והביצוע בפועל, לכל שנת תקציב.<br/>
+                יש להזין את התקציב שניתן על ידי המשרד בלבד, לא כולל השתתפות רשויות או את גובה התרומה של הגוף השותף לממשלה, במיזמים משותפים.
             </div>
             <app-editable-table [record]='datarecord' field='manualBudget' [config]='C.manualBudgetConfig'></app-editable-table>
         </div>
