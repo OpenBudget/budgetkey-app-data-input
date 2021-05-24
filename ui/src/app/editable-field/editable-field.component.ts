@@ -1,8 +1,9 @@
 import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
-import { ApiService } from 'etl-server';
 import { from, fromEvent, Subscription } from 'rxjs';
 import { first, switchMap } from 'rxjs/operators';
 import { FieldVerifyerService } from '../field-verifyer.service';
+import { CachedApiService } from '../cached-api.service';
+import { ApiService } from 'etl-server';
 
 @Component({
   selector: 'app-editable-field',
@@ -28,7 +29,7 @@ export class EditableFieldComponent implements OnInit, OnDestroy {
   _verifierId = null;
   valid = true;
 
-  constructor(private api: ApiService, private verifier: FieldVerifyerService) { }
+  constructor(private api: ApiService, private cachedApi: CachedApiService, private verifier: FieldVerifyerService) { }
 
   ngOnInit() {
     this.editing = !this.record[this.field] && this.record[this.field] !== 0;
@@ -41,7 +42,7 @@ export class EditableFieldComponent implements OnInit, OnDestroy {
         switchMap((configuration) => {
           for (let def of (configuration.dataRecords || [])) {
             if (def.name === this.options.name) {
-              return this.api.queryDatarecords(def.name);
+              return this.cachedApi.queryDatarecords(def.name);
             }
           }
           return from([[]]);
