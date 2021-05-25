@@ -210,7 +210,7 @@ export class SocialServiceEditorComponent implements OnInit {
     });
     this.datarecord.budgetItems.forEach((item) => {
       const year = item.year;
-      if (!existingManualYears[year]) {
+      if (year >= 2017 && !existingManualYears[year]) {
         const rec = {year: year, approved: null, executed: null};
         this.datarecord.manualBudget.push(rec);
         existingManualYears[year] = rec;
@@ -223,7 +223,7 @@ export class SocialServiceEditorComponent implements OnInit {
 
     this.datarecord.manualBudget = (this.datarecord.manualBudget as any[]).sort(
       (a, b) => b.year - a.year
-    );
+    ).filter((x) => x.approved || x.year >= 2017);
 
     const conditions = [];
     const percents = {};
