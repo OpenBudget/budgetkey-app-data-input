@@ -209,6 +209,7 @@ export class SocialServiceEditorComponent implements OnInit {
       if (item.manual) {
         const amount = (existingManualYears[year].approved || 0) + item.manual;
         existingManualYears[year].approved = amount;
+        item.manual = null;
       }
     });
 
