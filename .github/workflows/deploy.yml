@@ -12,9 +12,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+    - name: Set up Python 3.7
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.7
     - uses: actions/setup-node@v2-beta
       with:
-        node-version: '10'
+        node-version: '12'
     - name: Build
       env:
         TRAVIS_CI_OPERATOR: "1"
@@ -22,6 +26,8 @@ jobs:
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}        
         GITHUB_TOKEN: ${{ secrets.K8S_GITHUB_TOKEN }}
       run: |
+        python version.py
+        (cd ui && npm install && npm run package) 
         ./ci.sh install
         ./ci.sh script
         ./ci.sh deploy
