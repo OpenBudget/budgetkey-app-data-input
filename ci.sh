@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 K8S_OPS_REPO_BRANCH=master
 K8S_OPS_REPO_SLUG=OpenBudget/budgetkey-k8s
-DEPLOY_VALUES_IMAGE_PROP=image
 DEPLOY_YAML_UPDATE_FILE=values.auto-updated.yaml
 DEPLOY_GIT_EMAIL=budgetkey-deployer@null.void
 DEPLOY_GIT_USER=budgetkey-deployer
 
 DEPLOY_COMMIT_MESSAGE="automatic update of budgetkey-app-data-input"
 DEPLOY_VALUES_CHART_NAME=data-input
+DEPLOY_VALUES_IMAGE_PROP=dataInputServerImage
 DOCKER_IMAGE=budgetkey/budgetkey-app-data-input
 
 
