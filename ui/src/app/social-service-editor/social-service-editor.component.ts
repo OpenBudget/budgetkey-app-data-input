@@ -206,7 +206,7 @@ export class SocialServiceEditorComponent implements OnInit {
         this.datarecord.manualBudget.push(rec);
         existingManualYears[year] = rec;
       }
-      if (item.manual) {
+      if (item.manual && existingManualYears[year]) {
         const amount = (existingManualYears[year].approved || 0) + item.manual;
         existingManualYears[year].approved = amount;
         item.manual = null;
