@@ -386,6 +386,26 @@ export class SocialServiceEditorComponent implements OnInit {
       });
   }
 
+  checkBudgetAmounts() {
+    console.log('checkBudgetAmounts');
+    for (const mb of (this.datarecord.manualBudget || [])) {
+      const mbYear = mb.year;
+      mb.warning = null;
+      for (const ba of (this.budgetAmounts || [])) {
+        const baYear = ba.year;
+        if (mbYear === baYear) {
+          console.log('checkBudgetAmounts', baYear, mb.approved, ba);
+          if (mb.approved && ba.net_revised && mb.approved > ba.net_revised) {
+            mb.warning = 'שימו לב, התקציב המאושר שהזנתם - גבוה מהתקציב המאושר בתקנה כפי שפורסם בספר התקציב (ראו מצד שמאל). בדקו שוב אם הסכום מדויק';
+          } else if (mb.executed && ba.net_executed && mb.executed > ba.net_executed) {
+            mb.warning = 'שימו לב, התקציב המאושר שהזנתם - גבוה מהתקציב המאושר בתקנה כפי שפורסם בספר התקציב (ראו מצד שמאל). בדקו שוב אם הסכום מדויק';
+          }
+          break;
+        }
+      }
+    }
+  }
+
   connectTender({row, field}) {
     const tender_key = row.tender_key;
     this.datarecord.tenders = this.datarecord.tenders.filter((x) => x.tender_key !== tender_key);

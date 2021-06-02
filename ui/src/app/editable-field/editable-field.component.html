@@ -32,3 +32,6 @@
 <ng-container *ngIf='kind === "button"'>
   <button (click)='onChanged()'>{{ placeholder }}</button>
 </ng-container>
+<ng-container *ngIf='kind === "icon" && record[field]'>
+  <i [class]='options.iconClass' [style.color]='options.iconColor' [title]='record[field]'></i>
+</ng-container>

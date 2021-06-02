@@ -115,6 +115,16 @@ export const budgetItemsConfig = {
           number: true
         }
       },
+      {
+        name: 'warning',
+        kind: 'icon',
+        display: '',
+        readonly: true,
+        options: {
+          iconClass: 'fas fa-exclamation-triangle',
+          iconColor: '#FFD700'
+        }
+      }
     ],
     rowDelete: true,
     rowDeleteFields: ['year']

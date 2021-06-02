@@ -116,7 +116,7 @@
     במידה והתקציב בתקנה משויך כולו לשירות הספציפי ולא כולל שירותים נוספים, יש להשתמש בנתוני התקציב המאושר ותקציב הביצוע בפועל כפי שמופיעים בספר התקציב (ראו מצד שמאל). במצב בו בתקנה כלולים מספר שירותים, הקפידו להכניס את התקציב המאושר ותקציב הביצוע בפועל, הרלוונטיים רק לשירות הספציפי.
 
             </div>
-            <app-editable-table [record]='datarecord' field='manualBudget' [config]='C.manualBudgetConfig'></app-editable-table>
+            <app-editable-table [record]='datarecord' field='manualBudget' [config]='C.manualBudgetConfig' (change)='checkBudgetAmounts()'></app-editable-table>
         </div>
         <div *ngIf='budgetAmounts && budgetAmounts.length'>
             <h3>נתונים מספר התקציב</h3>
