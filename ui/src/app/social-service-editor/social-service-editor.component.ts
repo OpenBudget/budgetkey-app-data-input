@@ -555,7 +555,7 @@ export class SocialServiceEditorComponent implements OnInit {
         this.errorMsg = 'יש למלא ערכים בכל השדות המסומנים!';
       } else if (!this.datarecord.budgetItems || this.datarecord.budgetItems.length === 0) {
         this.errorMsg = 'יש לחבר לשירות לפחות תקנה תקציבית אחת!';
-      } else if (!this.datarecord.tenders || this.datarecord.tenders.length === 0) {
+      } else if ((!this.datarecord.tenders || this.datarecord.tenders.length === 0) && !this.datarecord.noTendersNeeded) {
         this.errorMsg = 'יש לחבר לשירות לפחות מכרז אחד!';
       } else if (!this.datarecord.suppliers || this.datarecord.suppliers.length === 0) {
         this.errorMsg = 'יש לחבר לשירות לפחות מפעיל אחד!';

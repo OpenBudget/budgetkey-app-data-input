@@ -147,23 +147,29 @@
 
 <div class='tab-contents' [class.visible]='tab==="tenders"'>
     <div class='explanation'>המכרזים אשר במסגרתם מסופק השירות. סמנו את המכרזים הרלוונטים, או לחילופין הזינו את המידע אודות המכרזים שבשירות.</div>
-    <ng-container *ngIf='tendersTender.length'>
-        <h3>מכרזים קשורים</h3>
-        <app-editable-table [record]='thiz' field='tendersTender' [config]='C.tendersTenderConfig' (changed)='connectTender($event)'></app-editable-table>
+    <h4 class='checkbox'>
+        <input type='checkbox' [(ngModel)]='datarecord.noTendersNeeded'>
+        <span>השירות לא ניתן מכוח מכרז או פטור, אלא בהסכם חוזי היסטורי אחר</span>
+    </h4>
+    <ng-container *ngIf='!datarecord.noTendersNeeded'>
+        <ng-container *ngIf='tendersTender.length'>
+            <h3>מכרזים קשורים</h3>
+            <app-editable-table [record]='thiz' field='tendersTender' [config]='C.tendersTenderConfig' (changed)='connectTender($event)'></app-editable-table>
+        </ng-container>
+        <ng-container *ngIf='tendersExemption.length'>
+            <h3>פטורים קשורים</h3>
+            <app-editable-table [record]='thiz' field='tendersExemption' [config]='C.tendersExemptionConfig' (changed)='connectTender($event)'></app-editable-table>
+        </ng-container>
+        <ng-container *ngIf='datarecord.non_tenders.length'>
+            <h3>מכרזים <u>לא</u> קשורים</h3>
+            <app-editable-table [record]='datarecord' field='non_tenders' [config]='C.tendersConfig' (changed)='connectTender($event)'></app-editable-table>
+        </ng-container>
+        <ng-container *ngIf='possibleTenders && possibleTenders.length'>
+            <h3>מכרזים אפשריים</h3>
+            <app-editable-table [record]='thiz' field='possibleTenders' [config]='C.tenderListConfig' (changed)='connectTender($event)'></app-editable-table>    
+        </ng-container>
+        <h4 class='clickable' (click)='modal("tender")'><i class="fas fa-search"></i>חיפוש והוספה של מכרז או פטור</h4>        
     </ng-container>
-    <ng-container *ngIf='tendersExemption.length'>
-        <h3>פטורים קשורים</h3>
-        <app-editable-table [record]='thiz' field='tendersExemption' [config]='C.tendersExemptionConfig' (changed)='connectTender($event)'></app-editable-table>
-    </ng-container>
-    <ng-container *ngIf='datarecord.non_tenders.length'>
-        <h3>מכרזים <u>לא</u> קשורים</h3>
-        <app-editable-table [record]='datarecord' field='non_tenders' [config]='C.tendersConfig' (changed)='connectTender($event)'></app-editable-table>
-    </ng-container>
-    <ng-container *ngIf='possibleTenders && possibleTenders.length'>
-        <h3>מכרזים אפשריים</h3>
-        <app-editable-table [record]='thiz' field='possibleTenders' [config]='C.tenderListConfig' (changed)='connectTender($event)'></app-editable-table>    
-    </ng-container>
-    <h4 class='clickable' (click)='modal("tender")'><i class="fas fa-search"></i>חיפוש והוספה של מכרז או פטור</h4>
 </div>
 
 
