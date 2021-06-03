@@ -398,7 +398,7 @@ export class SocialServiceEditorComponent implements OnInit {
           if (mb.approved && ba.net_revised && mb.approved > ba.net_revised) {
             mb.warning = 'שימו לב, התקציב המאושר שהזנתם - גבוה מהתקציב המאושר בתקנה כפי שפורסם בספר התקציב (ראו מצד שמאל). בדקו שוב אם הסכום מדויק';
           } else if (mb.executed && ba.net_executed && mb.executed > ba.net_executed) {
-            mb.warning = 'שימו לב, התקציב המאושר שהזנתם - גבוה מהתקציב המאושר בתקנה כפי שפורסם בספר התקציב (ראו מצד שמאל). בדקו שוב אם הסכום מדויק';
+            mb.warning = 'שימו לב, תקציב הביצוע שהזנתם - גבוה מהתקציב המבוצע בתקנה כפי שפורסם בספר התקציב (ראו מצד שמאל). בדקו שוב אם הסכום מדויק';
           }
           break;
         }
