@@ -32,9 +32,9 @@ export class EditableFieldComponent implements OnInit, OnDestroy {
   constructor(private api: ApiService, private cachedApi: CachedApiService, private verifier: FieldVerifyerService) { }
 
   ngOnInit() {
-    this.editing = !this.record[this.field] && this.record[this.field] !== 0;
     this.kind = this.kind || 'text';
     this.options = this.options || {};
+    this.editing = !this.value && this.value !== 0 && !this.options.empty_value;
     this.placeholder = this.placeholder || this.label;
     if (this.kind === 'datarecord') {
       this.api.configuration.pipe(
@@ -63,7 +63,7 @@ export class EditableFieldComponent implements OnInit, OnDestroy {
       this._verifierId = this.verifier.register();
       this.verifier.update(this._verifierId, false);
       this._verificationSubscription = this.verifier.verificationRequested.subscribe(() => {
-        const val = this.record[this.field];
+        const val = this.value;
         this.valid = Number.isFinite(val) || (val && val.length > 0);
         if (this.options.multiple) {
           this.valid = this.valid && val.length <= 4;
@@ -81,6 +81,10 @@ export class EditableFieldComponent implements OnInit, OnDestroy {
     }
   }
 
+  get value(): any {
+    return this.record[this.field];
+  }
+
   get editing(): boolean {
     return this._editing;
   }
@@ -94,17 +98,25 @@ export class EditableFieldComponent implements OnInit, OnDestroy {
   }
 
   get direction() {
-    return (this.options.number || this.options.date) ? 'ltr' : 'inherit';
+    return (this.value && (this.options.number || this.options.date)) ? 'ltr' : 'inherit';
   }
 
   toText(x: any) {
     if (this.options.number) {
       const num = x as number;
       if (!Number.isFinite(num)) {
-        return '';
+        return this.options.empty_value || '';
       }
       return num.toLocaleString(this.options.format || {});
     }
+    if (this.options.integer) {
+      const num = x as number;
+      if (!Number.isFinite(num)) {
+        return this.options.empty_value || '';
+      }
+      return num.toString();
+    }
+
     if (this.options.link) {
       return `<a href='${x}' target='_blank'>קישור</a>`;
     }
@@ -125,11 +137,11 @@ export class EditableFieldComponent implements OnInit, OnDestroy {
   }
 
   blur() {
-    if (this.record[this.field]) {
+    if (this.value || this.options.empty_value) {
       this.editing = false;
     }
-    this.record[this.field] = this.processValue(this.record[this.field]);
-    this.changed.emit(this.record[this.field]);
+    this.record[this.field] = this.processValue(this.value);
+    this.changed.emit(this.value);
   }
 
   onChanged() {

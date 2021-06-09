@@ -67,7 +67,6 @@ export class SocialServiceEditorComponent implements OnInit {
     }
     this.datarecord.__tab = this.datarecord.__tab || 'org';
     this.cachedApi.queryDatarecords('beneficiary_kind').subscribe((results) => {
-      console.log('BKBK', results);
       this.datarecord.beneficiary_kind = this.datarecord.beneficiary_kind || results[0].value.id;
     });
     this.cachedApi.queryDatarecords('hierarchy').subscribe((results) => {
@@ -189,6 +188,7 @@ export class SocialServiceEditorComponent implements OnInit {
     this.fetchSpendingTenders();
     this.fetchLookupTable();
     this.refreshExistingTenders();
+    this.refreshExistingSuppliers();
   }
 
   fetchBudgetAmounts() {
@@ -391,15 +391,19 @@ export class SocialServiceEditorComponent implements OnInit {
       });
   }
 
+  refreshExistingSuppliers() {
+    this.datarecord.suppliers.forEach((supplier) => {
+      supplier.active = supplier.active || 'yes';
+    })
+  }
+
   checkBudgetAmounts() {
-    console.log('checkBudgetAmounts');
     for (const mb of (this.datarecord.manualBudget || [])) {
       const mbYear = mb.year;
       mb.warning = null;
       for (const ba of (this.budgetAmounts || [])) {
         const baYear = ba.year;
         if (mbYear === baYear) {
-          console.log('checkBudgetAmounts', baYear, mb.approved, ba);
           if (mb.approved && ba.net_revised && mb.approved > ba.net_revised) {
             mb.warning = 'שימו לב, התקציב המאושר שהזנתם - גבוה מהתקציב המאושר בתקנה כפי שפורסם בספר התקציב (ראו מצד שמאל). בדקו שוב אם הסכום מדויק';
           } else if (mb.executed && ba.net_executed && mb.executed > ba.net_executed) {
@@ -441,8 +445,7 @@ export class SocialServiceEditorComponent implements OnInit {
         if (this.datarecord.suppliers.map((x) => x.entity_id).filter((x) => x.entity_id === row.entity_id).length === 0) {
           this.api.fetchEntity(row.entity_kind, row.entity_id).subscribe((row) => {
             if (row) {
-              const field = null;
-              this.connectSupplier({row, field}, false);
+              this.connectSupplier({row, field: 'related'}, false);
             }
           })
         }
@@ -480,33 +483,51 @@ export class SocialServiceEditorComponent implements OnInit {
   }
 
   connectSupplier({row, field}, clearModal=true) {
-    row.related = row.related || 'yes';
-    const entity_id = row.entity_id;
-    this.datarecord.suppliers = this.datarecord.suppliers.filter((x) => x.entity_id !== entity_id);
-    this.datarecord.non_suppliers = this.datarecord.non_suppliers.filter((x) => x.entity_id !== entity_id);
-    if (row.related === 'yes') {
-      this.datarecord.suppliers.push(row);
-      this.possibleSuppliers = this.possibleSuppliers.filter((x) => x.entity_id !== entity_id);
-      for (const item of this.lookupTable) {
-        if (item.entity_id === entity_id) {
-          const tender_key = item.tender_key;
-          for (const tender of this.possibleTenders) {
-            if (tender.tender_key === tender_key) {
-              tender.related = 'suggestion';
-              this.datarecord.tenders.push(tender);
-              this.possibleTenders = this.possibleTenders.filter((x) => x.tender_key !== tender_key);
-              break;
+    if (field.name) {
+      field = field.name;
+    }
+    if (field === 'related') {
+      row.related = row.related || 'yes';
+      row.active = row.active || 'yes';
+      const entity_id = row.entity_id;
+      this.datarecord.suppliers = this.datarecord.suppliers.filter((x) => x.entity_id !== entity_id);
+      this.datarecord.non_suppliers = this.datarecord.non_suppliers.filter((x) => x.entity_id !== entity_id);
+      if (row.related === 'yes') {
+        this.datarecord.suppliers.push(row);
+        this.possibleSuppliers = this.possibleSuppliers.filter((x) => x.entity_id !== entity_id);
+        for (const item of this.lookupTable) {
+          if (item.entity_id === entity_id) {
+            const tender_key = item.tender_key;
+            for (const tender of this.possibleTenders) {
+              if (tender.tender_key === tender_key) {
+                tender.related = 'suggestion';
+                this.datarecord.tenders.push(tender);
+                this.possibleTenders = this.possibleTenders.filter((x) => x.tender_key !== tender_key);
+                break;
+              }
             }
           }
         }
+        const startYear = (new Date()).getFullYear();
+        if (startYear > 2021) {
+          row.year_activity_start = startYear;  
+        }
+      } else if (row.related === 'no') {
+        this.datarecord.non_suppliers.push(row);
+      } else if (row.related === 'suggestion') {
+        this.datarecord.suppliers.push(row);
       }  
-    } else if (row.related === 'no') {
-      this.datarecord.non_suppliers.push(row);
-    } else if (row.related === 'suggestion') {
-      this.datarecord.suppliers.push(row);
+      if (clearModal) {
+        this.modal(null);
+      }
     }
-    if (clearModal) {
-      this.modal(null);
+    if (field === 'active') {
+      row.active = row.active || 'yes';
+      if (row.active === 'yes') {
+        row.year_activity_end = null;
+      } else {
+        row.year_activity_end = (new Date()).getFullYear() - 1;
+      }
     }
   }
 

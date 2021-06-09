@@ -211,6 +211,6 @@
         <div class='close' (click)='modal(null)'>סגירה</div>
         <app-budget-searcher *ngIf='showSearch === "budget"' (choose)='addBudgetItem($event)'></app-budget-searcher>
         <app-tender-searcher *ngIf='showSearch === "tender"' [office]='datarecord && datarecord.office' [existing]='datarecord.tenders' (choose)='connectTender({row: $event})'></app-tender-searcher>
-        <app-supplier-searcher *ngIf='showSearch === "supplier"' (choose)='connectSupplier({row: $event})'></app-supplier-searcher>
+        <app-supplier-searcher *ngIf='showSearch === "supplier"' (choose)='connectSupplier({row: $event, field: "related"})'></app-supplier-searcher>
     </div>
 </div>

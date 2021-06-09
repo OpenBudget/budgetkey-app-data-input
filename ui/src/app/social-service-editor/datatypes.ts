@@ -218,6 +218,35 @@ export const suppliersConfig = {
           multiple: true
         }
       },
+      {
+        name: 'active',
+        display: 'האם פעיל?',
+        kind: 'enum',
+        options: {
+          options: [
+            { value: 'yes', show: 'פעיל' },
+            { value: 'no', show: 'לא פעיל' },
+          ]
+        }
+      },
+      {
+        name: 'year_activity_start',
+        display: 'תחילת פעילות',
+        explanation: 'באיזו שנה המפעיל התחיל להפעיל את השירות הזה',
+        options: {
+          integer: true,
+          empty_value: '2020 או קודם לכן'
+        }
+      },
+      {
+        name: 'year_activity_end',
+        display: 'סיום פעילות',
+        explanation: 'באיזו שנה המפעיל סיים להפעיל את השירות הזה',
+        options: {
+          integer: true,
+          empty_value: 'עדיין פעיל'
+        }
+      },
     ]
   };
 export const nonSuppliersConfig = {
