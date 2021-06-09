@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { from, Subject } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import * as Sentry from "@sentry/angular";
+import { AuthService } from 'dgp-oauth2-ng';
 
 @Injectable({
   providedIn: 'root'
@@ -12,9 +13,10 @@ export class ObudgetApiService {
   private errors = new Subject<string>();
   private errorMsgs = [];
   private handingErrors = false;
+  private email: any;
   public errorMsg: string = null;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private auth: AuthService) {
     this.errors.subscribe((msg) => {
       this.errorMsgs.push(msg);
       if (!this.handingErrors) {
@@ -22,6 +24,11 @@ export class ObudgetApiService {
         this.handleErrorMsg();
       }
     })
+    this.auth.getUser().subscribe((user) => {
+      if (user && user.profile) {
+        this.email = user.profile.email;
+      }
+    });
   }
 
   handleErrorMsg() {
@@ -43,7 +50,7 @@ export class ObudgetApiService {
         catchError((err) => {
           this.errors.next('שגיאה בשליפת המידע');
           Sentry.captureMessage('ObudgetApiService::query: SQL=' + sql);
-          Sentry.captureMessage('ObudgetApiService::query: GOT ERROR=' + JSON.stringify(err));
+          Sentry.captureMessage('ObudgetApiService::query: ' + this.email + ' GOT ERROR=' + JSON.stringify(err));
           return from([{}]);
         }),
         map((response: any) => response.rows || []),
@@ -64,7 +71,7 @@ export class ObudgetApiService {
       catchError((err) => {
         this.errors.next('שגיאה בחיפוש המידע');
         Sentry.captureMessage('ObudgetApiService::search: WHAT=' + what + '/' + query);
-        Sentry.captureMessage('ObudgetApiService::search: GOT ERROR=' + JSON.stringify(err));
+        Sentry.captureMessage('ObudgetApiService::search: ' + this.email + ' GOT ERROR=' + JSON.stringify(err));
         return from([{}]);
       }),
       map((result: any) => {
@@ -82,7 +89,7 @@ export class ObudgetApiService {
       catchError((err) => {
         this.errors.next('שגיאה באיתור המידע');
         Sentry.captureMessage(`ObudgetApiService::fetchSupplier: entity=${entity_kind}/${entity_id}`);
-        Sentry.captureMessage('ObudgetApiService::fetchSupplier: GOT ERROR=' + JSON.stringify(err));
+        Sentry.captureMessage('ObudgetApiService::fetchSupplier: ' + this.email + ' GOT ERROR=' + JSON.stringify(err));
         return from([{}]);
       }),
       map((result: any) => {
