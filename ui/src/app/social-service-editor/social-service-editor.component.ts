@@ -62,6 +62,7 @@ export class SocialServiceEditorComponent implements OnInit {
     this.datarecord.suppliers = this.datarecord.suppliers || [];
     this.datarecord.non_tenders = this.datarecord.non_tenders || [];
     this.datarecord.non_suppliers = this.datarecord.non_suppliers || [];
+    this.datarecord.beneficiaries = this.datarecord.beneficiaries || [];
     if (!this.datarecord.virtue_of_table || this.datarecord.virtue_of_table.length === 0) {
       this.datarecord.virtue_of_table = [{}];
     }
@@ -189,6 +190,7 @@ export class SocialServiceEditorComponent implements OnInit {
     this.fetchLookupTable();
     this.refreshExistingTenders();
     this.refreshExistingSuppliers();
+    this.refreshExistingBeneficiaries();
   }
 
   fetchBudgetAmounts() {
@@ -394,7 +396,20 @@ export class SocialServiceEditorComponent implements OnInit {
   refreshExistingSuppliers() {
     this.datarecord.suppliers.forEach((supplier) => {
       supplier.active = supplier.active || 'yes';
-    })
+    });
+  }
+
+  refreshExistingBeneficiaries() {
+    const firstYear = 2017;
+    const lastYear = (new Date()).getFullYear();
+    const existingYears = this.datarecord.beneficiaries.map((x) => x.year);
+    const num_beneficiaries = null;
+    for (let year = firstYear; year < lastYear; year++) {
+      if (existingYears.indexOf(year) < 0) {
+        this.datarecord.beneficiaries.push({year, num_beneficiaries});
+      }
+    }
+    this.datarecord.beneficiaries = this.datarecord.beneficiaries.sort((a, b) => b.year - a.year);
   }
 
   checkBudgetAmounts() {
