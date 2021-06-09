@@ -127,6 +127,19 @@
             "admin": true
         },
         {
+            "name": "beneficiary_kind",
+            "display": "סוג מוטב",
+            "display_plural": "סוגי מוטבים",
+            "field": {
+                "name": "name",
+                "kind": "text",
+                "placeholder": "סוג המוטב",
+                "options": {}
+            },
+            "edit_component": "simple_list",
+            "admin": true
+        },
+        {
             "name": "contact",
             "display": "איש קשר",
             "display_plural": "אנשי קשר",

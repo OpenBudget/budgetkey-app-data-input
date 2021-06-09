@@ -92,6 +92,8 @@
     <div class='explanation'>
         המספר השנתי של מקבלי השירות אשר קיבלו בפועל את השירות. שימו לב כי מדובר במקבלי שירות מקרב אוכלוסיית היעד ולא ברשויות מקומיות, בתי ספר וכדומה.<br/>
          במידה ויש צורך, בצעו הערכה של מספר מקבלי השירות על פי מפתח קבוע. לדוגמה, אם השירות ניתן למספר כיתות, בצעו חישוב על פי המספר הממוצע של תלמידים בכיתה.</div>
+    <app-editable-field [record]='datarecord' field='beneficiary_kind' label='סוג המוטבים' kind='datarecord' [required]='true'
+         [options]='{name: "beneficiary_kind"}'></app-editable-field>
     <app-editable-table [record]='datarecord' field='beneficiaries' [config]='C.beneficiariesConfig'></app-editable-table>
 </div>
 
