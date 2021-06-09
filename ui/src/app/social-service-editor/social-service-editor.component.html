@@ -130,6 +130,7 @@
 
 <div class='tab-contents' [class.visible]='tab==="suppliers"'>
     <div class='explanation'>מפעילים אשר רלוונטיים להליך המכרזי ולשירות. סמנו או לחילופין הזינו את המידע אודות המפעילים הרלוונטיים לשירות.</div>
+    <h4 class='clickable' (click)='modal("supplier")'><i class="fas fa-search"></i>חיפוש והוספה של מפעיל</h4>
     <ng-container *ngIf='datarecord.suppliers.length'>
         <h3>מפעילים קשורים</h3>
         <app-editable-table [record]='datarecord' field='suppliers' [config]='C.suppliersConfig' (changed)='connectSupplier($event)'></app-editable-table>    
@@ -142,7 +143,6 @@
         <h3>מפעילים אפשריים</h3>
         <app-editable-table [record]='thiz' field='possibleSuppliers' [config]='C.supplierListConfig' (changed)='connectSupplier($event)'></app-editable-table>
     </ng-container>
-    <h4 class='clickable' (click)='modal("supplier")'><i class="fas fa-search"></i>חיפוש והוספה של מפעיל</h4>
 </div>
 
 <div class='tab-contents' [class.visible]='tab==="tenders"'>
@@ -152,6 +152,7 @@
         <span>השירות לא ניתן מכוח מכרז או פטור, אלא בהסכם חוזי היסטורי אחר</span>
     </h4>
     <ng-container *ngIf='!datarecord.noTendersNeeded'>
+        <h4 class='clickable' (click)='modal("tender")'><i class="fas fa-search"></i>חיפוש והוספה של מכרז או פטור</h4>
         <ng-container *ngIf='tendersTender.length'>
             <h3>מכרזים קשורים</h3>
             <app-editable-table [record]='thiz' field='tendersTender' [config]='C.tendersTenderConfig' (changed)='connectTender($event)'></app-editable-table>
@@ -168,7 +169,6 @@
             <h3>מכרזים אפשריים</h3>
             <app-editable-table [record]='thiz' field='possibleTenders' [config]='C.tenderListConfig' (changed)='connectTender($event)'></app-editable-table>    
         </ng-container>
-        <h4 class='clickable' (click)='modal("tender")'><i class="fas fa-search"></i>חיפוש והוספה של מכרז או פטור</h4>        
     </ng-container>
 </div>
 
