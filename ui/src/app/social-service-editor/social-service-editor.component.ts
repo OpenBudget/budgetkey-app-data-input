@@ -622,7 +622,7 @@ export class SocialServiceEditorComponent implements OnInit {
   }
 
   fakeDelete(e) {
-    this.confirmer.confirm(this.confirmer.ACTION_DELETE_DATARECORD, this.datarecord.name)
+    this.confirmer.confirm(this.confirmer.ACTION_CUSTOM, this.datarecord.name, 'לסמן כלא פעיל את השירות')
       .pipe(
         filter((x) => x),
         tap(() => {
@@ -633,7 +633,6 @@ export class SocialServiceEditorComponent implements OnInit {
         })
       ).subscribe((result) => {
         console.log('FAKE DELETED DATARECORD', result);
-        this.router.navigate(['/dashboard']);
       });
     e.preventDefault();
     return false;

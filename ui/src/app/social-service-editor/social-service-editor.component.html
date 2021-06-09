@@ -190,7 +190,7 @@
         <ng-container *ngIf='datarecord.deleted' >
             <div class='restore button' (click)='restore($event)'>
                 <i class="fas fa-trash" aria-hidden="true"></i>
-                שחזור השירות
+                סימון השירות כפעיל
             </div>          
             <div class='delete button' (click)='delete($event)'>
                 <i class="fas fa-trash" aria-hidden="true"></i>
@@ -200,7 +200,7 @@
         <ng-container *ngIf='!datarecord.deleted' >
             <div class='fake-delete button' (click)='fakeDelete($event)'>
                 <i class="fas fa-trash" aria-hidden="true"></i>
-                מחיקת השירות
+                סימון שירות כלא פעיל
             </div>          
         </ng-container>
     </ng-container>
