@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ApiService, RolesService } from 'etl-server';
 import { ReplaySubject, Subject } from 'rxjs';
 import { debounceTime, first, map, switchMap } from 'rxjs/operators';
+import { CachedApiService } from '../cached-api.service';
 import { VERSION } from '../version';
 
 @Component({
@@ -22,12 +23,12 @@ export class SocialServiceListComponent implements OnInit {
   query = '';
   VERSION = VERSION;
 
-  constructor(public api: ApiService, public roles: RolesService) {
+  constructor(public api: ApiService, public roles: RolesService, private cachedApi: CachedApiService) {
     this.api.currentUserProfile.pipe(
       first(),
       switchMap((profile) => {
         this.designatedOffice = profile.permissions?.datarecords?.social_service?.designated_office;
-        return this.api.queryDatarecords('hierarchy');
+        return this.cachedApi.queryDatarecords('hierarchy');
       }),
       map((hierarchies) => {
         for (const h of hierarchies) {
@@ -41,7 +42,7 @@ export class SocialServiceListComponent implements OnInit {
     ).subscribe((s) => {
       console.log('SELECTED OFFICE = ', s);
     });
-    api.queryDatarecords('hierarchy').subscribe((results) => {
+    cachedApi.queryDatarecords('hierarchy').subscribe((results) => {
       results.map(x => x.value).forEach((el) => {
         this.offices[el.id] = el.name;
       });

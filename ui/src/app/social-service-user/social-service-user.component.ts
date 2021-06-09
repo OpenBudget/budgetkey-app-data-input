@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ApiService } from 'etl-server';
+import { CachedApiService } from '../cached-api.service';
 
 @Component({
   selector: 'app-social-service-user',
@@ -13,8 +14,8 @@ export class SocialServiceUserComponent implements OnInit {
 
   offices: any[] = [];
 
-  constructor(private api: ApiService) {
-    api.queryDatarecords('hierarchy').subscribe((results) => {
+  constructor(private cachedApi: CachedApiService) {
+    cachedApi.queryDatarecords('hierarchy').subscribe((results) => {
       this.offices = results.map(x => x.value).map(x => { return {value: x.id, show: x.name}; });
     });
   }

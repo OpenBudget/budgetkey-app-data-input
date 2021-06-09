@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService, ConfirmerService, RolesService } from 'etl-server';
 import { filter, switchMap, tap } from 'rxjs/operators';
+import { CachedApiService } from '../cached-api.service';
 import { FieldVerifyerService } from '../field-verifyer.service';
 import { ObudgetApiService } from '../obudget-api.service';
 import * as configs from './datatypes';
@@ -51,13 +52,9 @@ export class SocialServiceEditorComponent implements OnInit {
     (${p} like 'משרד העלייה והקליטה%%')
   )`;
 
-  constructor(public api: ObudgetApiService, private etlApi: ApiService, public roles: RolesService,
+  constructor(public api: ObudgetApiService, private etlApi: ApiService, public roles: RolesService, private cachedApi: CachedApiService,
               private confirmer: ConfirmerService, private router: Router, private verifyer: FieldVerifyerService) {
     this.thiz = this;
-    this.etlApi.queryDatarecords('hierarchy').subscribe((results) => {
-      this.offices = results.map(x => x.value);
-      this.updateHierarchy();
-    });
   }
 
   ngOnInit() {
@@ -69,6 +66,14 @@ export class SocialServiceEditorComponent implements OnInit {
       this.datarecord.virtue_of_table = [{}];
     }
     this.datarecord.__tab = this.datarecord.__tab || 'org';
+    this.cachedApi.queryDatarecords('beneficiary_kind').subscribe((results) => {
+      console.log('BKBK', results);
+      this.datarecord.beneficiary_kind = this.datarecord.beneficiary_kind || results[0].value.id;
+    });
+    this.cachedApi.queryDatarecords('hierarchy').subscribe((results) => {
+      this.offices = results.map(x => x.value);
+      this.updateHierarchy();
+    });
     this.refresh();
   }
 
