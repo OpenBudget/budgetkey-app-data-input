@@ -509,6 +509,11 @@ export const tendersTenderConfig = {
           { value: '3', show: '3' },
           { value: '4', show: '4' },
           { value: '5', show: '5' },
+          { value: '6', show: '6' },
+          { value: '7', show: '7' },
+          { value: '8', show: '8' },
+          { value: '9', show: '9' },
+          { value: '10', show: '10' },
         ]
       }
     },
@@ -530,6 +535,16 @@ export const tendersTenderConfig = {
           { value: '8', show: '8' },
           { value: '9', show: '9' },
           { value: '10', show: '10' },
+          { value: '11', show: '11' },
+          { value: '12', show: '12' },
+          { value: '13', show: '13' },
+          { value: '14', show: '14' },
+          { value: '15', show: '15' },
+          { value: '16', show: '16' },
+          { value: '17', show: '17' },
+          { value: '18', show: '18' },
+          { value: '19', show: '19' },
+          { value: '20', show: '20' },
         ]
       }
     },
