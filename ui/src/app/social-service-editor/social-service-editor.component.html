@@ -86,6 +86,8 @@
     <textarea [(ngModel)]='datarecord.notes' rows='5' placeholder='הערות כלליות (לא לפרסום)'></textarea> 
     <div class='explanation'>מידע אודות תהליך ההזנה, האופן בו התבצע והגורמים שלקחו חלק.<br/>
         המידע מיועד לסייע לגורמים הבאים אחריכם שיזינו את הנתונים במערכת, ולסייע בידם להגיע למידע, הוא לא יוצג בממשק המשתמש הרגיל.</div>
+
+    <app-editable-field [record]='datarecord' field='catalog_number' label='מספר קטלוגי (כאשר רלוונטי)' [required]='false'></app-editable-field>
 </div>
 
 <div class='tab-contents' [class.visible]='tab=="beneficiaries"'>
