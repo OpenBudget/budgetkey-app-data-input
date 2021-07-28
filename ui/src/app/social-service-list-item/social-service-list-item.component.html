@@ -16,7 +16,17 @@
     <div class='content visible' [class.highlighted]='_open'>
         <div class='item' [class.deleted]='item.item.deleted'>
             <div class='line'>
-                <a [routerLink]='"/datarecords/" + def.name + "/" + item.id'>{{item.item.name}}</a>
+                <span class='name'>
+                    <a [routerLink]='"/datarecords/" + def.name + "/" + item.id'>{{item.item.name}}</a>
+                    <ng-container *ngIf='!item.item.deleted && item.item.office === "משרד הרווחה"'>
+                        <ng-container *ngIf='item.item.catalog_number'>
+                            &nbsp;<small>(#{{item.item.catalog_number}})</small>
+                        </ng-container>
+                        <ng-container *ngIf='!item.item.catalog_number'>
+                            &nbsp;<small><strong>(מספר קטלוגי חסר)</strong></small>
+                        </ng-container>                                
+                    </ng-container>        
+                </span>
                 <small>{{item.item.description}}</small>
             </div>
             <div class='line'>

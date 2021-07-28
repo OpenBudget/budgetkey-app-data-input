@@ -620,6 +620,8 @@ export class SocialServiceEditorComponent implements OnInit {
         this.errorMsg = 'יש לחבר לשירות לפחות מכרז אחד!';
       } else if (!this.datarecord.suppliers || this.datarecord.suppliers.length === 0) {
         this.errorMsg = 'יש לחבר לשירות לפחות מפעיל אחד!';
+      } else if (this.datarecord.office === 'משרד הרווחה' && !this.datarecord.catalog_number) {
+        this.errorMsg = 'יש למלא לשירות מספר קטלוגי!';
       }
       this.valid = this.valid && this.errorMsg.length === 0;
       proceed = this.valid ;
