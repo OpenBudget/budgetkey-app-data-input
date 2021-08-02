@@ -68,7 +68,8 @@ export class SocialServiceListItemComponent implements OnChanges {
         this._open = false;
         if (
           (this.item.item.name && this.item.item.name.indexOf(this.search) >= 0) ||
-          (this.item.item.description && this.item.item.description.indexOf(this.search) >= 0)
+          (this.item.item.description && this.item.item.description.indexOf(this.search) >= 0) ||
+          (this.item.item.catalog_number && ('' + this.item.item.catalog_number) === this.search)
         ) {
           this.onfound();
         }
