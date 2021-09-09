@@ -1,14 +1,12 @@
 <label *ngIf='label' [class.invalid]='!valid'>{{label}}:</label>
 <ng-container *ngIf='kind === "text"'>
-  <div class='editable-field' [class.editable]='!readonly' [class.readonly]='readonly'>
-    <ng-container *ngIf='!editing'>
-      <span class='pencil' (click)='editing = true; focus()'><i class="fas fa-edit"></i></span>
-      <span class='value' [innerHtml]='toText(record[field])' [style.direction]='direction' [class.strong]='strong'></span>
-    </ng-container>
-    <ng-container *ngIf='editing'>
-      <input [class.invalid]='!valid' [(ngModel)]='record[field]' (blur)='blur()' [placeholder]='placeholder' size='1' [style.direction]='direction' 
-             [type]='inputType()' #editor>
-    </ng-container>
+  <div class='editable-field' [class.editable]='!readonly' [class.readonly]='readonly' *ngIf='!editing' (click)='editing = true; focus()'>
+    <span class='pencil'><i class="fas fa-edit"></i></span>
+    <span class='value' [innerHtml]='toText(record[field])' [style.direction]='direction' [class.strong]='strong'></span>  
+  </div>
+  <div class='editable-field' [class.editable]='!readonly' [class.readonly]='readonly' *ngIf='editing'>
+    <input [class.invalid]='!valid' [(ngModel)]='record[field]' (blur)='blur()' [placeholder]='placeholder' size='1' [style.direction]='direction' 
+           [type]='inputType()' #editor>
   </div>
 </ng-container>
 <ng-container *ngIf='kind === "enum" || kind === "datarecord"'>
