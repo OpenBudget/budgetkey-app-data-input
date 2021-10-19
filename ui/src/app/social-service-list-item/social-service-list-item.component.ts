@@ -35,7 +35,7 @@ export class SocialServiceListItemComponent implements OnChanges {
 
   _incompleteCount(item) {
     if (item.item) {
-      return item.item.complete ? 0 : 1;
+      return (item.item.complete || !!item.item.deleted) ? 0 : 1;
     } else if (item.items) {
       let ret = 0;
       for (const i of item.items) {
