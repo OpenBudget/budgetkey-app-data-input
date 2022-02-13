@@ -40,7 +40,7 @@ export class TenderSearcherComponent implements OnInit, OnDestroy, AfterViewInit
           'משרד הבריאות':
              ['הבריאות'],
         }[this.office] || publisher;
-        publisher.push('מטה החשב הכללי');
+        publisher.push('מ.האוצר');
         return this.api.search('tenders', query, [{publisher}])
       })
     ).pipe(
