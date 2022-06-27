@@ -107,10 +107,10 @@
             <div class='explanation'>
                 התקנות התקציביות מהן מתוקצב השירות.
             </div>
-            <app-editable-table [record]='datarecord' field='budgetItems' [config]='C.budgetItemsConfig' (change)='refresh()'></app-editable-table>
-            <!-- <a class='fill-in' (click)='fillInBudgets()' *ngIf='datarecord.budgetItems && datarecord.budgetItems.length'><i class="fas fa-magic"></i>השלמת תקנות אוטומטית</a>         -->
             <h4 class='clickable' (click)='modal("budget")'><i class="fas fa-search"></i>חיפוש והוספה של תקנה תקציבית</h4>
             <div class='explanation'>מספר התקנה התקציבית ממנה ניתן תקציב השירות. על התקנה לכלול 8 ספרות, כולל מספר המשרד</div>
+            <app-editable-table [record]='datarecord' field='budgetItems' [config]='C.budgetItemsConfig' (change)='refresh()'></app-editable-table>
+            <!-- <a class='fill-in' (click)='fillInBudgets()' *ngIf='datarecord.budgetItems && datarecord.budgetItems.length'><i class="fas fa-magic"></i>השלמת תקנות אוטומטית</a>         -->
         </div>
         <div *ngIf='datarecord.manualBudget && datarecord.manualBudget.length'>
             <h3>תקציב השירות</h3>
