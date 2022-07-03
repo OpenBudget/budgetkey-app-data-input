@@ -178,20 +178,27 @@
 
 
 <div class='buttons'>
-    <div *ngIf='roles._.datarecordEditOwn || roles._.datarecordEditAll'  class='save-done button' [class.confirm]='saveConfirm' (click)='save(false)'>
+    <div *ngIf='roles._.datarecordEditOwn || roles._.datarecordEditAll'  class='save-done button' [class.confirm]='saveConfirm === "false/false"' (click)='save(false, false)'>
       <i class="fas fa-save" aria-hidden="true" *ngIf='!saveConfirm'></i>
       <i class="fas fa-check-circle" aria-hidden="true" *ngIf='saveConfirm'></i>
-      שמירה והמשך עבודה
+      שמירה - עדיין בעבודה, לא לפרסום
     </div>
-    <div *ngIf='roles._.datarecordEditOwn || roles._.datarecordEditAll'  class='save-notdone button' (click)='save(true)'>
+    <div *ngIf='roles._.datarecordEditOwn || roles._.datarecordEditAll'  class='save-done button' [class.confirm]='saveConfirm === "false/true"' (click)='save(false, true)'>
+      <i class="fas fa-save" aria-hidden="true" *ngIf='!saveConfirm'></i>
+      <i class="fas fa-check-circle" aria-hidden="true" *ngIf='saveConfirm'></i>
+      שמירה - עדיין בעבודה, לפרסום
+    </div>
+    <div *ngIf='roles._.datarecordEditOwn || roles._.datarecordEditAll'  class='save-notdone button' [class.confirm]='saveConfirm === "true/true"' (click)='save(true, true)'>
       <i class="fas fa-save" aria-hidden="true"></i>
-      שמירה וסימון כהושלם
+      שמירה - סימון כהושלם
     </div>
-    <div *ngIf='errorMsg || api.errorMsg' class='error-msg'>{{errorMsg || api.errorMsg}}</div>
+    <div *ngIf='errorMsg || api.errorMsg' class='error-msg' [class.minor]='!errorMsgMajor'>
+        <span *ngIf='!errorMsgMajor'>יש לשים לב: </span>{{errorMsg || api.errorMsg}}
+    </div>
     <ng-container *ngIf='(roles._.datarecordDeleteOwn ||  roles._.datarecordDeleteAll) && datarecord.id' >
         <ng-container *ngIf='datarecord.deleted' >
             <div class='restore button' (click)='restore($event)'>
-                <i class="fas fa-trash" aria-hidden="true"></i>
+                <i class="fas fa-play-circle" aria-hidden="true"></i>
                 סימון השירות כפעיל
             </div>          
             <div class='delete button' (click)='delete($event)'>
@@ -201,7 +208,7 @@
         </ng-container>
         <ng-container *ngIf='!datarecord.deleted' >
             <div class='fake-delete button' (click)='fakeDelete($event)'>
-                <i class="fas fa-trash" aria-hidden="true"></i>
+                <i class="fas fa-stop-circle" aria-hidden="true"></i>
                 סימון שירות כלא פעיל
             </div>          
         </ng-container>

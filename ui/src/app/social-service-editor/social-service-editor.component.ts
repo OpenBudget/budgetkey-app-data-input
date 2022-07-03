@@ -31,7 +31,8 @@ export class SocialServiceEditorComponent implements OnInit {
   showSearch: string = '';
   valid = true;
   errorMsg: string = '';
-  saveConfirm: boolean;
+  errorMsgMajor = false;
+  saveConfirm: string = '';
 
   offices: any[] = [];
   office_options: any = {options: []};
@@ -600,43 +601,54 @@ export class SocialServiceEditorComponent implements OnInit {
     return non_connected ? non_connected.length : 0;
   }
 
-  _save(complete) {
+  _save() {
     this.datarecord.id = this.datarecord.id || this.datarecord[this.def.id];
-    this.datarecord.complete = complete;
     return this.etlApi.saveDatarecord(this.def.name, this.datarecord);
   }
 
-  save(complete) {
-    let proceed = true;
-    this.errorMsg = '';
+  save(complete, publish) {
     if (complete) {
+      publish = true;
+    }
+
+    let proceed = true;
+    let errorMsg = '';
+    this.errorMsg = '';
+    if (publish) {
       this.verifyer.verify();
       this.valid = this.verifyer.valid();
+
       if (!this.valid) {
-        this.errorMsg = 'יש למלא ערכים בכל השדות המסומנים!';
+        errorMsg = 'יש למלא ערכים בכל השדות המסומנים!';
       } else if (!this.datarecord.budgetItems || this.datarecord.budgetItems.length === 0) {
-        this.errorMsg = 'יש לחבר לשירות לפחות תקנה תקציבית אחת!';
+        errorMsg = 'יש לחבר לשירות לפחות תקנה תקציבית אחת!';
       } else if ((!this.datarecord.tenders || this.datarecord.tenders.length === 0) && !this.datarecord.noTendersNeeded) {
-        this.errorMsg = 'יש לחבר לשירות לפחות מכרז אחד!';
+        errorMsg = 'יש לחבר לשירות לפחות מכרז אחד!';
       } else if (!this.datarecord.suppliers || this.datarecord.suppliers.length === 0) {
-        this.errorMsg = 'יש לחבר לשירות לפחות מפעיל אחד!';
+        errorMsg = 'יש לחבר לשירות לפחות מפעיל אחד!';
       } else if (this.datarecord.office === 'משרד הרווחה' && !this.datarecord.catalog_number) {
-        this.errorMsg = 'יש למלא לשירות מספר קטלוגי!';
+        errorMsg = 'יש למלא לשירות מספר קטלוגי!';
       } else if (this.datarecord.manualBudget) {
       }
-      this.valid = this.valid && this.errorMsg.length === 0;
-      proceed = this.valid ;
+      this.valid = this.valid && errorMsg.length === 0;
+      this.errorMsg = errorMsg;
+      this.errorMsgMajor = complete;
+    }
+    if (complete) {
+      proceed = this.valid;
     }
     if (proceed) {
-      this._save(complete)
+      this.datarecord.complete = complete;
+      this.datarecord.keepPrivate = !publish;
+      this._save()
       .subscribe((result) => {
         if (result.id) {
           if (complete) {
             this.router.navigate(['/dashboard']);
           } else {
-            this.saveConfirm = true;
+            this.saveConfirm = `${complete}/${publish}`;
             setTimeout(() => {
-              this.saveConfirm = false;
+              this.saveConfirm = '';
             }, 2000);
           }
         } else {
@@ -668,7 +680,7 @@ export class SocialServiceEditorComponent implements OnInit {
           this.datarecord.deleted = true;
         }),
         switchMap(() => {
-          return this._save(this.datarecord.complete);
+          return this._save();
         })
       ).subscribe((result) => {
         console.log('FAKE DELETED DATARECORD', result);
@@ -679,7 +691,7 @@ export class SocialServiceEditorComponent implements OnInit {
 
   restore(e) {
     this.datarecord.deleted = false;
-    this.save(this.datarecord.complete);
+    this.save(this.datarecord.complete, !this.datarecord.keepPrivate);
     e.preventDefault();
     return false;
   }

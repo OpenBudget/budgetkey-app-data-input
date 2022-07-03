@@ -136,14 +136,24 @@
             color: darkred;
             font-size: 18px;
             font-weight: 700;
+
+            &.minor {
+                color: #444;
+            }
         }
 
         .restore, .fake-delete {
             margin-right: auto;
         }
 
-        .delete, .fake-delete {
+        .delete {
             background: darkred;
+        }
+        .fake-delete {
+            background: darkgray;
+        }
+        .restore {
+            background: darkgreen;
         }
 
         .confirm {
