@@ -11,46 +11,62 @@ export class SocialServiceListItemComponent implements OnChanges {
   @Input() item: any = {};
   @Input() def: any = {};
   @Input() search: string;
+  @Input() level = 0;
 
   @Output() found = new EventEmitter<void>();
 
-  count = 0;
-  incompleteCount = 0;
+  stats: any = {};
   _open = false;
 
   constructor(private listState: ListStateService) { }
 
-  _count(item) {
-    if (item.item) {
-      return 1;
-    } else if (item.items) {
-      let ret = 0;
-      for (const i of item.items) {
-        ret += this._count(i);
-      }
-      return ret;
+  _stats(item) {
+    if (!!item._stats) {
+      return item._stats;
     }
-    return 0;
-  }
-
-  _incompleteCount(item) {
+    let ret: any = null;
     if (item.item) {
-      return (item.item.complete || !!item.item.deleted) ? 0 : 1;
-    } else if (item.items) {
-      let ret = 0;
-      for (const i of item.items) {
-        ret += this._incompleteCount(i);
+      const updated = item.item.manualBudget && item.item.manualBudget.length > 0 && item.item.manualBudget[0].year >= 2021;
+      const complete = !!item.item.complete && !item.item.deleted;
+      const keepPrivate = !!item.item.keepPrivate;
+      const incomplete = !item.item.complete && !item.item.deleted;
+      const inactive = !!item.item.deleted;
+      ret = {
+        total: 1,
+        completeUpdated: (complete && updated) ? 1 : 0,
+        updateNeeded: (complete && !updated) ? 1 : 0,
+        publishedWIP: (incomplete && !keepPrivate) ? 1 : 0,
+        unpublishedWIP: (incomplete && keepPrivate) ? 1 : 0,
+        inactive: inactive ? 1 : 0,
       }
-      return ret;
+    } else if (item.items) {
+      ret = {};
+      for (const i of item.items) {
+        const itemStats = this._stats(i);
+        for (const key of Object.keys(itemStats)) {
+          if (!ret[key]) {
+            ret[key] = 0;
+          }
+          ret[key] += itemStats[key];
+        }
+      }
     }
-    return 0;
+    item._stats = ret;
+    return ret || {};
   }
 
   ngOnChanges(): void {
-    this.count = this._count(this.item);
-    this.incompleteCount = this._incompleteCount(this.item);
+    // this.count = this._count(this.item);
+    // this.incompleteCount = this._incompleteCount(this.item);
     if (!this.item.id && !this.item.header) { // root
-      this._open = true;
+      console.log('INIT', this.item.header || this.item.item?.name || 'UNKNOWN', this.stats);
+      this._stats(this.item);
+    }
+    this.stats = this.item._stats;
+    if (!this.item.id && !this.item.header) { // root
+      this._stats(this.item);
+      this.stats = this.item._stats;
+        this._open = true;
       if (this.search) {
         this.listState.clear();
       }

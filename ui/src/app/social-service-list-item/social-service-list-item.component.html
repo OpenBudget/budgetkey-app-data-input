@@ -2,15 +2,17 @@
     <div class='header' [class.open]='_open' (click)='open = !open'>
         <i *ngIf='!_open' class="fas fa-caret-left"></i>
         <i *ngIf='_open' class="fas fa-caret-down"></i>
-        <h3>{{item.header}}</h3>
-        <p class='count'>
+        <h3 [style.margin-left]='(16  * (3-level)) + "px"'>{{item.header}}</h3>
+        <app-item-progress [stats]='stats'></app-item-progress>
+        <!-- <div class='stats'>{{stats.total.toLocaleString()}}</div> -->
+        <!-- <p class='count'>
             מספר שירותים: {{count.toLocaleString()}}
             <span *ngIf='incompleteCount'>({{incompleteCount.toLocaleString()}} עדיין בעבודה)</span>
-        </p>
+        </p> -->
     </div>
 </ng-container>
 <div class='content' [class.visible]='item.items && _open'>
-    <app-social-service-list-item *ngFor='let i of item.items' [def]='def' [item]='i' [search]='search' (found)='onfound()'></app-social-service-list-item>
+    <app-social-service-list-item *ngFor='let i of item.items' [def]='def' [item]='i' [search]='search' [level]='level+1' (found)='onfound()'></app-social-service-list-item>
 </div>
 <ng-container *ngIf='item.item'>
     <div class='content visible' [class.highlighted]='_open'>

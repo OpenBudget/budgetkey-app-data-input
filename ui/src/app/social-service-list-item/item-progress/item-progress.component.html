@@ -1,0 +1,8 @@
+<div class='total'>סה״כ: {{stats.total}}</div>
+<div class='progress'>
+    <div class='complete' *ngIf='stats.completeUpdated' [style.width]='width(stats.completeUpdated)' title='ההזנה הושלמה'>{{stats.completeUpdated}}</div>
+    <div class='update-needed' *ngIf='stats.updateNeeded' [style.width]='width(stats.updateNeeded)' title='נדרש עדכון'>{{stats.updateNeeded}}</div>
+    <div class='published' *ngIf='stats.publishedWIP' [style.width]='width(stats.publishedWIP)' title='ההזנה טרם הושלמה (אולם עלו לאתר)'>{{stats.publishedWIP}}</div>
+    <div class='unpublished' *ngIf='stats.unpublishedWIP' [style.width]='width(stats.unpublishedWIP)' title='ההזנה טרם הושלמה ולא עלו לאתר'>{{stats.unpublishedWIP}}</div>
+    <div class='inactive' *ngIf='stats.inactive' [style.width]='width(stats.inactive)' title='שירותים לא פעילים'>{{stats.inactive}}</div>
+</div>

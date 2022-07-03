@@ -1,0 +1,52 @@
+:host {
+    display: flex;
+    flex-flow: row;
+    align-items: center;
+    height: 100%;
+
+    .total {
+        width: 80px;
+        white-space: nowrap;
+    }
+
+    .progress {
+        width: 100%;
+        flex: 1 1 auto;
+        display: flex;
+        flex-flow: row;
+        align-items: stretch;
+
+        div {
+            height: 100%;
+            flex: 1 1 auto;
+            // border: 1px solid black;
+            display: flex;
+            flex-flow: row;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            overflow: hidden;
+            font-weight: 600;
+            cursor: help;
+            padding: 0 6px;
+
+            &.complete {
+                background-color: green;
+            }
+            &.update-needed {
+                background-color: lightgreen;
+                color: #444;
+            }
+            &.published {
+                background-color: orange;
+            }
+            &.unpublished {
+                background-color: peachpuff;
+                color: #444;
+            }
+            &.inactive {
+                background-color: gray;
+            }
+        }
+    }
+}

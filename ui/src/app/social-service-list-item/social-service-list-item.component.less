@@ -1,21 +1,27 @@
 :host {
     display: block;
     margin-top: 8px;
+    width: 100%;
 
     .header {
         display: flex;
         flex-flow: row;
         align-items: center;
         cursor: pointer;
+        gap: 16px;
 
-        & > * {
-            margin-left: 16px;
+        i {
+            flex: 0 0 10px;
         }
 
-        .count {
-            span {
-                margin-right: 16px;
-            }
+        h3 {
+            width: 360px;
+            flex: 0 0 auto;
+        }
+
+        app-item-progress { 
+            width: 100%;
+            flex: 1 1 auto;
         }
     }
 

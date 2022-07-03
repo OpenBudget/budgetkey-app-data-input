@@ -21,6 +21,7 @@ import { HierarchyEditorComponent } from './hierarchy-editor/hierarchy-editor.co
 import { EditableFieldMultipleSelectionComponent } from './editable-field-multiple-selection/editable-field-multiple-selection.component';
 
 import * as Sentry from "@sentry/angular";
+import { ItemProgressComponent } from './social-service-list-item/item-progress/item-progress.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import * as Sentry from "@sentry/angular";
     SocialServiceUserComponent,
     HierarchyEditorComponent,
     EditableFieldMultipleSelectionComponent,
+    ItemProgressComponent,
   ],
   imports: [
     BrowserModule,

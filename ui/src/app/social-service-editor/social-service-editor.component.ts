@@ -622,6 +622,7 @@ export class SocialServiceEditorComponent implements OnInit {
         this.errorMsg = 'יש לחבר לשירות לפחות מפעיל אחד!';
       } else if (this.datarecord.office === 'משרד הרווחה' && !this.datarecord.catalog_number) {
         this.errorMsg = 'יש למלא לשירות מספר קטלוגי!';
+      } else if (this.datarecord.manualBudget) {
       }
       this.valid = this.valid && this.errorMsg.length === 0;
       proceed = this.valid ;
