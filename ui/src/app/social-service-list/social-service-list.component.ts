@@ -4,6 +4,7 @@ import { ReplaySubject, Subject } from 'rxjs';
 import { debounceTime, first, map, switchMap } from 'rxjs/operators';
 import { CachedApiService } from '../cached-api.service';
 import { VERSION } from '../version';
+import { ItemFilter, ItemFilterActive, ItemFilterComplete, ItemFilterInactive, ItemFilterPublished, ItemFilterUpdateNeeded, ItemFilterWIP } from './item-filters';
 
 @Component({
   selector: 'app-social-service-list',
@@ -22,6 +23,15 @@ export class SocialServiceListComponent implements OnInit {
   searchStream = new Subject<string>();
   query = '';
   VERSION = VERSION;
+
+  filterAll = new ItemFilter();
+  filterActive = new ItemFilterActive();
+  filterPublished = new ItemFilterPublished();
+  filterUpdateNeeded = new ItemFilterUpdateNeeded();
+  filterWIP = new ItemFilterWIP();
+  filterComplete = new ItemFilterComplete();
+  filterInactive = new ItemFilterInactive();
+  selectedFilter = 'all';
 
   constructor(public api: ApiService, public roles: RolesService, private cachedApi: CachedApiService) {
     this.api.currentUserProfile.pipe(

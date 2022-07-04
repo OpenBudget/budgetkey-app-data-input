@@ -8,7 +8,18 @@
     </div>
 </div>
 
-<input (keyup)='search($event)' class='search' placeholder='חיפוש שרות...'>
-<app-social-service-list-item [def]='def' [item]='aggregated' [search]='query'></app-social-service-list-item>
+<div class='filtering'>
+    <input (keyup)='search($event)' class='search' placeholder='חיפוש שרות...'>
+    <select [(ngModel)]='selectedFilter'>
+        <option value='all'>הצגת כל השרותים</option>
+        <option value='active'>הצגת רק השרותים הפעילים</option>
+        <option value='published'>הצגת רק השרותים שמפורסמים באתר</option>
+        <option value='updateNeeded'>הצגת רק השרותים שדורשים עדכון</option>
+        <option value='wip'>הצגת רק השרותים שעדיין בעבודה</option>
+        <option value='complete'>הצגת רק השרותים שהושלמו</option>
+        <option value='inactive'>הצגת רק השרותים שאינם פעילים</option>
+    </select>
+</div>
+<app-social-service-list-item [def]='def' [item]='aggregated' [search]='query' [itemFilter]='selectedFilter'></app-social-service-list-item>
 
 <div class='version'>גירסא: {{ VERSION }}</div>

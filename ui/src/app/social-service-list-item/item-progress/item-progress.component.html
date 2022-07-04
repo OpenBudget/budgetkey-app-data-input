@@ -1,4 +1,5 @@
-<div class='total'>סה״כ: {{stats.total}}</div>
+<div class='total' *ngIf='!stats.total'>כל השירותים מוסתרים</div>
+<div class='total' *ngIf='stats.total'>סה״כ: {{stats.total}}</div>
 <div class='progress'>
     <div class='complete' *ngIf='stats.completeUpdated' [style.width]='width(stats.completeUpdated)' title='ההזנה הושלמה'>{{stats.completeUpdated}}</div>
     <div class='update-needed' *ngIf='stats.updateNeeded' [style.width]='width(stats.updateNeeded)' title='נדרש עדכון'>{{stats.updateNeeded}}</div>

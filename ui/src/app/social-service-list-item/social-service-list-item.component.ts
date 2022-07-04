@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { ListStateService } from '../list-state.service';
+import { FILTERS, ItemFilter } from '../social-service-list/item-filters';
 
 @Component({
   selector: 'app-social-service-list-item',
@@ -12,16 +13,19 @@ export class SocialServiceListItemComponent implements OnChanges {
   @Input() def: any = {};
   @Input() search: string;
   @Input() level = 0;
+  @Input() itemFilter: string;
 
   @Output() found = new EventEmitter<void>();
 
   stats: any = {};
   _open = false;
+  items: any[] = [];
+  itemFilterObj: ItemFilter | null = null;
 
   constructor(private listState: ListStateService) { }
 
-  _stats(item) {
-    if (!!item._stats) {
+  _stats(item, force=false) {
+    if (!force && !!item._stats) {
       return item._stats;
     }
     let ret: any = null;
@@ -41,8 +45,8 @@ export class SocialServiceListItemComponent implements OnChanges {
       }
     } else if (item.items) {
       ret = {};
-      for (const i of item.items) {
-        const itemStats = this._stats(i);
+      for (const i of this.itemFilterObj?.filter(item.items) || item.items) {
+        const itemStats = this._stats(i, force);
         for (const key of Object.keys(itemStats)) {
           if (!ret[key]) {
             ret[key] = 0;
@@ -56,17 +60,20 @@ export class SocialServiceListItemComponent implements OnChanges {
   }
 
   ngOnChanges(): void {
-    // this.count = this._count(this.item);
-    // this.incompleteCount = this._incompleteCount(this.item);
+    if (this.item.items) {
+      if (this.itemFilter) {
+        this.itemFilterObj = FILTERS[this.itemFilter] || new ItemFilter();
+      }
+      this.items = this.itemFilterObj.filter(this.item.items);
+    } else {
+      this.items = [];
+    }
     if (!this.item.id && !this.item.header) { // root
-      console.log('INIT', this.item.header || this.item.item?.name || 'UNKNOWN', this.stats);
-      this._stats(this.item);
+      this._stats(this.item, true);
     }
     this.stats = this.item._stats;
     if (!this.item.id && !this.item.header) { // root
-      this._stats(this.item);
-      this.stats = this.item._stats;
-        this._open = true;
+      this._open = true;
       if (this.search) {
         this.listState.clear();
       }

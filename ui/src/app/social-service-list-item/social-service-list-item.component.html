@@ -11,8 +11,8 @@
         </p> -->
     </div>
 </ng-container>
-<div class='content' [class.visible]='item.items && _open'>
-    <app-social-service-list-item *ngFor='let i of item.items' [def]='def' [item]='i' [search]='search' [level]='level+1' (found)='onfound()'></app-social-service-list-item>
+<div class='content' [class.visible]='item.items && items.length > 0 && !!_open'>
+    <app-social-service-list-item *ngFor='let i of items' [def]='def' [item]='i' [search]='search' [level]='level+1' [itemFilter]='itemFilter' (found)='onfound()'></app-social-service-list-item>
 </div>
 <ng-container *ngIf='item.item'>
     <div class='content visible' [class.highlighted]='_open'>
