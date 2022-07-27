@@ -203,11 +203,6 @@ export const suppliersConfig = {
         }
       },
       {
-        name: 'notes',
-        display: 'תיאור מורחב של המפעיל',
-        fullRow: 6
-      },
-      {
         name: 'geo',
         kind: 'datarecord',
         display: 'איזור פעילות',
@@ -575,9 +570,11 @@ export const tendersTenderConfig = {
       }
     },
     {
-      name: 'notes',
-      display: 'תיאור מורחב של המכרז',
-      fullRow: 6
+      name: 'alert',
+      display: 'מכרז זה עומד לפוג השנה. אנא הזינו אופציה למכרז, קשרו מכרז נוסף או סמנו שירות כלא פעיל',
+      kind: 'expiration-alert',
+      fullRow: 6,
+      alert: true
     },
   ]
 };
@@ -637,11 +634,6 @@ export const tendersExemptionConfig = {
           { value: 'suggestion', show: 'כנראה קשור' },
         ]
       }
-    },
-    {
-      name: 'notes',
-      display: 'תיאור מורחב של המכרז',
-      fullRow: 6
     },
   ]
 };

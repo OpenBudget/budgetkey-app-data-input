@@ -22,6 +22,7 @@ import { EditableFieldMultipleSelectionComponent } from './editable-field-multip
 
 import * as Sentry from "@sentry/angular";
 import { ItemProgressComponent } from './social-service-list-item/item-progress/item-progress.component';
+import { AlertTextComponent } from './alert-text/alert-text.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { ItemProgressComponent } from './social-service-list-item/item-progress/
     HierarchyEditorComponent,
     EditableFieldMultipleSelectionComponent,
     ItemProgressComponent,
+    AlertTextComponent,
   ],
   imports: [
     BrowserModule,
