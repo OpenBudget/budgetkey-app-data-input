@@ -178,17 +178,17 @@
 
 
 <div class='buttons'>
-    <div *ngIf='roles._.datarecordEditOwn || roles._.datarecordEditAll'  class='save-done button' [class.confirm]='saveConfirm === "false/false"' (click)='save(false, false)'>
+    <div *ngIf='roles._.datarecordEditOwn || roles._.datarecordEditAll'  class='save-notdone button' [class.confirm]='saveConfirm === "false/false"' (click)='save(false, false)'>
       <i class="fas fa-save" aria-hidden="true" *ngIf='!saveConfirm'></i>
       <i class="fas fa-check-circle" aria-hidden="true" *ngIf='saveConfirm'></i>
       שמירה - עדיין בעבודה, לא לפרסום
     </div>
-    <div *ngIf='roles._.datarecordEditOwn || roles._.datarecordEditAll'  class='save-done button' [class.confirm]='saveConfirm === "false/true"' (click)='save(false, true)'>
+    <div *ngIf='roles._.datarecordEditOwn || roles._.datarecordEditAll'  class='save-notdone button' [class.confirm]='saveConfirm === "false/true"' (click)='save(false, true)'>
       <i class="fas fa-save" aria-hidden="true" *ngIf='!saveConfirm'></i>
       <i class="fas fa-check-circle" aria-hidden="true" *ngIf='saveConfirm'></i>
-      שמירה - עדיין בעבודה, לפרסום
+      שמירה - נתונים חסרים, לפרסום
     </div>
-    <div *ngIf='roles._.datarecordEditOwn || roles._.datarecordEditAll'  class='save-notdone button' [class.confirm]='saveConfirm === "true/true"' (click)='save(true, true)'>
+    <div *ngIf='roles._.datarecordEditOwn || roles._.datarecordEditAll'  class='save-done button' [class.confirm]='saveConfirm === "true/true"' (click)='save(true, true)'>
       <i class="fas fa-save" aria-hidden="true"></i>
       שמירה - סימון כהושלם
     </div>
