@@ -472,6 +472,19 @@ export const tendersTenderConfig = {
       }
     },
     {
+      name: 'active',
+      display: 'האם פעיל?',
+      kind: 'enum',
+      explanation: 'האם המכרז עדיין פעיל? וודאו כי הסטטוס המופיע אכן מדויק ותקנו במידת הצורך',
+      required: true,
+      options: {
+        options: [
+          { value: 'yes', show: 'פעיל' },
+          { value: 'no', show: 'לא פעיל' },
+        ]
+      }
+    },
+    {
       name: 'publisher',
       display: 'הגורם המפרסם',
       readonly: true

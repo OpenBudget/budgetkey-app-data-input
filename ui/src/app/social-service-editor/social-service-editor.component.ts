@@ -391,6 +391,9 @@ export class SocialServiceEditorComponent implements OnInit {
           const tender = rm[ct.tender_key] || {};
           Object.assign(ct, tender);
         }
+        for (const t of this.datarecord.tenders) {
+          this.calculateTenderActive(t);
+        }
       });
   }
 
@@ -431,6 +434,24 @@ export class SocialServiceEditorComponent implements OnInit {
     }
   }
 
+  calculateTenderActive(tender) {
+    const end_date = tender.end_date;
+    const option_duration = tender.option_duration;
+    tender.formally_active = null;
+    if (end_date) {
+      let end_year = parseInt(end_date.slice(0, 4));
+      if (option_duration) {
+        end_year += parseInt(option_duration);
+      }
+      tender.end_date_extended = end_year.toString() + end_date.slice(4);
+      const today = (new Date()).toISOString().slice(0, 10);
+      tender.formally_active = tender.end_date_extended > today ? 'yes' : 'no';
+    }
+    if (!tender.active) {
+      tender.active = tender.formally_active;
+    }
+  }
+
   connectTender({row, field}) {
     const tender_key = row.tender_key;
     this.datarecord.tenders = this.datarecord.tenders.filter((x) => x.tender_key !== tender_key);
@@ -438,6 +459,8 @@ export class SocialServiceEditorComponent implements OnInit {
     if (row.delete) {
       return;
     }
+
+    this.calculateTenderActive(row);
 
     row.related = row.related || 'yes';
     if (row.related === 'yes') {
