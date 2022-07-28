@@ -23,6 +23,7 @@ import { EditableFieldMultipleSelectionComponent } from './editable-field-multip
 import * as Sentry from "@sentry/angular";
 import { ItemProgressComponent } from './social-service-list-item/item-progress/item-progress.component';
 import { AlertTextComponent } from './alert-text/alert-text.component';
+import { ItemProgressLegendComponent } from './social-service-list/item-progress-legend/item-progress-legend.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { AlertTextComponent } from './alert-text/alert-text.component';
     EditableFieldMultipleSelectionComponent,
     ItemProgressComponent,
     AlertTextComponent,
+    ItemProgressLegendComponent,
   ],
   imports: [
     BrowserModule,
