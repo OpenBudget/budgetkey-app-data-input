@@ -13,6 +13,7 @@ export class EditableTableComponent implements OnInit {
   @Input() field: string;
   @Input() config: any;
   @Output() changed = new EventEmitter<{row: any, field: any}>();
+  @Output() modal = new EventEmitter<string>();
 
   headers = [];
   colspan = 1;
@@ -52,5 +53,14 @@ export class EditableTableComponent implements OnInit {
         this.record[this.field] = this.record[this.field].filter((x) => x !== row);
       }
     });
+  }
+
+  kind(field) {
+    if (field.kind === 'expiration-alert') {
+      return 'alert';
+    } else if (field.kind === 'supplier-selection') {
+      return 'supplier-selection';
+    }
+    return 'editable';
   }
 }

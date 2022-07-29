@@ -159,7 +159,7 @@
         <h4 class='clickable' (click)='modal("tender")'><i class="fas fa-search"></i>חיפוש והוספה של מכרז או פטור</h4>
         <ng-container *ngIf='tendersTender.length'>
             <h3>מכרזים קשורים</h3>
-            <app-editable-table [record]='thiz' field='tendersTender' [config]='C.tendersTenderConfig' (changed)='connectTender($event)'></app-editable-table>
+            <app-editable-table [record]='thiz' field='tendersTender' [config]='C.tendersTenderConfig' (changed)='connectTender($event)' (modal)='modal($event)'></app-editable-table>
         </ng-container>
         <ng-container *ngIf='tendersExemption.length'>
             <h3>פטורים קשורים</h3>
@@ -193,7 +193,7 @@
       שמירה - סימון כהושלם
     </div>
     <div *ngIf='errorMsg || api.errorMsg' class='error-msg' [class.minor]='!errorMsgMajor'>
-        <span *ngIf='!errorMsgMajor'>יש לשים לב: </span>{{errorMsg || api.errorMsg}}
+        <span *ngIf='!errorMsgMajor'>שימו לב: </span>{{errorMsg || api.errorMsg}}
     </div>
     <ng-container *ngIf='(roles._.datarecordDeleteOwn ||  roles._.datarecordDeleteAll) && datarecord.id' >
         <ng-container *ngIf='datarecord.deleted' >

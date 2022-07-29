@@ -1,0 +1,25 @@
+<ng-container *ngIf='!editing'>
+    <span>מפעילים: {{(value && value.length > 0) ? commaSeparatedList : 'לא סומנו המפעילים הזוכים'}}</span>
+    <span class='pencil' (click)='editing = !editing'><i class="fas fa-edit"></i></span>
+</ng-container>
+<ng-container *ngIf='editing'>
+    <ng-container *ngIf='context.datarecord.suppliers && context.datarecord.suppliers.length > 0'>
+        <div class='col'>
+            <strong>מי מבין המפעילים שנבחרו זכו במכרז הזה?</strong>
+            <div>
+                <i class="fas fa-save"></i>
+                <a (click)='editing=false'>סגירה ושמירת השינויים</a>
+            </div>
+            <div>
+                <i class="fas fa-search"></i>
+                <a (click)='searchSupplier()'>קישור מפעיל שלא מופיע ברשימה</a>
+            </div>
+        </div>
+        <ul>
+            <li *ngFor='let supplier of context.datarecord.suppliers'>
+                <input type='checkbox' [(ngModel)]='selection[supplier.entity_id]'>
+                <span>{{supplier.entity_name}}</span>
+            </li>
+        </ul>
+    </ng-container>
+</ng-container>

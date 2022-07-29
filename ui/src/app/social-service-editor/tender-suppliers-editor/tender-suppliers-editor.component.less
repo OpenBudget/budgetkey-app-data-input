@@ -1,0 +1,48 @@
+:host {
+
+    display: flex;
+    flex-flow: row;
+    align-items: center;
+
+    &.editing {
+        align-items: flex-start;
+    }
+
+    .col {
+        display: flex;
+        flex-flow: column;
+        align-items: flex-start;
+        padding: 6px;
+        gap: 8px;
+
+        > div {
+            display: flex;
+            flex-flow: row;
+            align-items: center;
+            gap: 8px;        
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    }
+    li {
+        display: flex;
+        flex-flow: row;
+        align-items: center;
+        gap: 8px;
+
+        input {
+            width: auto;
+        }
+    }
+
+    padding: 4px;
+    gap: 8px;
+
+    .pencil {
+        cursor: pointer;
+        margin: 0;
+    }
+    
+}

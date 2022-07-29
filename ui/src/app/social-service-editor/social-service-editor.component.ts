@@ -393,11 +393,37 @@ export class SocialServiceEditorComponent implements OnInit {
         }
         for (const t of this.datarecord.tenders) {
           this.calculateTenderActive(t);
+          this.calculateSupplierList(t);
         }
+        this.datarecord.tenders.sort((a, b) => a.tender_key.localeCompare(b.tender_key));
       });
   }
 
   refreshExistingSuppliers() {
+
+    const entityIds = this.datarecord.suppliers.map(x => x.entity_id);
+    if (entityIds.length === 0) {
+      return;
+    }
+    const entityIdsStr = entityIds.map(x => `'${x}'`).join(', ');
+    const sql = `
+    SELECT id as entity_id, name as entity_name, kind as entity_kind, kind_he as entity_kind_he
+    FROM entities_processed
+    WHERE id IN (${entityIdsStr})
+    GROUP BY 1, 2, 3, 4
+    `;
+    this.api.query(sql)
+      .subscribe((records: any) => {
+        const rm = {};
+        for (const record of records) {
+          rm[record.entity_id] = record;
+        }
+        for (const sup of this.datarecord.suppliers) {
+          const supplier = rm[sup.entity_id] || {};
+          Object.assign(sup, supplier);
+        }
+      });
+
     this.datarecord.suppliers.forEach((supplier) => {
       supplier.active = supplier.active || 'yes';
     });
@@ -452,6 +478,21 @@ export class SocialServiceEditorComponent implements OnInit {
     }
   }
 
+  calculateSupplierList(tender) {
+    const tender_key = tender.tender_key;
+    tender.suppliers = tender.suppliers || [];
+    const entity_ids = tender.suppliers.map((x) => x.entity_id);
+    for (const item of this.lookupTable) {
+      if (item.tender_key === tender_key) {
+        const entity_id = item.entity_id;
+        if (entity_ids.indexOf(entity_id) < 0) {
+          tender.suppliers.push({entity_id, entity_name: item.entity_name, entity_kind: item.entity_kind, entity_kind_he: item.entity_kind_he});
+        }
+      }
+    }
+    tender.suppliers.sort((a, b) => a.entity_name.localeCompare(b.entity_name));
+  }
+
   connectTender({row, field}) {
     const tender_key = row.tender_key;
     this.datarecord.tenders = this.datarecord.tenders.filter((x) => x.tender_key !== tender_key);
@@ -465,7 +506,9 @@ export class SocialServiceEditorComponent implements OnInit {
     row.related = row.related || 'yes';
     if (row.related === 'yes') {
       this.datarecord.tenders.push(row);
+      this.datarecord.tenders.sort((a, b) => a.tender_key.localeCompare(b.tender_key));
       this.possibleTenders = this.possibleTenders.filter((x) => x.tender_key !== tender_key);
+      this.calculateSupplierList(row);
       for (const item of this.lookupTable) {
         if (item.tender_key === tender_key) {
           const entity_id = item.entity_id;
@@ -573,6 +616,9 @@ export class SocialServiceEditorComponent implements OnInit {
   fetchLookupTable() {
     const sql = `
       SELECT entity_id,
+             entity_name,
+             entity_kind,
+             entity_kind_he,
              ((tender_key->>0)::JSON)->>0 || ':' || 
              (((tender_key->>0)::JSON)->>1)::text || ':' || 
              (((tender_key->>0)::JSON)->>2)::text AS tender_key
@@ -580,7 +626,7 @@ export class SocialServiceEditorComponent implements OnInit {
       WHERE budget_code in ('${this.getBudgetCodes().join("','")}')
           AND ${this.OFFICE_CONDITION('publisher_name')}
           AND jsonb_array_length(tender_key) > 0
-      GROUP BY 1, 2
+      GROUP BY 1, 2, 3, 4, 5
     `;
     this.api.query(sql)
       .subscribe((records: any) => {

@@ -24,14 +24,22 @@
               [strong]='field.strong'
               [required]='field.required'
               (changed)='emit(row, field)'
-              *ngIf='!field.alert'
+              *ngIf='kind(field) === "editable"'
           ></app-editable-field>
           <app-alert-text
-            *ngIf='field.alert'
             [record]='row'
             [kind]='field.kind'
             [display]='field.display'
+            *ngIf='kind(field) === "alert"'
           ></app-alert-text>
+          <app-tender-suppliers-editor
+            [record]='row'
+            [field]='field.name'
+            [context]='record'
+            (changed)='emit(row, field)'
+            (modal)='modal.emit($event)'
+            *ngIf='kind(field) === "supplier-selection"'
+          ></app-tender-suppliers-editor>
         </td>
         <td *ngIf='config.rowDelete && rows.length - 1 === rowidx'><span class='delete' (click)='delete(row)'><i class="fas fa-trash-alt"></i></span></td>
       </tr>  

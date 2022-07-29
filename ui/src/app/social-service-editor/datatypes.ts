@@ -586,8 +586,13 @@ export const tendersTenderConfig = {
       name: 'alert',
       display: 'מכרז זה עומד לפוג השנה. אנא הזינו אופציה למכרז, קשרו מכרז נוסף או סמנו שירות כלא פעיל',
       kind: 'expiration-alert',
-      fullRow: 6,
-      alert: true
+      fullRow: 6
+    },
+    {
+      name: 'suppliers',
+      display: 'המפעילים הזוכים במכרז',
+      kind: 'supplier-selection',
+      fullRow: 7
     },
   ]
 };
