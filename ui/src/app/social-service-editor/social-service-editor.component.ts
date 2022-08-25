@@ -143,6 +143,7 @@ export class SocialServiceEditorComponent implements OnInit {
     if (item.history) {
       for (let historyItem of Object.keys(item.history)) {
         const year = parseInt(historyItem);
+        if (year < 2017) continue;
         for (const codeTitleItem of item.history[historyItem].code_titles) {
           const codeTitle = codeTitleItem.split(':');
           const code = codeTitle[0];
@@ -174,7 +175,7 @@ export class SocialServiceEditorComponent implements OnInit {
     }
     const sql = `
       SELECT code, title, year from raw_budget
-      where (${conditions.join('')}) and net_revised != 0
+      where (${conditions.join('')}) and net_revised != 0 and year >= 2017
       order by year desc, code
     `;
     this.api.query(sql)
@@ -200,7 +201,7 @@ export class SocialServiceEditorComponent implements OnInit {
     }
     this.datarecord.budgetItems = (this.datarecord.budgetItems as any[]).sort(
       (a, b) => b.year - a.year
-    );
+    ).filter((item) => item.year >= 2017);
     this.datarecord.manualBudget = this.datarecord.manualBudget || [];
     
     const existingManualYears = {};
