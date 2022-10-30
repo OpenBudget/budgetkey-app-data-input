@@ -71,4 +71,14 @@ export class TenderSuppliersEditorComponent implements OnInit, OnChanges {
     this.editing = false;
     this.modal.emit("supplier");
   }
+
+  checkAll() {
+    for (const supplier of (this.context.datarecord.suppliers || [])) {
+      this.selection[supplier.entity_id] = true;
+    }
+  }
+
+  clearAll() {
+    this.selection = {};
+  }
 }

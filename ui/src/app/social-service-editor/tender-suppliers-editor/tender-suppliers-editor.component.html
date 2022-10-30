@@ -14,6 +14,14 @@
                 <i class="fas fa-search"></i>
                 <a (click)='searchSupplier()'>קישור מפעיל שלא מופיע ברשימה</a>
             </div>
+            <div>
+                <i class="fas fa-check-double"></i>
+                <a (click)='checkAll()'>סימון הכל</a>
+            </div>
+            <div>
+                <i class="fas fa-ban"></i>
+                <a (click)='clearAll()'>ניקוי הבחירה</a>
+            </div>
         </div>
         <ul>
             <li *ngFor='let supplier of context.datarecord.suppliers'>
