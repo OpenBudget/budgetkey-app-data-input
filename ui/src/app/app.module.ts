@@ -27,68 +27,64 @@ import { ItemProgressLegendComponent } from './social-service-list/item-progress
 import { TenderSuppliersEditorComponent } from './social-service-editor/tender-suppliers-editor/tender-suppliers-editor.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    SocialServiceEditorComponent,
-    EditableTableComponent,
-    EditableFieldComponent,
-    BudgetSearcherComponent,
-    TenderSearcherComponent,
-    SupplierSearcherComponent,
-    SocialServiceListComponent,
-    SocialServiceListItemComponent,
-    SimpleListEditorComponent,
-    SocialServiceUserComponent,
-    HierarchyEditorComponent,
-    EditableFieldMultipleSelectionComponent,
-    ItemProgressComponent,
-    AlertTextComponent,
-    ItemProgressLegendComponent,
-    TenderSuppliersEditorComponent,
-  ],
-  imports: [
-    BrowserModule,
-    FormsModule,
-    RouterModule.forRoot([], { relativeLinkResolution: 'legacy' }),
-    EtlServerModule.forRoot(environment)
-  ],
-  providers: [{
-    provide: EXTRA_MAPPING,
-    useValue: {
-      social_services: {
-        detail: SocialServiceEditorComponent,
-        dashboard: SocialServiceListComponent,
-        user: SocialServiceUserComponent,
-        list: false
-      },
-      simple_list: {
-        list: SimpleListEditorComponent
-      },
-      hierarchy: {
-        list: HierarchyEditorComponent
-      }
-    }
-  },
-  {
-    provide: ErrorHandler,
-    useValue: Sentry.createErrorHandler({
-      showDialog: true,
-    }),
-  },
-  {
-    provide: Sentry.TraceService,
-    deps: [Router],
-  },
-  {
-    provide: APP_INITIALIZER,
-    useFactory: () => () => {},
-    deps: [Sentry.TraceService],
-    multi: true,
-  }],
-  entryComponents: [
-    SocialServiceEditorComponent,
-    SocialServiceListComponent
-  ],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent,
+        SocialServiceEditorComponent,
+        EditableTableComponent,
+        EditableFieldComponent,
+        BudgetSearcherComponent,
+        TenderSearcherComponent,
+        SupplierSearcherComponent,
+        SocialServiceListComponent,
+        SocialServiceListItemComponent,
+        SimpleListEditorComponent,
+        SocialServiceUserComponent,
+        HierarchyEditorComponent,
+        EditableFieldMultipleSelectionComponent,
+        ItemProgressComponent,
+        AlertTextComponent,
+        ItemProgressLegendComponent,
+        TenderSuppliersEditorComponent,
+    ],
+    imports: [
+        BrowserModule,
+        FormsModule,
+        RouterModule.forRoot([], { relativeLinkResolution: 'legacy' }),
+        EtlServerModule.forRoot(environment)
+    ],
+    providers: [{
+            provide: EXTRA_MAPPING,
+            useValue: {
+                social_services: {
+                    detail: SocialServiceEditorComponent,
+                    dashboard: SocialServiceListComponent,
+                    user: SocialServiceUserComponent,
+                    list: false
+                },
+                simple_list: {
+                    list: SimpleListEditorComponent
+                },
+                hierarchy: {
+                    list: HierarchyEditorComponent
+                }
+            }
+        },
+        {
+            provide: ErrorHandler,
+            useValue: Sentry.createErrorHandler({
+                showDialog: true,
+            }),
+        },
+        {
+            provide: Sentry.TraceService,
+            deps: [Router],
+        },
+        {
+            provide: APP_INITIALIZER,
+            useFactory: () => () => { },
+            deps: [Sentry.TraceService],
+            multi: true,
+        }],
+    bootstrap: [AppComponent]
 })
 export class AppModule { }
