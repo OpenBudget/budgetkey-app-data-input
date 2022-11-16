@@ -8,7 +8,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "package": "ng build --prod --localize"
+    "package": "ng build -c production --localize"
   },
   "private": true,
   "dependencies": {
