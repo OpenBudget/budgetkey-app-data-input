@@ -49,7 +49,7 @@ import { TenderSuppliersEditorComponent } from './social-service-editor/tender-s
   imports: [
     BrowserModule,
     FormsModule,
-    RouterModule.forRoot([]),
+    RouterModule.forRoot([], { relativeLinkResolution: 'legacy' }),
     EtlServerModule.forRoot(environment)
   ],
   providers: [{
