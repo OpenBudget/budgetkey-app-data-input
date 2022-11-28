@@ -210,7 +210,7 @@ export class SocialServiceEditorComponent implements OnInit {
     });
     this.datarecord.budgetItems.forEach((item) => {
       const year = item.year;
-      if (year >= 2017 && !existingManualYears[year]) {
+      if (year >= 2017 && year <= 2021 && !existingManualYears[year]) {
         const rec = {year: year, approved: null, executed: null};
         this.datarecord.manualBudget.push(rec);
         existingManualYears[year] = rec;
