@@ -297,7 +297,8 @@ export class SocialServiceEditorComponent implements OnInit {
           regulation,
           page_url,
           coalesce(supplier, entity_name) as supplier,
-          entity_id
+          entity_id,
+          entity_kind
     FROM a
     JOIN procurement_tenders_processed USING (publication_id,
                                               tender_id,
@@ -377,7 +378,9 @@ export class SocialServiceEditorComponent implements OnInit {
            start_date || '&nbsp;-<br/>' || end_date as date_range,
            regulation,
            page_url,
-           coalesce(supplier, entity_name) as supplier
+           coalesce(supplier, entity_name) as supplier,
+           entity_id,
+           entity_kind
     FROM
      procurement_tenders_processed 
     WHERE (publication_id || ':' || tender_type || ':' || tender_id) IN (${connectedTenderKeysStr})
@@ -395,6 +398,7 @@ export class SocialServiceEditorComponent implements OnInit {
         for (const t of this.datarecord.tenders) {
           this.calculateTenderActive(t);
           this.calculateSupplierList(t);
+          this.fetchAndConnectSupplierIfNeeded(t);
         }
         this.datarecord.tenders.sort((a, b) => a.tender_key.localeCompare(b.tender_key));
       });
@@ -494,6 +498,19 @@ export class SocialServiceEditorComponent implements OnInit {
     tender.suppliers.sort((a, b) => a.entity_name.localeCompare(b.entity_name));
   }
 
+  fetchAndConnectSupplierIfNeeded(row) {
+    if (row.entity_id && row.entity_kind) {
+      // If the row contains an entity that isn't connected yet
+      if (this.datarecord.suppliers.map((x) => x.entity_id).filter((x) => x.entity_id === row.entity_id).length === 0) {
+        this.api.fetchEntity(row.entity_kind, row.entity_id).subscribe((row) => {
+          if (row) {
+            this.connectSupplier({row, field: 'related'}, false);
+          }
+        })
+      }
+    }
+  }
+
   connectTender({row, field}) {
     const tender_key = row.tender_key;
     this.datarecord.tenders = this.datarecord.tenders.filter((x) => x.tender_key !== tender_key);
@@ -523,16 +540,7 @@ export class SocialServiceEditorComponent implements OnInit {
           }
         }
       }
-      if (row.entity_id && row.entity_kind) {
-        // If the row contains an entity that isn't connected yet
-        if (this.datarecord.suppliers.map((x) => x.entity_id).filter((x) => x.entity_id === row.entity_id).length === 0) {
-          this.api.fetchEntity(row.entity_kind, row.entity_id).subscribe((row) => {
-            if (row) {
-              this.connectSupplier({row, field: 'related'}, false);
-            }
-          })
-        }
-      }
+      this.fetchAndConnectSupplierIfNeeded(row);
     } else if (row.related === 'no') {
       this.datarecord.non_tenders.push(row);
     } else if (row.related === 'suggestion') {
