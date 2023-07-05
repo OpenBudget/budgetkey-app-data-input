@@ -30,7 +30,7 @@ export class SocialServiceListItemComponent implements OnChanges {
     }
     let ret: any = null;
     if (item.item) {
-      const updated = item.item.manualBudget && item.item.manualBudget.length > 0 && item.item.manualBudget[0].year >= 2021;
+      const updated = item.item.manualBudget && item.item.manualBudget.length > 0 && item.item.manualBudget[0].year >= 2022;
       const complete = !!item.item.complete && !item.item.deleted;
       const keepPrivate = !!item.item.keepPrivate;
       const incomplete = !item.item.complete && !item.item.deleted;
