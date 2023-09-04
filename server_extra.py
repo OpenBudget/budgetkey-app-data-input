@@ -3,7 +3,6 @@ from flask import request, jsonify
 import logging
 
 import dataflows as DF
-from dataflows_airtable import AIRTABLE_ID_FIELD, load_from_airtable, dump_to_airtable
 
 from etl_server.permissions import check_permission, Permissions
 
@@ -12,6 +11,7 @@ BASE_INTERFACE = 'pagAXNXilnivMrB4B?WOvEo='
 FLAG_INTERFACE = 'pagUHIK5LdLYZaxzV?WOvEo='
 
 def fetch_tenders_airtable():
+    from dataflows_airtable import AIRTABLE_ID_FIELD, load_from_airtable, dump_to_airtable
     existing_tender_ids = DF.Flow(
         load_from_airtable(
             TENDERS_BASE, 'מכרזים', 'SYNC'
@@ -22,6 +22,7 @@ def fetch_tenders_airtable():
 
 
 def fetch_survey_airtable():
+    from dataflows_airtable import AIRTABLE_ID_FIELD, load_from_airtable, dump_to_airtable
     existing_base_ids = DF.Flow(
         load_from_airtable(
             TENDERS_BASE, 'מכרז בסיס', 'SYNC'
@@ -40,6 +41,7 @@ def fetch_survey_airtable():
 
 
 def update_tenders_airtable(tender_records):
+    from dataflows_airtable import AIRTABLE_ID_FIELD, load_from_airtable, dump_to_airtable
     if len(tender_records) > 0:
         DF.Flow(
             tender_records,
@@ -49,6 +51,7 @@ def update_tenders_airtable(tender_records):
 
 
 def update_survey_airtable(base_records, flag_records):
+    from dataflows_airtable import AIRTABLE_ID_FIELD, load_from_airtable, dump_to_airtable
     if len(base_records) > 0:
         DF.Flow(
             base_records,
@@ -64,6 +67,7 @@ def update_survey_airtable(base_records, flag_records):
 
 
 def sync_tenders_internal(body):
+    from dataflows_airtable import AIRTABLE_ID_FIELD, load_from_airtable, dump_to_airtable
     office = body['office']
     unit = body['unit']
     tenders = body['tenders']
