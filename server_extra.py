@@ -131,7 +131,7 @@ def sync_tenders():
 
 def extra_server_init(app):
     app.add_url_rule(
-        'api/sync-tenders', 'sync-tenders', sync_tenders, methods=['POST'])
+        '/api/sync-tenders', 'sync-tenders', sync_tenders, methods=['POST'])
 
 
 if __name__ == '__main__':
