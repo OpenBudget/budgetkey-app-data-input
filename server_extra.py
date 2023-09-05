@@ -4,14 +4,15 @@ import logging
 
 import dataflows as DF
 
+from dataflows_airtable import AIRTABLE_ID_FIELD, load_from_airtable, dump_to_airtable
+
 from etl_server.permissions import check_permission, Permissions
 
 TENDERS_BASE = 'appkFwqZCU6MFquJh'
-BASE_INTERFACE = 'pagAXNXilnivMrB4B?WOvEo='
+BASE_INTERFACE = 'pagAXNXilnivMrB4B?2cbJH='
 FLAG_INTERFACE = 'pagUHIK5LdLYZaxzV?WOvEo='
 
 def fetch_tenders_airtable():
-    from dataflows_airtable import AIRTABLE_ID_FIELD, load_from_airtable, dump_to_airtable
     existing_tender_ids = DF.Flow(
         load_from_airtable(
             TENDERS_BASE, 'מכרזים', 'SYNC'
@@ -22,7 +23,6 @@ def fetch_tenders_airtable():
 
 
 def fetch_survey_airtable():
-    from dataflows_airtable import AIRTABLE_ID_FIELD, load_from_airtable, dump_to_airtable
     existing_base_ids = DF.Flow(
         load_from_airtable(
             TENDERS_BASE, 'מכרז בסיס', 'SYNC'
@@ -41,7 +41,6 @@ def fetch_survey_airtable():
 
 
 def update_tenders_airtable(tender_records):
-    from dataflows_airtable import AIRTABLE_ID_FIELD, load_from_airtable, dump_to_airtable
     if len(tender_records) > 0:
         DF.Flow(
             tender_records,
@@ -51,7 +50,6 @@ def update_tenders_airtable(tender_records):
 
 
 def update_survey_airtable(base_records, flag_records):
-    from dataflows_airtable import AIRTABLE_ID_FIELD, load_from_airtable, dump_to_airtable
     if len(base_records) > 0:
         DF.Flow(
             base_records,
@@ -70,6 +68,8 @@ def sync_tenders_internal(body):
     from dataflows_airtable import AIRTABLE_ID_FIELD, load_from_airtable, dump_to_airtable
     office = body['office']
     unit = body['unit']
+    service_name = body['service_name']
+    service_id = body['service_id']
     tenders = body['tenders']
     tender_records = []
     base_records = []
@@ -83,20 +83,33 @@ def sync_tenders_internal(body):
         tender_number = str(tender.get('tender_id') or tender['publication_number'])
         tender_name = tender['publication_name']
         flag = tender['flag']
+        active = tender['active']
+        start_date = tender['start_date']
+        end_date = tender['end_date']
         existing_rec_id = existing_tender_ids.get(key)
-        tender_records.append({
+        tender_record = {
             'id': key,
             'מספר הליך הרכש': tender_number,
             'שם המכרז': tender_name,
             'שם המשרד': office,
             'מינהל / חטיבה': unit,
             'מכרז דגל': flag,
+            'פעיל': active,
+            'תחילת תוקף': start_date,
+            'סיום תוקף': end_date,
+            'שם השירות': service_name,
+            'מזהה השירות': service_id,
             AIRTABLE_ID_FIELD: existing_rec_id
-        })
-        if flag and not existing_rec_id in existing_flag_ids:
-            flag_records.append(key)
-        if not flag and not existing_rec_id in existing_base_ids:
-            base_records.append(key)
+        }
+        if flag:
+            tender_record['מזהה מכרז בסיס'] = []
+            if existing_rec_id not in existing_flag_ids:
+                flag_records.append(key)
+        if not flag:
+            tender_record['מזהה מכרז דגל'] = []
+            if existing_rec_id not in existing_base_ids:
+                base_records.append(key)
+        tender_records.append(tender_record)
     
     update_tenders_airtable(tender_records)
     if len(flag_records) > 0 or len(base_records) > 0:
@@ -133,6 +146,7 @@ def extra_server_init(app):
     app.add_url_rule(
         '/api/sync-tenders', 'sync-tenders', sync_tenders, methods=['POST'])
 
+fetch_tenders_airtable()
 
 if __name__ == '__main__':
     body = dict(
