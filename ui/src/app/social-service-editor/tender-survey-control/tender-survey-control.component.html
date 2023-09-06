@@ -1,0 +1,15 @@
+<div class='container' *ngIf='survey !== null'>
+    <div *ngIf='survey.submitted'>שאלון מדידת ״רכש חברתי מיטבי״ הוגש</div>
+    <ng-container *ngIf='!survey.submitted && survey.link'>
+        <a [href]='survey.link' *ngIf='survey.flag === "no"' target='_blank'>קישור לשאלון מדידה להליך בסיס</a>
+        <a [href]='survey.link' *ngIf='survey.flag === "yes"' target='_blank'>קישור לשאלון מדידה להליך דגל</a>
+    </ng-container>
+    <ng-container *ngIf='!survey.submitted && !survey.link && record.tender_type !== "exemptions" && !survey.flag'>
+        <strong>בחירת סוג מכרז עבור מדידת ״רכש חברתי מיטבי״:</strong>
+        <select [(ngModel)]='flag'>
+            <option [ngValue]='null'>בחירה</option>
+            <option [ngValue]='"yes"'>מכרז דגל</option>
+            <option [ngValue]='"no"'>מכרז בסיס</option>
+        </select>
+    </ng-container>
+</div>

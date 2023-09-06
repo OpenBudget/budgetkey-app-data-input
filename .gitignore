@@ -1,3 +1,4 @@
 minio-data/
 docker-compose.secrets.yml
 AIRTABLE_TOKEN
+bkp/

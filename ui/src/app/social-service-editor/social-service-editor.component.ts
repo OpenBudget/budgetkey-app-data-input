@@ -193,6 +193,7 @@ export class SocialServiceEditorComponent implements OnInit {
     this.refreshExistingTenders();
     this.refreshExistingSuppliers();
     this.refreshExistingBeneficiaries();
+    this.api.syncTenders(this.datarecord);
   }
 
   fetchBudgetAmounts() {
@@ -541,6 +542,7 @@ export class SocialServiceEditorComponent implements OnInit {
         }
       }
       this.fetchAndConnectSupplierIfNeeded(row);
+      this.api.syncTenders(this.datarecord);
     } else if (row.related === 'no') {
       this.datarecord.non_tenders.push(row);
     } else if (row.related === 'suggestion') {
@@ -601,7 +603,7 @@ export class SocialServiceEditorComponent implements OnInit {
         }
         const startYear = (new Date()).getFullYear();
         if (startYear > 2021) {
-          row.year_activity_start = startYear;  
+          row.year_activity_start = row.year_activity_start || startYear;  
         }
       } else if (row.related === 'no') {
         this.datarecord.non_suppliers.push(row);
@@ -680,8 +682,16 @@ export class SocialServiceEditorComponent implements OnInit {
   }
 
   _save() {
+    console.log('TTTTS1');
     this.datarecord.id = this.datarecord.id || this.datarecord[this.def.id];
     return this.etlApi.saveDatarecord(this.def.name, this.datarecord);
+  }
+
+  saveSimple() {
+    console.log('TTTTS3');
+    this._save().subscribe((result) => {
+      console.log('TTTTS2', result);
+    });
   }
 
   save(complete, publish) {

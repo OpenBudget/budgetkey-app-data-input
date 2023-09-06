@@ -594,6 +594,12 @@ export const tendersTenderConfig = {
       kind: 'supplier-selection',
       fullRow: 7
     },
+    {
+      name: 'survey',
+      display: 'מדידה',
+      kind: 'survey',
+      fullRow: 8
+    },
   ]
 };
 export const tendersExemptionConfig = {
@@ -652,6 +658,12 @@ export const tendersExemptionConfig = {
           { value: 'suggestion', show: 'כנראה קשור' },
         ]
       }
+    },
+    {
+      name: 'survey',
+      display: 'מדידה',
+      kind: 'survey',
+      fullRow: 6
     },
   ]
 };

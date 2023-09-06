@@ -14,6 +14,7 @@ export class EditableTableComponent implements OnInit {
   @Input() config: any;
   @Output() changed = new EventEmitter<{row: any, field: any}>();
   @Output() modal = new EventEmitter<string>();
+  @Output() save = new EventEmitter<void>();
 
   headers = [];
   colspan = 1;
@@ -60,7 +61,14 @@ export class EditableTableComponent implements OnInit {
       return 'alert';
     } else if (field.kind === 'supplier-selection') {
       return 'supplier-selection';
+    } else if (field.kind === 'survey') {
+      return 'survey';
     }
     return 'editable';
+  }
+
+  saveChanges() {
+    console.log('TTTTS0');
+    this.save.emit();
   }
 }
