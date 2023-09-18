@@ -72,30 +72,6 @@ export class SocialServiceEditorComponent implements OnInit {
     }
   }
 
-  get tendersTender(): any[] {
-    const ret: any[] = [];
-    if (this.datarecord.tenders) {
-      for (const t of this.datarecord.tenders) {
-        if (t.tender_type !== 'exemptions') {
-          ret.push(t);
-        }
-      }
-    }
-    return ret;
-  }
-
-  get tendersExemption(): any[] {
-    const ret: any[] = [];
-    if (this.datarecord.tenders) {
-      for (const t of this.datarecord.tenders) {
-        if (t.tender_type === 'exemptions') {
-          ret.push(t);
-        }
-      }
-    }
-    return ret;
-  }
-  
   stat(kind) {
     if (kind === 'suppliers') {
       return {

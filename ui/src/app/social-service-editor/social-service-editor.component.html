@@ -41,18 +41,18 @@
     <div class='explanation'>שם המשרד אשר נותן את השירות</div>
     <ng-container *ngIf='ssu.level1_name && ssu.level1_options.options.length'>
         <app-editable-field [record]='datarecord' field='unit' [required]='true'
-                            [label]='"שם ה" + level1_name' kind='enum' [options]='level1_options' (changed)='updateHierarchy(2)'></app-editable-field>
+                            [label]='"שם ה" + ssu.level1_name' kind='enum' [options]='ssu.level1_options' (changed)='ssu.updateHierarchy(2)'></app-editable-field>
         <div class='explanation'>שם ה{{level1_name}} אשר אחראי על מתן השירות</div>
     </ng-container>
     <ng-container *ngIf='ssu.level2_name && ssu.level2_options.options.length'>
         <app-editable-field [record]='datarecord' field='subunit' [required]='true'
-                        [label]='"שם ה" + level2_name' kind='enum' [options]='level2_options' (changed)='updateHierarchy(3)'></app-editable-field>
-        <div class='explanation'>שם ה{{level2_name}} אשר אחראים למתן השירות</div>
+                        [label]='"שם ה" + ssu.level2_name' kind='enum' [options]='ssu.level2_options' (changed)='ssu.updateHierarchy(3)'></app-editable-field>
+        <div class='explanation'>שם ה{{ssu.level2_name}} אשר אחראים למתן השירות</div>
     </ng-container>
     <ng-container *ngIf='ssu.level3_name && ssu.level3_options.options.length'>
         <app-editable-field [record]='datarecord' field='subsubunit' [required]='false'
-                            [label]='"שם ה" + level3_name' kind='enum' [options]='level3_options' (changed)='updateHierarchy()'></app-editable-field>
-        <div class='explanation'>שם ה{{level3_name}} אשר אחראים למתן השירות</div>
+                            [label]='"שם ה" + ssu.level3_name' kind='enum' [options]='ssu.level3_options' (changed)='ssu.updateHierarchy()'></app-editable-field>
+        <div class='explanation'>שם ה{{ssu.level3_name}} אשר אחראים למתן השירות</div>
     </ng-container>
 </div>
 
@@ -127,7 +127,7 @@
             <div class='explanation'>
                 תקציב התקנה כפי שמופיע בספר התקציב. אנא בדקו כי תקציב השירות המאושר ותקציב הביצוע בפועל אינם חורגים מתקציב התקנה.
             </div>
-            <app-editable-table [record]='thiz' field='budgetAmounts' [config]='C.budgetAmountsConfig'></app-editable-table>
+            <app-editable-table [record]='ssu' field='budgetAmounts' [config]='C.budgetAmountsConfig'></app-editable-table>
         </div>
     </div>        
 </div>
@@ -145,7 +145,7 @@
     </ng-container>
     <ng-container *ngIf='ssu.possibleSuppliers && ssu.possibleSuppliers.length'>
         <h3>מפעילים אפשריים</h3>
-        <app-editable-table [record]='thiz' field='possibleSuppliers' [config]='C.supplierListConfig' (changed)='connectSupplier($event)'></app-editable-table>
+        <app-editable-table [record]='ssu' field='possibleSuppliers' [config]='C.supplierListConfig' (changed)='connectSupplier($event)'></app-editable-table>
     </ng-container>
 </div>
 
@@ -157,21 +157,21 @@
     </h4>
     <ng-container *ngIf='!datarecord.noTendersNeeded'>
         <h4 class='clickable' (click)='modal("tender")'><i class="fas fa-search"></i>חיפוש והוספה של מכרז או פטור</h4>
-        <ng-container *ngIf='tendersTender.length'>
+        <ng-container *ngIf='ssu.tendersTender.length'>
             <h3>מכרזים קשורים</h3>
-            <app-editable-table [record]='thiz' field='tendersTender' [config]='C.tendersTenderConfig' (changed)='connectTender($event)' (modal)='modal($event)' (save)='saveSimple()'></app-editable-table>
+            <app-editable-table [record]='ssu' field='tendersTender' [config]='C.tendersTenderConfig' (changed)='connectTender($event)' (modal)='modal($event)' (save)='saveSimple()'></app-editable-table>
         </ng-container>
-        <ng-container *ngIf='tendersExemption.length'>
+        <ng-container *ngIf='ssu.tendersExemption.length'>
             <h3>פטורים קשורים</h3>
-            <app-editable-table [record]='thiz' field='tendersExemption' [config]='C.tendersExemptionConfig' (changed)='connectTender($event)'></app-editable-table>
+            <app-editable-table [record]='ssu' field='tendersExemption' [config]='C.tendersExemptionConfig' (changed)='connectTender($event)'></app-editable-table>
         </ng-container>
         <ng-container *ngIf='datarecord.non_tenders.length'>
             <h3>מכרזים <u>לא</u> קשורים</h3>
             <app-editable-table [record]='datarecord' field='non_tenders' [config]='C.tendersConfig' (changed)='connectTender($event)'></app-editable-table>
         </ng-container>
-        <ng-container *ngIf='possibleTenders && possibleTenders.length'>
+        <ng-container *ngIf='ssu.possibleTenders && ssu.possibleTenders.length'>
             <h3>מכרזים אפשריים</h3>
-            <app-editable-table [record]='thiz' field='possibleTenders' [config]='C.tenderListConfig' (changed)='connectTender($event)'></app-editable-table>    
+            <app-editable-table [record]='ssu' field='possibleTenders' [config]='C.tenderListConfig' (changed)='connectTender($event)'></app-editable-table>    
         </ng-container>
     </ng-container>
 </div>

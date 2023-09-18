@@ -362,6 +362,14 @@ export class SocialServiceUtils {
         }
       });
 
+    // // Min year for manualBudget
+    // let firstYear: any = this.MAX_YEAR;
+    // for (const mb of this.datarecord.manualBudget) {
+    //   if (mb.year < firstYear && mb.approved) {
+    //     firstYear = mb.year;
+    //   }
+    // }
+    // console.log('firstYear = ', firstYear);
     this.datarecord.suppliers.forEach((supplier) => {
       supplier.active = supplier.active || 'yes';
       if (supplier.year_activity_end < supplier.year_activity_start) {
@@ -370,6 +378,9 @@ export class SocialServiceUtils {
       if (supplier.year_activity_start > this.MAX_YEAR) {
         supplier.year_activity_start = null;
       }
+      // if (supplier.year_activity_start > firstYear) {
+      //   supplier.year_activity_start = firstYear >= 2020 ? firstYear : null;
+      // }
     });
   }
 
@@ -579,5 +590,30 @@ export class SocialServiceUtils {
     return this.etlApi.saveDatarecord(this.def.name, this.datarecord);
   }
 
+
+  get tendersTender(): any[] {
+    const ret: any[] = [];
+    if (this.datarecord.tenders) {
+      for (const t of this.datarecord.tenders) {
+        if (t.tender_type !== 'exemptions') {
+          ret.push(t);
+        }
+      }
+    }
+    return ret;
+  }
+
+  get tendersExemption(): any[] {
+    const ret: any[] = [];
+    if (this.datarecord.tenders) {
+      for (const t of this.datarecord.tenders) {
+        if (t.tender_type === 'exemptions') {
+          ret.push(t);
+        }
+      }
+    }
+    return ret;
+  }
+  
 }
 
