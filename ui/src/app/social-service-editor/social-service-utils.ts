@@ -458,7 +458,7 @@ export class SocialServiceUtils {
             }
           }
         }
-        row.year_activity_start = row.year_activity_start || this.MAX_YEAR;
+        // row.year_activity_start = row.year_activity_start || this.MAX_YEAR;
       } else if (row.related === 'no') {
         this.datarecord.non_suppliers.push(row);
       } else if (row.related === 'suggestion') {
