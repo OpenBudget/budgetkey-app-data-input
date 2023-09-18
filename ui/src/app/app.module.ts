@@ -26,6 +26,7 @@ import { AlertTextComponent } from './alert-text/alert-text.component';
 import { ItemProgressLegendComponent } from './social-service-list/item-progress-legend/item-progress-legend.component';
 import { TenderSuppliersEditorComponent } from './social-service-editor/tender-suppliers-editor/tender-suppliers-editor.component';
 import { TenderSurveyControlComponent } from './social-service-editor/tender-survey-control/tender-survey-control.component';
+import { SocialServiceListUpdaterComponent } from './social-service-list-updater/social-service-list-updater.component';
 
 @NgModule({
     declarations: [
@@ -47,6 +48,7 @@ import { TenderSurveyControlComponent } from './social-service-editor/tender-sur
         ItemProgressLegendComponent,
         TenderSuppliersEditorComponent,
         TenderSurveyControlComponent,
+        SocialServiceListUpdaterComponent,
     ],
     imports: [
         BrowserModule,

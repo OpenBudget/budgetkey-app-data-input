@@ -169,6 +169,9 @@ export class ObudgetApiService {
         end_date: end_date || null,
       }
     });
+    if (tenders.length === 0) {
+      return;
+    }
     const body = {service_id, service_name, office, unit, tenders};
     this.syncTendersQueue.next({body, tenders: record.tenders});
   }

@@ -25,5 +25,8 @@
 
 <app-social-service-list-item [def]='def' [item]='aggregated' [search]='query' [itemFilter]='selectedFilter'></app-social-service-list-item>
 
-
 <div class='version'>גירסא: {{ VERSION }}</div>
+
+<app-social-service-list-updater *ngIf='roles._.datarecordEditAll'
+    [datarecords]='updateDatarecords' [def]='def'
+></app-social-service-list-updater>

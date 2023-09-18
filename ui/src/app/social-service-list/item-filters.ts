@@ -25,7 +25,11 @@ export class ItemFilterPublished extends ItemFilter {
 
 export class ItemFilterUpdateNeeded extends ItemFilter {
     public condition(item: any): boolean {
-        return !item.deleted && item.complete && item.manualBudget && item.manualBudget.length > 0 && item.manualBudget[0].year < 2022;
+        const tenders = item.tenders || [];
+        return !item.deleted && item.complete && (
+            (item.manualBudget && item.manualBudget.length > 0 && item.manualBudget[0].year < 2022) || 
+            tenders.any((tender) => tender.survey && !tender.survey.submitted)
+        );
     }
 }
 

@@ -33,6 +33,8 @@ export class SocialServiceListComponent implements OnInit {
   filterInactive = new ItemFilterInactive();
   selectedFilter = 'all';
 
+  updateDatarecords: any[] = [];
+
   constructor(public api: ApiService, public roles: RolesService, private cachedApi: CachedApiService) {
     this.api.currentUserProfile.pipe(
       first(),
@@ -93,6 +95,7 @@ export class SocialServiceListComponent implements OnInit {
         }
       }
     });
+    this.updateDatarecords = this.datarecords.map((x) => x.value).filter((x) => !x.deleted);
   }
 
   search(event: KeyboardEvent) {

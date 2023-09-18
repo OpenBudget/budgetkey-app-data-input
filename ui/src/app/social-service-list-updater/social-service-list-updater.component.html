@@ -1,0 +1,2 @@
+<button (click)='start()' *ngIf='!updating'>עדכן את כל הרשומות</button>
+<span *ngIf='updating'>מעדכן... {{count}}/{{datarecords.length}}</span>
