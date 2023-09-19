@@ -137,15 +137,15 @@
     <h4 class='clickable' (click)='modal("supplier")'><i class="fas fa-search"></i>חיפוש והוספה של מפעיל</h4>
     <ng-container *ngIf='datarecord.suppliers.length'>
         <h3>מפעילים קשורים</h3>
-        <app-editable-table [record]='datarecord' field='suppliers' [config]='C.suppliersConfig' (changed)='connectSupplier($event)'></app-editable-table>    
+        <app-editable-table [record]='datarecord' field='suppliers' [config]='C.suppliersConfig' (changed)='ssu.connectSupplier($event)'></app-editable-table>    
     </ng-container>
     <ng-container *ngIf='datarecord.non_suppliers.length'>
         <h3>מפעילים <u>לא</u> קשורים</h3>
-        <app-editable-table [record]='datarecord' field='non_suppliers' [config]='C.nonSuppliersConfig' (changed)='connectSupplier($event)'></app-editable-table>
+        <app-editable-table [record]='datarecord' field='non_suppliers' [config]='C.nonSuppliersConfig' (changed)='ssu.connectSupplier($event)'></app-editable-table>
     </ng-container>
     <ng-container *ngIf='ssu.possibleSuppliers && ssu.possibleSuppliers.length'>
         <h3>מפעילים אפשריים</h3>
-        <app-editable-table [record]='ssu' field='possibleSuppliers' [config]='C.supplierListConfig' (changed)='connectSupplier($event)'></app-editable-table>
+        <app-editable-table [record]='ssu' field='possibleSuppliers' [config]='C.supplierListConfig' (changed)='ssu.connectSupplier($event)'></app-editable-table>
     </ng-container>
 </div>
 
@@ -159,19 +159,19 @@
         <h4 class='clickable' (click)='modal("tender")'><i class="fas fa-search"></i>חיפוש והוספה של מכרז או פטור</h4>
         <ng-container *ngIf='ssu.tendersTender.length'>
             <h3>מכרזים קשורים</h3>
-            <app-editable-table [record]='ssu' field='tendersTender' [config]='C.tendersTenderConfig' (changed)='connectTender($event)' (modal)='modal($event)' (save)='saveSimple()'></app-editable-table>
+            <app-editable-table [record]='ssu' field='tendersTender' [config]='C.tendersTenderConfig' (changed)='ssu.connectTender($event)' (modal)='modal($event)' (save)='saveSimple()'></app-editable-table>
         </ng-container>
         <ng-container *ngIf='ssu.tendersExemption.length'>
             <h3>פטורים קשורים</h3>
-            <app-editable-table [record]='ssu' field='tendersExemption' [config]='C.tendersExemptionConfig' (changed)='connectTender($event)'></app-editable-table>
+            <app-editable-table [record]='ssu' field='tendersExemption' [config]='C.tendersExemptionConfig' (changed)='ssu.connectTender($event)'></app-editable-table>
         </ng-container>
         <ng-container *ngIf='datarecord.non_tenders.length'>
             <h3>מכרזים <u>לא</u> קשורים</h3>
-            <app-editable-table [record]='datarecord' field='non_tenders' [config]='C.tendersConfig' (changed)='connectTender($event)'></app-editable-table>
+            <app-editable-table [record]='datarecord' field='non_tenders' [config]='C.tendersConfig' (changed)='ssu.connectTender($event)'></app-editable-table>
         </ng-container>
         <ng-container *ngIf='ssu.possibleTenders && ssu.possibleTenders.length'>
             <h3>מכרזים אפשריים</h3>
-            <app-editable-table [record]='ssu' field='possibleTenders' [config]='C.tenderListConfig' (changed)='connectTender($event)'></app-editable-table>    
+            <app-editable-table [record]='ssu' field='possibleTenders' [config]='C.tenderListConfig' (changed)='ssu.connectTender($event)'></app-editable-table>    
         </ng-container>
     </ng-container>
 </div>
@@ -218,8 +218,8 @@
 <div class='modal' *ngIf='modalActive' (keyup)='modalKeyup($event)' (click)='modalClick($event)'>
     <div class='dialog' (click)='$event.stopPropagation()'>
         <div class='close' (click)='modal(null)'>סגירה</div>
-        <app-budget-searcher *ngIf='showSearch === "budget"' (choose)='addBudgetItem($event)'></app-budget-searcher>
-        <app-tender-searcher *ngIf='showSearch === "tender"' [office]='datarecord && datarecord.office' [existing]='datarecord.tenders' (choose)='connectTender({row: $event})'></app-tender-searcher>
-        <app-supplier-searcher *ngIf='showSearch === "supplier"' (choose)='connectSupplier({row: $event, field: "related"})'></app-supplier-searcher>
+        <app-budget-searcher *ngIf='showSearch === "budget"' (choose)='ssu.addBudgetItem($event)'></app-budget-searcher>
+        <app-tender-searcher *ngIf='showSearch === "tender"' [office]='datarecord && datarecord.office' [existing]='datarecord.tenders' (choose)='ssu.connectTender({row: $event})'></app-tender-searcher>
+        <app-supplier-searcher *ngIf='showSearch === "supplier"' (choose)='ssu.connectSupplier({row: $event, field: "related"})'></app-supplier-searcher>
     </div>
 </div>
