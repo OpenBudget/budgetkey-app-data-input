@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { from, Subject } from 'rxjs';
+import { EMPTY, from, Subject } from 'rxjs';
 import { catchError, concatMap, debounceTime, map } from 'rxjs/operators';
 import * as Sentry from "@sentry/angular";
 import { AuthService } from 'dgp-oauth2-ng';
@@ -115,9 +115,11 @@ export class ObudgetApiService {
   }
 
   syncTendersInternal({body, tenders}) {
-    console.log('TTTT', body);
-    console.log('TTTT3', tenders);
     return this.http.post(`${environment.api_endpoint}/sync-tenders`, body, this.etlApiService.httpOptions).pipe(
+      catchError((err) => {
+        console.log('TTTT4', err);
+        return EMPTY;
+      }),
       map((result: any) => {
         console.log('TTTT2', result);
         result.tenders.forEach((t) => {
@@ -129,7 +131,7 @@ export class ObudgetApiService {
             tender.survey.submitted = !!t.submitted;
           }
         });
-      })
+      }),
     );
   }
 
