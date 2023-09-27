@@ -25,14 +25,14 @@ def fetch_survey_airtable():
         load_from_airtable(
             TENDERS_BASE, 'מכרז בסיס', 'SYNC'
         ),
-        DF.select_fields(['מכרזים', AIRTABLE_ID_FIELD, 'הגשה'])
+        DF.select_fields(['מכרזים', AIRTABLE_ID_FIELD, 'פרסום'])
     ).results()[0][0]
     existing_base_ids = dict((r['מכרזים'][0], r) for r in existing_base_ids)
     existing_flag_ids = DF.Flow(
         load_from_airtable(
             TENDERS_BASE, 'מכרז דגל', 'SYNC'
         ),
-        DF.select_fields(['מכרזים', AIRTABLE_ID_FIELD, 'הגשה'])
+        DF.select_fields(['מכרזים', AIRTABLE_ID_FIELD, 'פרסום'])
     ).results()[0][0]
     existing_flag_ids = dict((r['מכרזים'][0], r) for r in existing_flag_ids)
     return existing_base_ids, existing_flag_ids
@@ -123,7 +123,7 @@ def sync_tenders_internal(body):
         existing_rec_id = existing_tender_ids.get(key)
         rec = existing_base_ids.get(existing_rec_id) if not tender['flag'] else existing_flag_ids.get(existing_rec_id)
         rec_id = rec[AIRTABLE_ID_FIELD]
-        submitted = rec['הגשה']
+        submitted = rec['פרסום']
         response.append(dict(
             key=key,
             recId=rec_id,
