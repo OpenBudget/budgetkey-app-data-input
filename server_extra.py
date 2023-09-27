@@ -9,8 +9,6 @@ from dataflows_airtable import AIRTABLE_ID_FIELD, load_from_airtable, dump_to_ai
 from etl_server.permissions import check_permission, Permissions
 
 TENDERS_BASE = 'appkFwqZCU6MFquJh'
-BASE_INTERFACE = 'pagAXNXilnivMrB4B?2cbJH='
-FLAG_INTERFACE = 'pagUHIK5LdLYZaxzV?WOvEo='
 
 def fetch_tenders_airtable():
     existing_tender_ids = DF.Flow(
@@ -123,14 +121,13 @@ def sync_tenders_internal(body):
     for tender in tenders:
         key = tender['tender_key']
         existing_rec_id = existing_tender_ids.get(key)
-        interface = BASE_INTERFACE if not tender['flag'] else FLAG_INTERFACE
         rec = existing_base_ids.get(existing_rec_id) if not tender['flag'] else existing_flag_ids.get(existing_rec_id)
         rec_id = rec[AIRTABLE_ID_FIELD]
         submitted = rec['הגשה']
-        url = f'https://airtable.com/{TENDERS_BASE}/{interface}{rec_id}'
         response.append(dict(
             key=key,
-            link=url,
+            recId=rec_id,
+            flag='flag' if tender['flag'] else 'base',
             submitted=submitted
         ))
     
