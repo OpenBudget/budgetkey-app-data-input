@@ -1,3 +1,4 @@
+import datetime
 import os
 from flask import request, jsonify
 import logging
@@ -62,6 +63,18 @@ def update_survey_airtable(base_records, flag_records):
         ).process()
 
 
+def validate_date(date):
+    if date is None:
+        return None
+    if date == '':
+        return None
+    try:
+        date = datetime.date.fromisoformat(date)
+        date = date.isoformat()
+    except ValueError:
+        date = None
+    return date
+
 def sync_tenders_internal(body):
     from dataflows_airtable import AIRTABLE_ID_FIELD, load_from_airtable, dump_to_airtable
     office = body['office']
@@ -82,8 +95,8 @@ def sync_tenders_internal(body):
         tender_name = tender['publication_name']
         flag = tender['flag']
         active = tender['active']
-        start_date = tender['start_date']
-        end_date = tender['end_date']
+        start_date = validate_date(tender['start_date'])
+        end_date = validate_date(tender['end_date'])
         existing_rec_id = existing_tender_ids.get(key)
         tender_record = {
             'id': key,
