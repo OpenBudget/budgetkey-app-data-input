@@ -27,6 +27,8 @@ export class SocialServiceEditorComponent implements OnInit {
 
   modalActive = false;
   showSearch: string = '';
+  surveyFlag: string = '';
+  surveyRecId: string = '';
   valid = true;
   errorMsg: string = '';
   errorMsgMajor = false;
@@ -218,11 +220,20 @@ export class SocialServiceEditorComponent implements OnInit {
 
   modal(kind) {
     if (kind) {
-      this.modalActive = true;
-      this.showSearch = kind;
+      if (kind.indexOf('survey:') === 0) {
+        this.modalActive = true;
+        const [_, surveyFlag, surveyRecId] = kind.split(':');
+        this.surveyRecId = surveyRecId;
+        this.surveyFlag = surveyFlag;
+      } else {
+        this.modalActive = true;
+        this.showSearch = kind;  
+      }
     } else {
       this.modalActive = false;
-      this.showSearch = '';    
+      this.showSearch = '';
+      this.surveyRecId = '';
+      this.surveyFlag = '';
     }
   }
 

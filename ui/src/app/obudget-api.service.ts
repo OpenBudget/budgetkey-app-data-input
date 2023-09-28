@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { EMPTY, from, Subject } from 'rxjs';
 import { catchError, concatMap, debounceTime, map } from 'rxjs/operators';
-import * as Sentry from "@sentry/angular";
+import * as Sentry from "@sentry/angular-ivy";
 import { AuthService } from 'dgp-oauth2-ng';
 import { ApiService } from 'etl-server';
 import { environment } from 'src/environments/environment';
@@ -117,17 +117,16 @@ export class ObudgetApiService {
   syncTendersInternal({body, tenders}) {
     return this.http.post(`${environment.api_endpoint}/sync-tenders`, body, this.etlApiService.httpOptions).pipe(
       catchError((err) => {
-        console.log('TTTT4', err);
         return EMPTY;
       }),
       map((result: any) => {
-        console.log('TTTT2', result);
         result.tenders.forEach((t) => {
           const key = t.key;
           const tender = tenders.find((x) => x.tender_key === key);
           if (tender) {
             tender.survey = tender.survey || {};
-            tender.survey.link = t.link;
+            tender.survey.recId = t.recId;
+            tender.survey.flagName = t.flag;
             tender.survey.submitted = !!t.submitted;
           }
         });

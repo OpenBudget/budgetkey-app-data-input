@@ -12,12 +12,12 @@ export class TenderSurveyControlComponent {
   @Input() record: any;
   @Input() context: any;
 
+  @Output() modal = new EventEmitter<string>();
   @Output() changed = new EventEmitter();
 
   constructor(private api: ObudgetApiService) { }
 
   set flag(value: boolean) {
-    console.log('TTTT4', value, this.survey.flag, this.context);
     if (value !== this.survey.flag) {
       this.survey.flag = value;
       this.changed.emit();
@@ -27,5 +27,9 @@ export class TenderSurveyControlComponent {
 
   get flag() {
     return this.survey.flag || null;
+  }
+
+  openSurvey(flag: string, recId: string) {
+    this.modal.emit(`survey:${flag}:${recId}`);
   }
 }

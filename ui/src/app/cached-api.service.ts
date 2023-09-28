@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ApiService } from 'etl-server';
 import { from, Observable, ReplaySubject } from 'rxjs';
 import { catchError, first, tap } from 'rxjs/operators';
-import * as Sentry from "@sentry/angular";
+import * as Sentry from "@sentry/angular-ivy";
 import { AuthService } from 'dgp-oauth2-ng';
 
 @Injectable({

@@ -1,0 +1,6 @@
+<div class='menu'>
+    <div class='menu-item' *ngFor='let item of (menuItems[flag] || [])' [class.active]='item.active' (click)='select(item)'>
+        <img [src]='"assets/survey/" + item.icon + ".png"' />
+        <span class='label'>{{item.label}}</span>
+    </div>
+</div>

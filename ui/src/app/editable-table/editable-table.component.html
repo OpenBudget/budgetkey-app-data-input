@@ -45,6 +45,7 @@
             [record]='row'
             [context]='record.datarecord'
             (changed)='emit(row, field); saveChanges()'
+            (modal)='modal.emit($event)'
             *ngIf='kind(field) === "survey"'
           ></app-tender-survey-control>
         </td>
