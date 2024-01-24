@@ -1,4 +1,4 @@
-
+import { MAX_YEAR } from '../social-service-editor/social-service-utils';
 export class ItemFilter {
     public condition(item: any): boolean {
         return true;
@@ -27,7 +27,7 @@ export class ItemFilterUpdateNeeded extends ItemFilter {
     public condition(item: any): boolean {
         const tenders = item.tenders || [];
         return !item.deleted && item.complete && (
-            (item.manualBudget && item.manualBudget.length > 0 && item.manualBudget[0].year < 2022)
+            (item.manualBudget && item.manualBudget.length > 0 && item.manualBudget[0].year < MAX_YEAR)
             //  || tenders.any((tender) => tender.survey && !tender.survey.submitted)
         );
     }

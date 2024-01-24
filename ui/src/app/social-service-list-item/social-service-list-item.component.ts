@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { ListStateService } from '../list-state.service';
 import { FILTERS, ItemFilter } from '../social-service-list/item-filters';
+import { MAX_YEAR } from '../social-service-editor/social-service-utils';
 
 @Component({
   selector: 'app-social-service-list-item',
@@ -31,7 +32,7 @@ export class SocialServiceListItemComponent implements OnChanges {
     let ret: any = null;
     if (item.item) {
       const updated = item.item.manualBudget && item.item.manualBudget.length > 0 && 
-        item.item.manualBudget[0].year >= 2022;
+        item.item.manualBudget[0].year >= MAX_YEAR;
         //  && (item.item.tenders || []).every((tender) => !tender.survey || tender.survey.submitted);
       const complete = !!item.item.complete && !item.item.deleted;
       const keepPrivate = !!item.item.keepPrivate;

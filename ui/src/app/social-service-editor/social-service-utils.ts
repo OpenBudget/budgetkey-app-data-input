@@ -3,6 +3,9 @@ import { CachedApiService } from '../cached-api.service';
 import { ObudgetApiService } from '../obudget-api.service';
 import { ApiService } from 'etl-server';
 
+export const MIN_YEAR = 2017;
+export const MAX_YEAR = 2023;
+
 export class SocialServiceUtils {
   
   offices: any[] = [];
@@ -31,8 +34,6 @@ export class SocialServiceUtils {
   )`;
 
   clearModal = new Subject<void>();
-  MIN_YEAR = 2017;
-  MAX_YEAR = 2022;
 
   constructor(private datarecord: any, private def: any,
       private cachedApi: CachedApiService, private api: ObudgetApiService, private etlApi: ApiService) {
@@ -114,7 +115,7 @@ export class SocialServiceUtils {
     }
     this.datarecord.budgetItems = (this.datarecord.budgetItems as any[]).sort(
       (a, b) => b.year - a.year
-    ).filter((item) => item.year >= this.MIN_YEAR);
+    ).filter((item) => item.year >= MIN_YEAR);
     this.datarecord.manualBudget = this.datarecord.manualBudget || [];
       
     const existingManualYears = {};
@@ -123,7 +124,7 @@ export class SocialServiceUtils {
     });
     this.datarecord.budgetItems.forEach((item) => {
       const year = item.year;
-      if (year >= this.MIN_YEAR && year <= this.MAX_YEAR && !existingManualYears[year]) {
+      if (year >= MIN_YEAR && year <= MAX_YEAR && !existingManualYears[year]) {
         const rec = {year: year, approved: null, executed: null};
         this.datarecord.manualBudget.push(rec);
         existingManualYears[year] = rec;
@@ -137,7 +138,7 @@ export class SocialServiceUtils {
     
     this.datarecord.manualBudget = (this.datarecord.manualBudget as any[]).sort(
       (a, b) => b.year - a.year
-    ).filter((x) => x.approved || x.year >= this.MIN_YEAR);
+    ).filter((x) => x.approved || x.year >= MIN_YEAR);
       
     const conditions = [];
     const budgets = [];
@@ -363,7 +364,7 @@ export class SocialServiceUtils {
       });
 
     // // Min year for manualBudget
-    // let firstYear: any = this.MAX_YEAR;
+    // let firstYear: any = MAX_YEAR;
     // for (const mb of this.datarecord.manualBudget) {
     //   if (mb.year < firstYear && mb.approved) {
     //     firstYear = mb.year;
@@ -375,7 +376,7 @@ export class SocialServiceUtils {
       if (supplier.year_activity_end < supplier.year_activity_start) {
         supplier.year_activity_start = supplier.year_activity_end - 1;
       }
-      if (supplier.year_activity_start > this.MAX_YEAR) {
+      if (supplier.year_activity_start > MAX_YEAR) {
         supplier.year_activity_start = null;
       }
       // if (supplier.year_activity_start > firstYear) {
@@ -385,7 +386,7 @@ export class SocialServiceUtils {
   }
 
   refreshExistingBeneficiaries() {
-    const firstYear = this.MIN_YEAR;
+    const firstYear = MIN_YEAR;
     const lastYear = (new Date()).getFullYear();
     const existingYears = this.datarecord.beneficiaries.map((x) => x.year);
     const num_beneficiaries = null;
@@ -469,7 +470,7 @@ export class SocialServiceUtils {
             }
           }
         }
-        // row.year_activity_start = row.year_activity_start || this.MAX_YEAR;
+        // row.year_activity_start = row.year_activity_start || MAX_YEAR;
       } else if (row.related === 'no') {
         this.datarecord.non_suppliers.push(row);
       } else if (row.related === 'suggestion') {
@@ -484,7 +485,7 @@ export class SocialServiceUtils {
       if (row.active === 'yes') {
         row.year_activity_end = null;
       } else {
-        row.year_activity_end = this.MAX_YEAR;
+        row.year_activity_end = MAX_YEAR;
       }
     }
   }
@@ -504,7 +505,7 @@ export class SocialServiceUtils {
     if (item.history) {
       for (let historyItem of Object.keys(item.history)) {
         const year = parseInt(historyItem);
-        if (year < this.MIN_YEAR) continue;
+        if (year < MIN_YEAR) continue;
         for (const codeTitleItem of item.history[historyItem].code_titles) {
           const codeTitle = codeTitleItem.split(':');
           const code = codeTitle[0];
@@ -536,7 +537,7 @@ export class SocialServiceUtils {
     }
     const sql = `
       SELECT code, title, year from raw_budget
-      where (${conditions.join('')}) and net_revised != 0 and year >= ${this.MIN_YEAR}
+      where (${conditions.join('')}) and net_revised != 0 and year >= ${MIN_YEAR}
       order by year desc, code
     `;
     this.api.query(sql)
