@@ -41,6 +41,7 @@ export class TenderSearcherComponent implements OnInit, OnDestroy, AfterViewInit
              ['הבריאות'],
         }[this.office] || publisher;
         publisher.push('מ.האוצר');
+        publisher.push('משרד האוצר');
         return this.api.search('tenders', query, [{publisher}])
       })
     ).pipe(
