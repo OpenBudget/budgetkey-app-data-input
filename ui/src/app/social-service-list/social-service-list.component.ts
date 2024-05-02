@@ -31,7 +31,7 @@ export class SocialServiceListComponent implements OnInit {
   filterWIP = new ItemFilterWIP();
   filterComplete = new ItemFilterComplete();
   filterInactive = new ItemFilterInactive();
-  selectedFilter = 'all';
+  selectedFilter = 'active';
 
   updateDatarecords: any[] = [];
 
