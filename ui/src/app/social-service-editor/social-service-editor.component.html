@@ -1,3 +1,24 @@
+<div class='tags'>
+    <div class='tag complete' *ngIf='datarecord.complete'>
+        הושלם
+    </div>
+    <div class='tag wip' *ngIf='!datarecord.complete'>
+        עדיין בעבודה
+    </div>
+    <div class='tag active' *ngIf='!datarecord.deleted'>
+        פעיל
+    </div>
+    <div class='tag inactive' *ngIf='datarecord.deleted'>
+        לא פעיל
+    </div>
+    <div class='tag unpublished' *ngIf='datarecord.keepPrivate'>
+        לא לפרסום
+    </div>    
+    <div class='tag published' *ngIf='!datarecord.keepPrivate'>
+        מפורסם באתר
+    </div>    
+</div>
+
 <app-editable-field [record]='datarecord' field='name' label='שם השירות' [required]='true'></app-editable-field>
 <div class='explanation'>שם השירות כפי שנקרא במערכות המידע ו/או ביחידות המקצועיות של המשרד. שם השירות צריך לבטא את מהות השירות הניתן ולהיות ברור לקורא מן החוץ.</div>
 <app-editable-field [record]='datarecord' field='description' label='תיאור השירות' [required]='true'></app-editable-field>
