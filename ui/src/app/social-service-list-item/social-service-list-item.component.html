@@ -34,9 +34,18 @@
             <div class='line'>
                 <div class='stat'>
                     <ng-container *ngIf='!item.item.deleted'>
-                        <span class='status complete' *ngIf='item.item.complete'>
-                            <i class="fas fa-check-circle"></i> הסתיים
-                        </span>
+                        <ng-container *ngIf='item.item.complete'>
+                            <ng-container *ngIf='item.item.updated'>
+                                <span class='status complete'>
+                                    <i class="fas fa-check-circle"></i> הסתיים
+                                </span>
+                            </ng-container>
+                            <ng-container *ngIf='!item.item.updated'>
+                                <span class='status update-needed'>
+                                    <i class="fas fa-check-circle"></i> נדרש עדכון
+                                </span>
+                            </ng-container>
+                        </ng-container>
                         <span class='status incomplete' *ngIf='!item.item.complete'>
                             <i class="fas fa-dot-circle "></i> בעבודה
                         </span>    

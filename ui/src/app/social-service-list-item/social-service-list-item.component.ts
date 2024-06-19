@@ -31,9 +31,14 @@ export class SocialServiceListItemComponent implements OnChanges {
     }
     let ret: any = null;
     if (item.item) {
-      const updated = item.item.manualBudget && item.item.manualBudget.length > 0 && 
-        item.item.manualBudget[0].year >= MAX_YEAR;
+      const manualBudget = (item.item.manualBudget || []).filter(x => x.approved || x.executed);
+      const beneficiaries = (item.item.beneficiaries || []).filter(x => x.num_beneficiaries);
+      const updated = (
+        manualBudget.length > 0 && manualBudget[0].year >= MAX_YEAR &&
+        beneficiaries.length > 0 && beneficiaries[0].year >= MAX_YEAR
+      );
         //  && (item.item.tenders || []).every((tender) => !tender.survey || tender.survey.submitted);
+      item.item['updated'] = updated;
       const complete = !!item.item.complete && !item.item.deleted;
       const keepPrivate = !!item.item.keepPrivate;
       const incomplete = !item.item.complete && !item.item.deleted;
@@ -114,12 +119,12 @@ export class SocialServiceListItemComponent implements OnChanges {
 
   get yearRange() {
     const minYear = Math.max(
-      Math.min(...(this.item.item.budgetItems || []).map(x => x.year)),
-      Math.min(...(this.item.item.beneficiaries || []).map(x => x.year)),      
+      Math.min(...(this.item.item.manualBudget || []).filter(x => x.approved || x.executed).map(x => x.year)),
+      Math.min(...(this.item.item.beneficiaries || []).filter(x => x.num_beneficiaries).map(x => x.year)),      
     );
     const maxYear = Math.min(
-      Math.max(...(this.item.item.budgetItems || []).map(x => x.year)),
-      Math.max(...(this.item.item.beneficiaries || []).map(x => x.year)),      
+      Math.max(...(this.item.item.manualBudget || []).filter(x => x.approved || x.executed).map(x => x.year)),
+      Math.max(...(this.item.item.beneficiaries || []).filter(x => x.num_beneficiaries).map(x => x.year)),      
     );
     if (Number.isFinite(minYear) && Number.isFinite(maxYear)) {
       return `${minYear} - ${maxYear}`;
