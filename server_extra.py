@@ -33,7 +33,7 @@ def fetch_survey_airtable():
         load_from_airtable(
             TENDERS_BASE, 'מכרז דגל', 'SYNC'
         ),
-        DF.select_fields(['מכרזים', AIRTABLE_ID_FIELD, 'פרסום'])
+        DF.select_fields(['מזהה המכרז'])
     ).results()[0][0]
     existing_flag_ids = list(r['מזהה המכרז'] for r in existing_flag_ids)
     return dict(), existing_flag_ids
