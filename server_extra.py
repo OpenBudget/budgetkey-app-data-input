@@ -76,7 +76,7 @@ def fetch_survey_airtable():
 #         date = None
 #     return date
 
-def sync_tenders_internal(body):
+def sync_tenders_internal():
     # office = body['office']
     # unit = body['unit']
     # service_name = body['service_name']
