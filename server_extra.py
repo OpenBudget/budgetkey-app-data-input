@@ -35,7 +35,7 @@ def fetch_survey_airtable():
         ),
         DF.select_fields(['מזהה המכרז'])
     ).results()[0][0]
-    existing_flag_ids = list(r['מזהה המכרז'] for r in existing_flag_ids)
+    existing_flag_ids = list(filter(None, (r['מזהה המכרז'] for r in existing_flag_ids)))
     return dict(), existing_flag_ids
     # return existing_base_ids, existing_flag_ids
 
