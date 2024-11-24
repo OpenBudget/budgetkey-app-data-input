@@ -87,6 +87,7 @@ export class TenderSearcherComponent implements OnInit, OnDestroy, AfterViewInit
       decision: item.decision,
       description: item.description,
       date_range: `${item.start_date || ''}&nbsp;-<br/>${item.end_date || ''}`,
+      publication_date: item.publication_date,
       regulation: item.regulation,
       supplier: item.supplier || item.entity_name,
       entity_id: item.entity_id,

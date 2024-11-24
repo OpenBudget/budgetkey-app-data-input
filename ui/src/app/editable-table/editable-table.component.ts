@@ -68,7 +68,6 @@ export class EditableTableComponent implements OnInit {
   }
 
   saveChanges() {
-    console.log('TTTTS0');
     this.save.emit();
   }
 }

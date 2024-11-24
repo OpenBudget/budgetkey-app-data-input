@@ -27,8 +27,7 @@ export class SocialServiceEditorComponent implements OnInit {
 
   modalActive = false;
   showSearch: string = '';
-  surveyFlag: string = '';
-  surveyRecId: string = '';
+  surveyLink: string = '';
   valid = true;
   errorMsg: string = '';
   errorMsgMajor = false;
@@ -218,22 +217,22 @@ export class SocialServiceEditorComponent implements OnInit {
     return false;
   }
 
-  modal(kind) {
+  modal(kind: string) {
     if (kind) {
       if (kind.indexOf('survey:') === 0) {
         this.modalActive = true;
-        const [_, surveyFlag, surveyRecId] = kind.split(':');
-        this.surveyRecId = surveyRecId;
-        this.surveyFlag = surveyFlag;
+        this.surveyLink = kind.slice(7);
       } else {
         this.modalActive = true;
         this.showSearch = kind;  
       }
     } else {
+      if (this.surveyLink) {
+        this.ssu.refresh();
+      }
       this.modalActive = false;
       this.showSearch = '';
-      this.surveyRecId = '';
-      this.surveyFlag = '';
+      this.surveyLink = '';
     }
   }
 

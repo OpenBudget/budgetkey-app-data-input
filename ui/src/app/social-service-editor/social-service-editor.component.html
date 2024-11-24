@@ -242,6 +242,6 @@
         <app-budget-searcher *ngIf='showSearch === "budget"' (choose)='ssu.addBudgetItem($event)'></app-budget-searcher>
         <app-tender-searcher *ngIf='showSearch === "tender"' [office]='datarecord && datarecord.office' [existing]='datarecord.tenders' (choose)='ssu.connectTender({row: $event})'></app-tender-searcher>
         <app-supplier-searcher *ngIf='showSearch === "supplier"' (choose)='ssu.connectSupplier({row: $event, field: "related"})'></app-supplier-searcher>
-        <app-survey *ngIf='surveyRecId?.length && surveyFlag?.length' [recId]='surveyRecId' [flag]='surveyFlag'></app-survey>
+        <app-survey *ngIf='surveyLink?.length' [link]='surveyLink'></app-survey>
     </div>
 </div>

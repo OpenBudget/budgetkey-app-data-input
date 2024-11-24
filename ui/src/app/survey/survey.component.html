@@ -1,6 +1,4 @@
-<div class='menu'>
-    <div class='menu-item' *ngFor='let item of (menuItems[flag] || [])' [class.active]='item.active' (click)='select(item)'>
-        <img [src]='"assets/survey/" + item.icon + ".png"' />
-        <span class='label'>{{item.label}}</span>
-    </div>
-</div>
+<iframe [src]='safeLink' *ngIf='safeLink' width='100%' height='100%'
+    frameborder='0' marginheight='0' marginwidth='0' style='border: none'
+    sandbox='allow-scripts allow-forms'
+></iframe>

@@ -21,7 +21,7 @@ export class SocialServiceListUpdaterComponent implements OnInit {
   constructor(public api: ObudgetApiService, private etlApi: ApiService, private cachedApi: CachedApiService,) { }
 
   ngOnInit(): void {
-    console.log('datarecords = ', this.datarecords);
+    // console.log('datarecords = ', this.datarecords);
   }
 
   start() {

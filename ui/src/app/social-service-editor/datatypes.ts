@@ -595,7 +595,7 @@ export const tendersTenderConfig = {
       fullRow: 7
     },
     {
-      name: 'survey',
+      name: 'tqs',
       display: 'מדידה',
       kind: 'survey',
       fullRow: 8
@@ -660,7 +660,7 @@ export const tendersExemptionConfig = {
       }
     },
     {
-      name: 'survey',
+      name: 'tqs',
       display: 'מדידה',
       kind: 'survey',
       fullRow: 6

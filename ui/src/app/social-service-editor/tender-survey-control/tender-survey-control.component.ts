@@ -29,7 +29,18 @@ export class TenderSurveyControlComponent {
     return this.survey.flag || null;
   }
 
-  openSurvey(flag: string, recId: string) {
-    this.modal.emit(`survey:${flag}:${recId}`);
+  openSurvey() {
+    this.modal.emit('survey:' + this.survey.link);
+  }
+
+  clear() {
+    if (!this.survey) {
+      return;
+    }
+    for (const key of Object.keys(this.survey)) {
+      this.survey[key] = null;
+    }
+    this.changed.emit();
+    this.api.syncTenders(this.context);
   }
 }

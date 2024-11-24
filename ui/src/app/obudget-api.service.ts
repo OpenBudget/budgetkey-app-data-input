@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { EMPTY, from, Subject } from 'rxjs';
-import { catchError, concatMap, debounceTime, map } from 'rxjs/operators';
+import { catchError, concatMap, debounceTime, map, take, tap } from 'rxjs/operators';
 import * as Sentry from "@sentry/angular-ivy";
 import { AuthService } from 'dgp-oauth2-ng';
 import { ApiService } from 'etl-server';
@@ -18,6 +18,8 @@ export class ObudgetApiService {
   private email: any;
   public errorMsg: string = null;
   private syncTendersQueue = new Subject<any>();
+  private syncedTendersQueue = new Subject<any[]>();
+  public submittedTenders: any = {};
 
   constructor(private http: HttpClient, private auth: AuthService, private etlApiService: ApiService) {
     this.errors.subscribe((msg) => {
@@ -32,7 +34,21 @@ export class ObudgetApiService {
         this.email = user.profile.email;
       }
     });
-    this.syncTendersQueue.pipe(concatMap((rec) => this.syncTendersInternal(rec))).subscribe();
+    this.syncTendersQueue.pipe(
+      tap((tenders) => {
+        this.updateTenderSubmittedStatus(tenders);
+      }),
+      concatMap((tenders) => 
+        this.getSubmittedTenders().pipe(
+          map(() => tenders)
+        )
+      ),
+      tap((tenders) => {
+        this.updateTenderSubmittedStatus(tenders);
+      })
+    ).subscribe((tenders) => {
+      this.syncedTendersQueue.next(tenders);
+    });
   }
 
   handleErrorMsg() {
@@ -114,35 +130,39 @@ export class ObudgetApiService {
     );
   }
 
-  syncTendersInternal({body, tenders}) {
-    return this.http.post(`${environment.api_endpoint}/sync-tenders`, body, this.etlApiService.httpOptions).pipe(
-      catchError((err) => {
-        return EMPTY;
-      }),
-      map((result: any) => {
-        result.tenders.forEach((t) => {
-          const key = t.key;
-          const tender = tenders.find((x) => x.tender_key === key);
-          if (tender) {
-            tender.survey = tender.survey || {};
-            tender.survey.recId = t.recId;
-            tender.survey.flagName = t.flag;
-            tender.survey.submitted = !!t.submitted;
-          }
-        });
-      }),
+  getSubmittedTenders() {
+    return this.http.get(`${environment.api_endpoint}/sync-tenders`, this.etlApiService.httpOptions).pipe(
+      tap((result: any) => {
+        this.submittedTenders = Object.assign({}, (result.submitted_flag_ids || {}), (result.submitted_base_ids || {}));
+      })
     );
   }
 
+  updateTenderSubmittedStatus(tenders) {
+    for (const tender of tenders) {
+      if (!!this.submittedTenders[tender.tender_key]) {
+        tender.tqs = tender.tqs || {};
+        tender.tqs.submitted = true;
+        tender.tqs.recId = this.submittedTenders[tender.tender_key];
+      } else {
+        tender.tqs = tender.tqs || {};
+        tender.tqs.submitted = false;
+      }
+    }
+  }
+
   syncTenders(record: any) {
-    const office = record.office;
-    const unit = record.unit;
-    const service_name = record.name;
-    const service_id = record.id;
     const tenders = record.tenders.filter((t) => {
+      t.survey = null;
+      t.tqs = t.tqs || {};
+      t.tqs.required = false;;
+      const start_year = parseInt((t.publication_date || '0-').split('-')[0]);
+      if (start_year < 2024) {
+        return false;
+      }
       if (t.tender_type !== 'exemptions') {
-        t.survey = t.survey || {};
-        return !!t.survey.flag;
+        t.tqs = t.tqs || {};
+        return true;
       } else if (
           t.tender_type === 'exemptions' && (
             t.entity_kind === 'municipality' ||
@@ -150,31 +170,44 @@ export class ObudgetApiService {
             (t.regulation || '').indexOf('ספק יחיד') >= 0
           )
         ) {
-        t.survey = t.survey || {};
-        t.survey.flag = 'no';
+        t.tqs = t.tqs || {};
+        t.tqs.flag = 'no';
         return true;
       }
       return false;
     }).map((t) => {
-      const start_date = (t.date_range || '-').split('-')[0];
-      const end_date = (t.date_range || '-').split('-')[1] || t.end_date;
-      
-      return {
-        tender_key: t.tender_key,
-        tender_id: t.tender_id === 'none' ? null : t.tender_id,
-        publication_number: t.tender_key.split(':')[0],
-        publication_name: t.description,
-        flag: t.survey.flag === 'yes',
-        active: t.active === 'yes',
-        start_date: start_date || null,
-        end_date: end_date || null,
-      }
+      t.tqs.required = true;
+      return t;
     });
     if (tenders.length === 0) {
       return;
     }
-    const body = {service_id, service_name, office, unit, tenders};
-    this.syncTendersQueue.next({body, tenders: record.tenders});
+    this.syncedTendersQueue.pipe(
+      take(1),
+    ).subscribe((tenders) => {
+      const office = record.office;
+      const unit = record.unit;
+
+      for (const t of tenders) {
+        const tender_key = t.tender_key;
+        const tender_name = t.description;
+        if (t.tqs.flag === 'yes') {
+          if (!t.tqs.submitted) {
+            t.tqs.link = 'https://form.jotform.com/242954939134062?' + 
+              'office_name=' + encodeURIComponent(office) + '&' +
+              'devision_name=' + encodeURIComponent(unit) + '&' +
+              'unit_name=' + encodeURIComponent(unit) + '&' +
+              'tender_ID=' + encodeURIComponent(tender_key) + '&' +
+              'tender_name=' + encodeURIComponent(tender_name);
+          } else {
+            t.tqs.link = 'https://airtable.com/appkFwqZCU6MFquJh/pag7DVwsy7HFIWno5?2cOrN=' + t.tqs.recId;
+          }
+        } else {
+          t.tqs.link = null;
+        }
+      }
+    });
+    this.syncTendersQueue.next(tenders);
   }
 
   cleanHighlights(item) {

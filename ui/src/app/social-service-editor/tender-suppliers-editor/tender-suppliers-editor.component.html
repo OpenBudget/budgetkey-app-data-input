@@ -1,6 +1,6 @@
 <ng-container *ngIf='!editing'>
-    <span>מפעילים: {{(value && value.length > 0) ? commaSeparatedList : 'לא סומנו המפעילים הזוכים'}}</span>
     <span class='pencil' (click)='editing = !editing'><i class="fas fa-edit"></i></span>
+    <span>מפעילים: {{(value && value.length > 0) ? commaSeparatedList : 'לא סומנו המפעילים הזוכים'}}</span>
 </ng-container>
 <ng-container *ngIf='editing'>
     <ng-container *ngIf='context.datarecord.suppliers && context.datarecord.suppliers.length > 0'>
