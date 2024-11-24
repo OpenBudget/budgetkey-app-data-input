@@ -19,6 +19,7 @@ export class ObudgetApiService {
   public errorMsg: string = null;
   private syncTendersQueue = new Subject<any>();
   private syncedTendersQueue = new Subject<any[]>();
+  private initialTenderSync = false;
   public submittedTenders: any = {};
 
   constructor(private http: HttpClient, private auth: AuthService, private etlApiService: ApiService) {
@@ -44,6 +45,7 @@ export class ObudgetApiService {
         )
       ),
       tap((tenders) => {
+        this.initialTenderSync = true;
         this.updateTenderSubmittedStatus(tenders);
       })
     ).subscribe((tenders) => {
@@ -133,19 +135,33 @@ export class ObudgetApiService {
   getSubmittedTenders() {
     return this.http.get(`${environment.api_endpoint}/sync-tenders`, this.etlApiService.httpOptions).pipe(
       tap((result: any) => {
-        this.submittedTenders = Object.assign({}, (result.submitted_flag_ids || {}), (result.submitted_base_ids || {}));
+        this.submittedTenders = {};
+        // Object.assign({}, (result.submitted_flag_ids || {}), (result.submitted_base_ids || {}));
+        for (const key of Object.keys(result.submitted_flag_ids || {})) {
+          this.submittedTenders[key] = {
+            flag: 'yes',
+            recId: result.submitted_flag_ids[key]
+          };
+        }
+        for (const key of Object.keys(result.submitted_base_ids || {})) {
+          this.submittedTenders[key] = {
+            flag: 'no',
+            recId: result.submitted_base_ids[key]
+          };
+        }
       })
     );
   }
 
   updateTenderSubmittedStatus(tenders) {
     for (const tender of tenders) {
+      tender.tqs = tender.tqs || {};
+      tender.tqs.required = this.initialTenderSync;
       if (!!this.submittedTenders[tender.tender_key]) {
-        tender.tqs = tender.tqs || {};
         tender.tqs.submitted = true;
-        tender.tqs.recId = this.submittedTenders[tender.tender_key];
+        tender.tqs.recId = this.submittedTenders[tender.tender_key].recId;
+        tender.tqs.flag = this.submittedTenders[tender.tender_key].flag;
       } else {
-        tender.tqs = tender.tqs || {};
         tender.tqs.submitted = false;
       }
     }
