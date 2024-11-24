@@ -34,7 +34,7 @@ def fetch_survey_airtable():
             TENDERS_BASE, 'מכרז דגל', 'SYNC'
         ),
         DF.select_fields(['מזהה המכרז', AIRTABLE_ID_FIELD]),
-        DF.filter_rows(lambda row: row['מזהה המכרז'] is not None)
+        DF.filter_rows(lambda row: row.get('מזהה המכרז') is not None)
     ).results()[0][0]
     existing_flag_ids = dict((r['מזהה המכרז'], r[AIRTABLE_ID_FIELD]) for r in existing_flag_ids)
     return dict(), existing_flag_ids
