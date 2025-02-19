@@ -50,7 +50,7 @@ export class TenderSuppliersEditorComponent implements OnInit, OnChanges {
       this._editing = value;
       if (!value) {
         console.log('SAVING CHANGES');
-        const suppliers = [];
+        const suppliers: any[] = [];
         for (const supplier of (this.context.datarecord.suppliers || [])) {
           if (this.selection[supplier.entity_id]) {
             const sup = {};

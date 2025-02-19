@@ -12,7 +12,6 @@ import { TenderSearcherComponent } from './tender-searcher/tender-searcher.compo
 import { SupplierSearcherComponent } from './supplier-searcher/supplier-searcher.component';
 import { FormsModule } from '@angular/forms';
 import { SocialServiceListComponent } from './social-service-list/social-service-list.component';
-import { SocialServiceListItemComponent } from './social-service-list-item/social-service-list-item.component';
 import { Router, RouterModule } from '@angular/router';
 import { SimpleListEditorComponent } from './simple-list-editor/simple-list-editor.component';
 import { SocialServiceUserComponent } from './social-service-user/social-service-user.component';
@@ -20,13 +19,19 @@ import { HierarchyEditorComponent } from './hierarchy-editor/hierarchy-editor.co
 import { EditableFieldMultipleSelectionComponent } from './editable-field-multiple-selection/editable-field-multiple-selection.component';
 
 import * as Sentry from "@sentry/angular-ivy";
-import { ItemProgressComponent } from './social-service-list-item/item-progress/item-progress.component';
 import { AlertTextComponent } from './alert-text/alert-text.component';
-import { ItemProgressLegendComponent } from './social-service-list/item-progress-legend/item-progress-legend.component';
 import { TenderSuppliersEditorComponent } from './social-service-editor/tender-suppliers-editor/tender-suppliers-editor.component';
 import { TenderSurveyControlComponent } from './social-service-editor/tender-survey-control/tender-survey-control.component';
 import { SocialServiceListUpdaterComponent } from './social-service-list-updater/social-service-list-updater.component';
 import { SurveyComponent } from './survey/survey.component';
+import { ServicesTabComponent } from './social-service-list/services-tab/services-tab.component';
+import { ItemProgressComponent } from './social-service-list/services-tab/social-service-list-item/item-progress/item-progress.component';
+import { ItemProgressLegendComponent } from './social-service-list/services-tab/item-progress-legend/item-progress-legend.component';
+import { SocialServiceListItemComponent } from './social-service-list/services-tab/social-service-list-item/social-service-list-item.component';
+import { MeasurementTabComponent } from './social-service-list/measurement-tab/measurement-tab.component';
+import { MeasurementProgressLegendComponent } from './social-service-list/measurement-tab/measurement-progress-legend/measurement-progress-legend.component';
+import { SocialServiceListMeasurementItemComponent } from './social-service-list/measurement-tab/social-service-list-measurement-item/social-service-list-measurement-item.component';
+import { MeasurementItemProgressComponent } from './social-service-list/measurement-tab/social-service-list-measurement-item/measurement-item-progress/measurement-item-progress.component';
 
 @NgModule({
     declarations: [
@@ -50,6 +55,11 @@ import { SurveyComponent } from './survey/survey.component';
         TenderSurveyControlComponent,
         SocialServiceListUpdaterComponent,
         SurveyComponent,
+        ServicesTabComponent,
+        MeasurementTabComponent,
+        MeasurementProgressLegendComponent,
+        SocialServiceListMeasurementItemComponent,
+        MeasurementItemProgressComponent,
     ],
     imports: [
         BrowserModule,

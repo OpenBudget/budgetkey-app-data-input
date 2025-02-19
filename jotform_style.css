@@ -1,0 +1,79 @@
+.form-all {
+    direction: rtl;
+    text-align: right;
+}
+
+.form-label-right, .form-radio-item label, .form-checkbox-item label {
+    text-align: right;
+}
+
+.form-line {
+    float: right;
+}
+.form-label.form-label-auto {
+        
+        display: inline-block;
+        float: left;
+        text-align: right;
+      
+      }
+      
+.form-line-column .form-label {
+	text-align: right !important;
+}
+
+.rating-item:not(:last-child) {
+	margin-left: 24px;
+	margin-right: inherit;
+}
+
+.rating-item .rating-item-title {
+	text-align: left;
+}
+
+.rating-item:first-child .rating-item-title {
+	text-align: right;
+}
+
+
+.form-label:not(.form-label-top) {
+	margin-left: 10px;
+	margin-right: 0;
+}
+
+li[data-type="control_scale"] .form-sub-label-container {
+	justify-content: flex-end;
+}
+
+.form-button-error {
+	padding-right: 8px;
+	padding-left: 0;
+}
+
+.jf-form-buttons:not(.form-pagebreak-back) {
+	margin-right: 10px;
+}
+
+.form-radio + label::after, .form-radio + label div::after, .form-radio + span::after, .form-radio + span div::after {
+	left: auto;
+	right: 3px;
+}
+
+.form-radio-item label {
+	padding-left: 0;
+	padding-right: 30px;
+}
+
+.form-checkbox-item label {
+	padding-left: 0;
+	padding-right: 30px;
+}
+
+.form-checkbox + label::before, .form-checkbox + span::before, .form-radio + label::before, .form-radio + span::before {
+	left: auto;
+	right: 0;
+}
+
+
+
+

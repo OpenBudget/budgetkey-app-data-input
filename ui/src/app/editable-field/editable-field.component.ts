@@ -25,8 +25,8 @@ export class EditableFieldComponent implements OnInit, OnDestroy {
   @Output() changed = new EventEmitter<any>();
   @ViewChild('editor', {static: false}) editor: ElementRef;
   _editing = false;
-  _verificationSubscription: Subscription;
-  _verifierId = null;
+  _verificationSubscription: Subscription | null = null;
+  _verifierId: string | null = null;
   valid = true;
 
   constructor(private api: ApiService, private cachedApi: CachedApiService, private verifier: FieldVerifyerService) { }

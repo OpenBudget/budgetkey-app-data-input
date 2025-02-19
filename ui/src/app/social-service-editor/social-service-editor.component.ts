@@ -23,7 +23,7 @@ export class SocialServiceEditorComponent implements OnInit {
 
   spending = [];
 
-  thiz = null;
+  thiz: SocialServiceEditorComponent;
 
   modalActive = false;
   showSearch: string = '';
@@ -90,23 +90,23 @@ export class SocialServiceEditorComponent implements OnInit {
   }
 
   statPossible(kind) {
-    const {possible, connected, non_connected} = this.stat(kind);
-    return possible ? possible.length : 0;
+    const s = this.stat(kind);
+    return s?.possible?.length || 0;
   }
 
   statConnected(kind) {
-    const {possible, connected, non_connected} = this.stat(kind);
-    return connected ? connected.filter(x => x.related === 'yes').length : 0;
+    const s = this.stat(kind);
+    return s?.connected?.filter(x => x.related === 'yes').length || 0;
   }
 
   statSuggested(kind) {
-    const {possible, connected, non_connected} = this.stat(kind);
-    return connected ? connected.filter(x => x.related === 'suggestion').length : 0;
+    const s = this.stat(kind);
+    return s?.connected?.filter(x => x.related === 'suggestion').length || 0;
   }
   
   statNonConnected(kind) {
-    const {possible, connected, non_connected} = this.stat(kind);
-    return non_connected ? non_connected.length : 0;
+    const s = this.stat(kind);
+    return s?.non_connected?.length || 0;
   }
 
   saveSimple() {
@@ -217,7 +217,7 @@ export class SocialServiceEditorComponent implements OnInit {
     return false;
   }
 
-  modal(kind: string) {
+  modal(kind: string | null) {
     if (kind) {
       if (kind.indexOf('survey:') === 0) {
         this.modalActive = true;

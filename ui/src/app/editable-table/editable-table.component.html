@@ -40,14 +40,14 @@
             (modal)='modal.emit($event)'
             *ngIf='kind(field) === "supplier-selection"'
           ></app-tender-suppliers-editor>
-          <app-tender-survey-control
+          <!-- <app-tender-survey-control
             [survey]='row.tqs || null'
             [record]='row'
             [context]='record.datarecord'
             (changed)='emit(row, field); saveChanges()'
             (modal)='modal.emit($event)'
             *ngIf='kind(field) === "survey" && row.tqs?.required'
-          ></app-tender-survey-control>
+          ></app-tender-survey-control> -->
         </td>
         <td *ngIf='config.rowDelete && rows.length - 1 === rowidx'><span class='delete' (click)='delete(row)'><i class="fas fa-trash-alt"></i></span></td>
       </tr>  

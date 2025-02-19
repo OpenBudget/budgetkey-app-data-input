@@ -1,29 +1,10 @@
-<div class='info'>
-    <p>הרשאות גישה: יש לך גישה לשירותים של {{offices[designatedOffice] || "כל המשרדים"}}</p>
-    <div *ngIf='roles._.datarecordNew' class='add-new'>
-        <a [routerLink]='"/datarecords/" + def.name + "/new"'>
-            <i class="fas fa-plus-circle" aria-hidden="true"></i>
-            יצירת שירות חברתי חדש
-        </a>
-    </div>
+<div class='tabs'>
+    <div class='tab' [class.active]='tab === "services"' (click)='tab = "services"'>סטטוס הזנת שירותים חברתיים</div>
+    <div class='tab' [class.active]='tab === "measurement"' (click)='tab = "measurement"'>סטטוס מדידת מכרזים</div>
 </div>
 
-<div class='filtering'>
-    <input (keyup)='search($event)' class='search' placeholder='חיפוש שרות...'>
-    <select [(ngModel)]='selectedFilter'>
-        <option value='all'>הצגת כל השרותים</option>
-        <option value='active'>הצגת רק השרותים הפעילים</option>
-        <option value='published'>הצגת רק השרותים שמפורסמים באתר</option>
-        <option value='updateNeeded'>הצגת רק השרותים שדורשים עדכון</option>
-        <option value='wip'>הצגת רק השרותים שעדיין בעבודה</option>
-        <option value='complete'>הצגת רק השרותים שהושלמו</option>
-        <option value='inactive'>הצגת רק השרותים שאינם פעילים</option>
-    </select>
-</div>
-
-<app-item-progress-legend></app-item-progress-legend>
-
-<app-social-service-list-item [def]='def' [item]='aggregated' [search]='query' [itemFilter]='selectedFilter'></app-social-service-list-item>
+<app-services-tab *ngIf='tab === "services"' [datarecords]='datarecords' [def]='def'></app-services-tab>
+<app-measurement-tab *ngIf='tab === "measurement"' [datarecords]='datarecords' [def]='def'></app-measurement-tab>
 
 <div class='version'>גירסא: {{ VERSION }}</div>
 

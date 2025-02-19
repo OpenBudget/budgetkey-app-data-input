@@ -13,7 +13,7 @@ import { delay, first, fromEvent, switchMap, tap, timer } from 'rxjs';
 export class SurveyComponent implements OnChanges {
   @Input() link: string;
 
-  safeLink: SafeResourceUrl;
+  safeLink: SafeResourceUrl | null = null;
 
   constructor(private sanitizer: DomSanitizer) {}
 

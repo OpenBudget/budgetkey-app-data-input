@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
-import { ListStateService } from '../list-state.service';
-import { FILTERS, ItemFilter } from '../social-service-list/item-filters';
-import { MAX_YEAR } from '../social-service-editor/social-service-utils';
+import { ListStateService } from '../../../list-state.service';
+import { FILTERS, ItemFilter } from '../item-filters';
+import { MAX_YEAR } from '../../../social-service-editor/social-service-utils';
 
 @Component({
   selector: 'app-social-service-list-item',
@@ -72,7 +72,7 @@ export class SocialServiceListItemComponent implements OnChanges {
       if (this.itemFilter) {
         this.itemFilterObj = FILTERS[this.itemFilter] || new ItemFilter();
       }
-      this.items = this.itemFilterObj.filter(this.item.items);
+      this.items = this.itemFilterObj?.filter(this.item.items) || [];
     } else {
       this.items = [];
     }

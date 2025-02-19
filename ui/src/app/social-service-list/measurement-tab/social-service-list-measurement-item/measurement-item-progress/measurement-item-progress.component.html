@@ -1,0 +1,6 @@
+<div class='total' *ngIf='!stats.total'>כל המכרזים מוסתרים</div>
+<div class='total' *ngIf='stats.total'>סה״כ: {{stats.total}}</div>
+<div class='progress'>
+    <div class='complete' *ngIf='stats.complete' [style.width]='width(stats.complete)' title='ההזנה הושלמה'>{{stats.complete}}</div>
+    <div class='incomplete' *ngIf='stats.incomplete' [style.width]='width(stats.incomplete)' title='נדרש עדכון'>{{stats.incomplete}}</div>
+</div>

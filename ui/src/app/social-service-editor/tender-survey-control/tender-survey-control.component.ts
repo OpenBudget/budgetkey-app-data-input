@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
-import { ObudgetApiService } from 'src/app/obudget-api.service';
+import { ObudgetApiService } from '../../obudget-api.service';
 
 @Component({
   selector: 'app-tender-survey-control',

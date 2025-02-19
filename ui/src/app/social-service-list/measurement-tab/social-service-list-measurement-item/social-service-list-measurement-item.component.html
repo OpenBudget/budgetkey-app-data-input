@@ -1,0 +1,74 @@
+<ng-container *ngIf='item.header'>
+    <div class='header' [class.open]='_open' (click)='open = !open'>
+        <i *ngIf='!_open' class="fas fa-caret-left"></i>
+        <i *ngIf='_open' class="fas fa-caret-down"></i>
+        <h3 [style.margin-left]='(16  * (3-level)) + "px"'>{{item.header}}</h3>
+        <app-measurement-item-progress [stats]='stats'></app-measurement-item-progress>
+    </div>
+</ng-container>
+<div class='content' [class.visible]='item.items && items.length > 0 && !!_open'>
+    <app-social-service-list-measurement-item *ngFor='let i of items' [def]='def' [item]='i' [search]='search' [level]='level+1' [itemFilter]='itemFilter' (found)='onfound()'></app-social-service-list-measurement-item>
+</div>
+<ng-container *ngIf='item.item'>
+    <div class='content visible' [class.highlighted]='_open'>
+        <div class='item'>
+            <div class='line'>
+                <span class='name'>
+                    <a [routerLink]='"/datarecords/" + def.name + "/" + item.item.service.id'>{{item.item.tender.description}}</a>
+                </span>
+            </div>
+            <div class='line' *ngIf='item.item.tender.tender_type !== "exemptions"'>
+                <div class='stat'>מספר מכרז: {{item.item.tender.tender_id}}</div>
+                <div class='stat'>סוג ההליך התחרותי: {{item.item.tender.tender_type_he}}</div>
+                <div class='stat'>
+                    <a [href]='item.item.tender.page_url' target="_blank">צפייה בפרטי המכרז</a>
+                </div>
+            </div>
+            <div class='line' *ngIf='item.item.tender.tender_type === "exemptions"'>
+                <div class='stat'>סוג ההליך התחרותי: {{item.item.tender.tender_type_he}}</div>
+                <div class='stat'>תקנה: {{item.item.tender.regulation}}</div>
+                <div class='stat'>
+                    <a [href]='item.item.tender.page_url' target="_blank">צפייה בפרטי הפטור</a>
+                </div>
+            </div>
+            <div class='line' *ngIf='item.item.tender.tender_type === "exemptions"'>
+                <div class='stat'>מפעיל: {{item.item.tender.supplier}}</div>
+            </div>
+            <div class='line'>
+                <ng-container *ngIf='item.item.tender.tqs.submitted'>
+                    <div class='stat'>
+                        <span class='status complete'>
+                            <i class="fas fa-check-circle"></i> טופס מדידה מולא
+                        </span>
+                    </div>
+                    <div class='stat'>
+                        <a [href]='item.item.tender.tqs.link[item.item.tender.tqs.flag]' target="_blank">צפייה בתוצאות</a>
+                    </div>
+                </ng-container>
+                <ng-container *ngIf='!item.item.tender.tqs.submitted'>
+                    <div class='stat'>
+                        <span class='status incomplete'>
+                            <i class="fas fa-check-circle"></i> טופס מדידה חסר
+                        </span>
+                    </div>
+                    <ng-container *ngIf='item.item.tender.tqs.flag==="yes"'>
+                        <div class='stat'>
+                            <a [href]='item.item.tender.tqs.link["yes"]' target="_blank">מילוי הטופס עבור מכרז דגל</a>
+                        </div>
+                        <div class='stat'>
+                            <a (click)='item.item.tender.tqs.flag = "no"'>שינוי למכרז בסיס</a>                           
+                        </div>
+                    </ng-container>
+                    <ng-container *ngIf='item.item.tender.tqs.flag==="no"'>
+                        <div class='stat'>
+                            <a [href]='item.item.tender.tqs.link["no"]' target="_blank">מילוי הטופס עבור מכרז בסיס</a>
+                        </div>
+                        <div class='stat' *ngIf='item.item.tender.tender_type !== "exemptions"'>
+                            <a (click)='item.item.tender.tqs.flag = "yes"'>שינוי למכרז דגל</a>
+                        </div>
+                    </ng-container>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+</ng-container>

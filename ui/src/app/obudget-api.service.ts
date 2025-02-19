@@ -5,7 +5,7 @@ import { catchError, concatMap, debounceTime, map, take, tap } from 'rxjs/operat
 import * as Sentry from "@sentry/angular-ivy";
 import { AuthService } from 'dgp-oauth2-ng';
 import { ApiService } from 'etl-server';
-import { environment } from 'src/environments/environment';
+import { environment } from '../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -13,10 +13,10 @@ import { environment } from 'src/environments/environment';
 export class ObudgetApiService {
 
   private errors = new Subject<string>();
-  private errorMsgs = [];
+  private errorMsgs: string[] = [];
   private handingErrors = false;
   private email: any;
-  public errorMsg: string = null;
+  public errorMsg: string | null = null;
   private syncTendersQueue = new Subject<any>();
   private syncedTendersQueue = new Subject<any[]>();
   private initialTenderSync = false;
@@ -45,7 +45,6 @@ export class ObudgetApiService {
         )
       ),
       tap((tenders) => {
-        this.initialTenderSync = true;
         this.updateTenderSubmittedStatus(tenders);
       })
     ).subscribe((tenders) => {
@@ -55,7 +54,7 @@ export class ObudgetApiService {
 
   handleErrorMsg() {
     if (this.errorMsgs.length > 0) {
-      this.errorMsg = this.errorMsgs.shift();
+      this.errorMsg = this.errorMsgs.shift() || null;
       window.setTimeout(() => {
         this.handleErrorMsg();
       }, 3000);
@@ -136,7 +135,6 @@ export class ObudgetApiService {
     return this.http.get(`${environment.api_endpoint}/sync-tenders`, this.etlApiService.httpOptions).pipe(
       tap((result: any) => {
         this.submittedTenders = {};
-        // Object.assign({}, (result.submitted_flag_ids || {}), (result.submitted_base_ids || {}));
         for (const key of Object.keys(result.submitted_flag_ids || {})) {
           this.submittedTenders[key] = {
             flag: 'yes',
@@ -149,6 +147,7 @@ export class ObudgetApiService {
             recId: result.submitted_base_ids[key]
           };
         }
+        this.initialTenderSync = true;
       })
     );
   }
@@ -167,15 +166,15 @@ export class ObudgetApiService {
     }
   }
 
-  syncTenders(record: any) {
+  syncTenders(record: any, refresh=true) {
     const tenders = record.tenders.filter((t) => {
       t.survey = null;
       t.tqs = t.tqs || {};
       t.tqs.required = false;;
       const start_year = parseInt((t.publication_date || '0-').split('-')[0]);
-      if (start_year < 2024) {
-        return false;
-      }
+      // if (start_year < 2021) { // TODO: change to 2025
+      //   return false;
+      // }
       if (t.tender_type !== 'exemptions') {
         t.tqs = t.tqs || {};
         return true;
@@ -196,34 +195,56 @@ export class ObudgetApiService {
       return t;
     });
     if (tenders.length === 0) {
-      return;
+      return [];
     }
-    this.syncedTendersQueue.pipe(
+    let obs = this.syncedTendersQueue.pipe(
       take(1),
-    ).subscribe((tenders) => {
+    );
+    if (!refresh) {
+      this.updateTenderSubmittedStatus(tenders);
+      obs = from([tenders]);
+    }
+    obs.subscribe((tenders) => {
       const office = record.office;
       const unit = record.unit;
+      const service_name = record.name;
 
       for (const t of tenders) {
         const tender_key = t.tender_key;
         const tender_name = t.description;
-        if (t.tqs.flag === 'yes') {
-          if (!t.tqs.submitted) {
-            t.tqs.link = 'https://form.jotform.com/242954939134062?' + 
+        const tender_id = t.tender_id === 'none' ? 'פטור' : t.tender_id;
+        t.tqs.flag = t.tqs.flag || 'no';
+        if (!t.tqs.submitted) {
+          t.tqs.link = {
+            yes: 'https://form.jotform.com/242954939134062?' + 
               'office_name=' + encodeURIComponent(office) + '&' +
               'devision_name=' + encodeURIComponent(unit) + '&' +
               'unit_name=' + encodeURIComponent(unit) + '&' +
               'tender_ID=' + encodeURIComponent(tender_key) + '&' +
-              'tender_name=' + encodeURIComponent(tender_name);
-          } else {
-            t.tqs.link = 'https://airtable.com/appkFwqZCU6MFquJh/pag7DVwsy7HFIWno5?2cOrN=' + t.tqs.recId;
-          }
+              'service_name=' + encodeURIComponent(service_name) + '&' +
+              'tender_number=' + encodeURIComponent(tender_id) + '&' +
+              'tender_name=' + encodeURIComponent(tender_name),
+            no: 'https://form.jotform.com/243532669862467?' + 
+              'office_name=' + encodeURIComponent(office) + '&' +
+              'devision_name=' + encodeURIComponent(unit) + '&' +
+              'unit_name=' + encodeURIComponent(unit) + '&' +
+              'tender_ID=' + encodeURIComponent(tender_key) + '&' +
+              'service_name=' + encodeURIComponent(service_name) + '&' +
+              'tender_number=' + encodeURIComponent(tender_id) + '&' +
+              'tender_name=' + encodeURIComponent(tender_name),
+          };
         } else {
-          t.tqs.link = null;
+          t.tqs.link = {
+            yes: 'https://airtable.com/appkFwqZCU6MFquJh/pag7DVwsy7HFIWno5?2cOrN=' + t.tqs.recId,
+            no: 'https://airtable.com/appkFwqZCU6MFquJh/pagH5bdK4WAKZ1m6j?2cOrN=' + t.tqs.recId,
+          };
         }
       }
     });
-    this.syncTendersQueue.next(tenders);
+    if (refresh) {
+      this.syncTendersQueue.next(tenders);
+    }
+    return tenders;
   }
 
   cleanHighlights(item) {

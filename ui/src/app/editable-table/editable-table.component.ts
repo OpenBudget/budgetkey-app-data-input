@@ -16,7 +16,7 @@ export class EditableTableComponent implements OnInit {
   @Output() modal = new EventEmitter<string>();
   @Output() save = new EventEmitter<void>();
 
-  headers = [];
+  headers: string[] = [];
   colspan = 1;
   defaultRowIndex = 5;
   rows: any = {};

@@ -1,4 +1,4 @@
-import { MAX_YEAR } from '../social-service-editor/social-service-utils';
+import { MAX_YEAR } from '../../social-service-editor/social-service-utils';
 export class ItemFilter {
     public condition(item: any): boolean {
         return true;

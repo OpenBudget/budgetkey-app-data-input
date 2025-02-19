@@ -33,7 +33,7 @@ export class EditableFieldMultipleSelectionComponent implements OnInit, OnChange
 
   changed(key, event: Event) {
     this._value[key] = (event.target as HTMLInputElement).checked;
-    const value = [];
+    const value: string[] = [];
     for (const option of this.options) {
       if (this._value[option.value]) {
         value.push(option.value);

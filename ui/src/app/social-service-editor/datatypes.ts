@@ -594,12 +594,12 @@ export const tendersTenderConfig = {
       kind: 'supplier-selection',
       fullRow: 7
     },
-    {
-      name: 'tqs',
-      display: 'מדידה',
-      kind: 'survey',
-      fullRow: 8
-    },
+    // {
+    //   name: 'tqs',
+    //   display: 'מדידה',
+    //   kind: 'survey',
+    //   fullRow: 8
+    // },
   ]
 };
 export const tendersExemptionConfig = {
@@ -659,11 +659,11 @@ export const tendersExemptionConfig = {
         ]
       }
     },
-    {
-      name: 'tqs',
-      display: 'מדידה',
-      kind: 'survey',
-      fullRow: 6
-    },
+    // {
+    //   name: 'tqs',
+    //   display: 'מדידה',
+    //   kind: 'survey',
+    //   fullRow: 6
+    // },
   ]
 };

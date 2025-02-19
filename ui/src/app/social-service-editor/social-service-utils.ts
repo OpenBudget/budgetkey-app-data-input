@@ -9,18 +9,18 @@ export const MAX_YEAR = 2023;
 export class SocialServiceUtils {
   
   offices: any[] = [];
-  budgetAmounts = [];
-  possibleSuppliers = [];
-  possibleTenders = [];
+  budgetAmounts: any[] = [];
+  possibleSuppliers: any[] = [];
+  possibleTenders: any[] = [];
 
   lookupTable: any[] = [];
 
   office_options: any = {options: []};
-  level1_name: string = null;
+  level1_name: string | null = null;
   level1_options: any = {options: []};
-  level2_name: string = null;
+  level2_name: string | null = null;
   level2_options: any = {options: []};
-  level3_name: string = null;
+  level3_name: string | null = null;
   level3_options: any = {options: []};
   
   OFFICE_CONDITION = (p) => `(
@@ -140,8 +140,8 @@ export class SocialServiceUtils {
       (a, b) => b.year - a.year
     ).filter((x) => x.approved || x.year >= MIN_YEAR);
       
-    const conditions = [];
-    const budgets = [];
+    const conditions: any[] = [];
+    const budgets: any[] = [];
     for (const line of this.datarecord.budgetItems) {
       const condition = `(code='${line.code}' and year=${line.year})`
       if (conditions.length > 0) {
@@ -156,7 +156,7 @@ export class SocialServiceUtils {
     `;
     this.api.query(sql)
     .subscribe((records: any) => {
-      let budget = null;
+      let budget: any = null;
       for (const row of records) {
         if (!budget || budget.year !== row.year) {
           budget = {year: row.year, net_revised: 0, net_executed: 0};
@@ -170,7 +170,7 @@ export class SocialServiceUtils {
   }
 
   getBudgetCodes() {
-    const budgetCodes = [];
+    const budgetCodes: string[] = [];
     if (this.datarecord.budgetItems && this.datarecord.budgetItems.length > 0) {
       for (const line of this.datarecord.budgetItems) {
         if (budgetCodes.indexOf(line.code) < 0) {
@@ -523,7 +523,7 @@ export class SocialServiceUtils {
   }
 
   fillInBudgets() {
-    const conditions = [];
+    const conditions: string[] = [];
     if (!this.datarecord.budgetItems || this.datarecord.budgetItems.length === 0) {
       return;
     }

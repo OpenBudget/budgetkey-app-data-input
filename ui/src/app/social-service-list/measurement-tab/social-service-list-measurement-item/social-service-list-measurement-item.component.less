@@ -1,0 +1,103 @@
+:host {
+    display: block;
+    margin-top: 8px;
+    width: 100%;
+
+    .header {
+        display: flex;
+        flex-flow: row;
+        align-items: center;
+        cursor: pointer;
+        gap: 16px;
+
+        i {
+            flex: 0 0 10px;
+        }
+
+        h3 {
+            width: 560px;
+            flex: 0 0 auto;
+        }
+
+        app-measurement-item-progress { 
+            width: 100%;
+            flex: 1 1 auto;
+        }
+    }
+
+    .content {
+        padding-right: 16px;
+
+        display: none;
+        &.visible {
+            display: flex;
+            flex-flow: column;
+        }
+
+        &.highlighted {
+            .item {
+                background: yellow;
+                border-width: 2px;
+            }
+        }
+
+        .item {
+            border: #ccc 1px solid;
+            box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.08);
+            border-radius: 4px;
+            width: ~'calc(100% - 16px)';
+            display: flex;
+            flex-flow: column;
+            padding: 4px 16px;
+
+            &.deleted {
+                background-color: lightgray;
+                color: gray;
+                .line a {
+                    color: gray;
+                }
+            }
+
+            .line {
+                display: flex;
+                flex-flow: row;
+                align-items: center;
+                &:not(:first-child) {
+                    margin-top: 4px;
+                }
+
+                .stat {
+                    margin-left: 16px;
+                    padding-left: 16px;
+                    &:not(:last-child) {
+                        border-left: 1px dashed #ccc;
+                    }
+                    &:not(:first-child) {
+                        min-width: 150px;
+                    }
+
+                    .status {
+                        margin-right: 8px;
+                    }
+                    .complete {
+                        color: green;
+                    }
+                    .incomplete {
+                        color: orange;
+                    }
+                    a {
+                        color: #007bff;
+                        text-decoration: underline;
+                        cursor: pointer;
+                    }
+                }
+                .name {
+                    a {
+                        font-weight: 700;
+                    }
+                    margin-left: 16px;
+                }
+            }
+        }
+    }
+}

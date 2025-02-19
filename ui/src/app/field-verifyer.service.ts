@@ -13,13 +13,15 @@ export class FieldVerifyerService {
 
   constructor() { }
 
-  register() {
+  register(): string {
     this.idx++
     return 'v' + this.idx;
   }
 
-  deregister(reg) {
-    delete this._validity[reg];
+  deregister(reg: string | null) {
+    if (reg) {
+      delete this._validity[reg];
+    }
   }
 
   verify() {
