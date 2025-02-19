@@ -12,8 +12,7 @@ export class SocialServiceListComponent {
   @Input() def: any;
   @Input() datarecords: any[] = [];
 
-  // tab = 'services';
-  tab = 'measurement'; // TODO: change to 'services' when ready
+  tab = 'services';
   VERSION = VERSION;
 
   constructor(public roles: RolesService) {}
