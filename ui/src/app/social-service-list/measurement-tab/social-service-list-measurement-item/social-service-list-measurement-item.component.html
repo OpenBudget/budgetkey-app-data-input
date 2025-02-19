@@ -19,14 +19,14 @@
             </div>
             <div class='line' *ngIf='item.item.tender.tender_type !== "exemptions"'>
                 <div class='stat'>מספר מכרז: {{item.item.tender.tender_id}}</div>
-                <div class='stat'>סוג ההליך התחרותי: {{item.item.tender.tender_type_he}}</div>
+                <div class='stat'>{{item.item.tender.tender_type_he}}</div>
                 <div class='stat'>
                     <a [href]='item.item.tender.page_url' target="_blank">צפייה בפרטי המכרז</a>
                 </div>
             </div>
             <div class='line' *ngIf='item.item.tender.tender_type === "exemptions"'>
-                <div class='stat'>סוג ההליך התחרותי: {{item.item.tender.tender_type_he}}</div>
-                <div class='stat'>תקנה: {{item.item.tender.regulation}}</div>
+                <div class='stat'>{{item.item.tender.tender_type_he}}</div>
+                <div class='stat'>{{item.item.tender.regulation}}</div>
                 <div class='stat'>
                     <a [href]='item.item.tender.page_url' target="_blank">צפייה בפרטי הפטור</a>
                 </div>
