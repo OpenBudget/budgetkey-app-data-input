@@ -17,4 +17,5 @@
 
 <app-measurement-progress-legend></app-measurement-progress-legend>
 
-<app-social-service-list-measurement-item [def]='def' [item]='aggregated' [search]='query' [itemFilter]='selectedFilter'></app-social-service-list-measurement-item>
+<app-social-service-list-measurement-item *ngIf='!loading' [def]='def' [item]='aggregated' [search]='query' [itemFilter]='selectedFilter'></app-social-service-list-measurement-item>
+<div class='loading' *ngIf='loading'>טוען נתונים...</div>

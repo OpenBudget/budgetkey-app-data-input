@@ -21,6 +21,7 @@ export class MeasurementTabComponent {
   query = '';
   offices: any = {};
   designatedOffice = null;
+  loading = false;
   
   filterAll = new ItemMeasurementFilter();
   filterFlag = new ItemMeasurementFlagFilter();
@@ -78,6 +79,7 @@ export class MeasurementTabComponent {
   }
 
   refresh() {
+    this.loading = true;
     this.obudgetApi.getSubmittedTenders().pipe(
       switchMap(() => this.selectedOffice),
       first()
@@ -99,6 +101,7 @@ export class MeasurementTabComponent {
           }
         }
       }
+      this.loading = false;
     });
     this.updateDatarecords = this.datarecords.map((x) => x.value).filter((x) => !x.deleted);
   }
