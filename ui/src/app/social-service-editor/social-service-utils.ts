@@ -4,7 +4,7 @@ import { ObudgetApiService } from '../obudget-api.service';
 import { ApiService } from 'etl-server';
 
 export const MIN_YEAR = 2017;
-export const MAX_YEAR = 2023;
+export const MAX_YEAR = 2024;
 
 export class SocialServiceUtils {
   
