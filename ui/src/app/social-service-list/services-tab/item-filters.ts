@@ -13,13 +13,13 @@ export class ItemFilter {
 
 export class ItemFilterActive extends ItemFilter {
     public condition(item: any): boolean {
-        return !item.deleted;
+        return !item.deleted && !item.keepPrivate;
     }
 }
 
-export class ItemFilterPublished extends ItemFilter {
+export class ItemFilterUnpublished extends ItemFilter {
     public condition(item: any): boolean {
-        return !item.deleted && !item.keepPrivate;
+        return item.keepPrivate;
     }
 }
 
@@ -32,34 +32,34 @@ export class ItemFilterUpdateNeeded extends ItemFilter {
           manualBudget.length > 0 && manualBudget[0].year >= MAX_YEAR &&
           beneficiaries.length > 0 && beneficiaries[0].year >= MAX_YEAR
         );
-        return !item.deleted && item.complete && !updated;
+        return !item.deleted && item.complete && !updated && !item.keepPrivate;
     }
 }
 
 export class ItemFilterWIP extends ItemFilter {
     public condition(item: any): boolean {
-        return !item.complete && !item.deleted;;
+        return !item.complete && !item.deleted && !item.keepPrivate;
     }
 }
 
 export class ItemFilterComplete extends ItemFilter {
     public condition(item: any): boolean {
-        return !!item.complete;
+        return !!item.complete && !item.deleted && !item.keepPrivate;
     }
 }
 
 export class ItemFilterInactive extends ItemFilter {
     public condition(item: any): boolean {
-        return !!item.deleted;
+        return !!item.deleted && !item.keepPrivate;
     }
 }
 
 export const FILTERS = {
     all: new ItemFilter(),
     active: new ItemFilterActive(),
-    published: new ItemFilterPublished(),
     updateNeeded: new ItemFilterUpdateNeeded(),
     wip: new ItemFilterWIP(),
     complete: new ItemFilterComplete(),
     inactive: new ItemFilterInactive(),
+    unpublished: new ItemFilterUnpublished(),
 };

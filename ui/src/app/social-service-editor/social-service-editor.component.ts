@@ -113,6 +113,10 @@ export class SocialServiceEditorComponent implements OnInit {
     this.ssu.save().subscribe();
   }
 
+  back() {
+    this.router.navigate(['/dashboard']);
+  }
+
   save(complete, publish) {
     if (complete) {
       publish = true;

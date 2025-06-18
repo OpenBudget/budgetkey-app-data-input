@@ -9,13 +9,10 @@
         פעיל
     </div>
     <div class='tag inactive' *ngIf='datarecord.deleted'>
-        לא פעיל
+        היסטורי
     </div>
     <div class='tag unpublished' *ngIf='datarecord.keepPrivate'>
         לא לפרסום
-    </div>    
-    <div class='tag published' *ngIf='!datarecord.keepPrivate'>
-        מפורסם באתר
     </div>    
 </div>
 
@@ -199,15 +196,14 @@
 
 
 <div class='buttons'>
-    <div *ngIf='roles._.datarecordEditOwn || roles._.datarecordEditAll'  class='save-notdone button' [class.confirm]='saveConfirm === "false/false"' (click)='save(false, false)'>
-      <i class="fas fa-save" aria-hidden="true" *ngIf='!saveConfirm'></i>
-      <i class="fas fa-check-circle" aria-hidden="true" *ngIf='saveConfirm'></i>
-      שמירה - עדיין בעבודה, לא לפרסום
+    <div class='back button' (click)='back()'>
+      <i class="fas fa-arrow-alt-circle-right" aria-hidden="true"></i>
+      סגירה ללא שמירה
     </div>
-    <div *ngIf='roles._.datarecordEditOwn || roles._.datarecordEditAll'  class='save-notdone button' [class.confirm]='saveConfirm === "false/true"' (click)='save(false, true)'>
+    <div *ngIf='roles._.datarecordEditOwn || roles._.datarecordEditAll'  class='save-wip button' [class.confirm]='saveConfirm === "false/true"' (click)='save(false, true)'>
       <i class="fas fa-save" aria-hidden="true" *ngIf='!saveConfirm'></i>
       <i class="fas fa-check-circle" aria-hidden="true" *ngIf='saveConfirm'></i>
-      שמירה - נתונים חסרים, לפרסום
+      שמירה - עדיין בעבודה
     </div>
     <div *ngIf='roles._.datarecordEditOwn || roles._.datarecordEditAll'  class='save-done button' [class.confirm]='saveConfirm === "true/true"' (click)='save(true, true)'>
       <i class="fas fa-save" aria-hidden="true"></i>
@@ -216,21 +212,25 @@
     <div *ngIf='errorMsg || api.errorMsg' class='error-msg' [class.minor]='!errorMsgMajor'>
         <span *ngIf='!errorMsgMajor'>שימו לב: </span>{{errorMsg || api.errorMsg}}
     </div>
-    <ng-container *ngIf='(roles._.datarecordDeleteOwn ||  roles._.datarecordDeleteAll) && datarecord.id' >
+    <ng-container *ngIf='datarecord.id' >
         <ng-container *ngIf='datarecord.deleted' >
-            <div class='restore button' (click)='restore($event)'>
+            <div class='restore button' (click)='restore($event)' *ngIf='roles._.datarecordDeleteOwn'>
                 <i class="fas fa-play-circle" aria-hidden="true"></i>
-                סימון השירות כפעיל
-            </div>          
-            <div class='delete button' (click)='delete($event)'>
+                סימון כשירות פעיל בלוח הבקרה
+            </div>
+            <div *ngIf='roles._.datarecordEditAll'  class='save-unpublish button' (click)='save(false, false)'>
+                <i class="fas fa-lock" aria-hidden="true"></i>
+                סימון שירות כ״לא לפרסום״
+            </div>
+            <div class='delete button' (click)='delete($event)' *ngIf='roles._.datarecordDeleteAll'>
                 <i class="fas fa-trash" aria-hidden="true"></i>
                 מחיקה סופית של השירות
             </div>
         </ng-container>
         <ng-container *ngIf='!datarecord.deleted' >
-            <div class='fake-delete button' (click)='fakeDelete($event)'>
+            <div class='fake-delete button' (click)='fakeDelete($event)' *ngIf='roles._.datarecordDeleteOwn'>
                 <i class="fas fa-stop-circle" aria-hidden="true"></i>
-                סימון שירות כלא פעיל
+                סימון כשירות היסטורי בלוח הבקרה
             </div>          
         </ng-container>
     </ng-container>

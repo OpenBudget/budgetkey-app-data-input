@@ -39,17 +39,20 @@ export class SocialServiceListItemComponent implements OnChanges {
       );
         //  && (item.item.tenders || []).every((tender) => !tender.survey || tender.survey.submitted);
       item.item['updated'] = updated;
-      const complete = !!item.item.complete && !item.item.deleted;
-      const keepPrivate = !!item.item.keepPrivate;
-      const incomplete = !item.item.complete && !item.item.deleted;
-      const inactive = !!item.item.deleted;
+      const unpublished = !!item.item.keepPrivate;
+      const inactive = !unpublished && !!item.item.deleted;
+      const complete = !unpublished && !inactive && !!item.item.complete;
+      const incomplete = !unpublished && !inactive && !item.item.complete;
       ret = {
         total: 1,
         completeUpdated: (complete && updated) ? 1 : 0,
         updateNeeded: (complete && !updated) ? 1 : 0,
-        publishedWIP: (incomplete && !keepPrivate) ? 1 : 0,
-        unpublishedWIP: (incomplete && keepPrivate) ? 1 : 0,
+        wip: incomplete ? 1 : 0,
+        unpublished: unpublished ? 1 : 0,
         inactive: inactive ? 1 : 0,
+      };
+      if (ret.completeUpdated + ret.updateNeeded + ret.wip + ret.unpublished + ret.inactive > 1) {
+        console.log('Multiple states for item', ret, item.item);
       }
     } else if (item.items) {
       ret = {};

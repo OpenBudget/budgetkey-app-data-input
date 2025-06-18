@@ -24,14 +24,12 @@
             &.complete {
                 background-color: green;
                 border-color: darken(green, 40%);
+                color: #fff;
             }
             &.wip {
-                background-color: lightgreen;
-                border-color: darken(lightgreen, 40%);
-            }
-            &.published {
-                background-color: orange;
-                border-color: darken(orange, 40%);
+                background-color: chocolate;
+                border-color: darken(chocolate, 40%);
+                color: #fff;
             }
             &.unpublished {
                 background-color: peachpuff;
@@ -39,7 +37,8 @@
             }
             &.inactive {
                 background-color: gray;
-                border-color: darken(gray, 40%);            
+                border-color: darken(gray, 40%);      
+                color: #fff;      
             }
             &.active {
                 background-color: lightblue;
@@ -192,6 +191,12 @@
 
         .save-done {
             background: green;
+        }
+        .save-wip {
+            background: chocolate;
+        }
+        .save-unpublish {
+            background: darken(peachpuff, 50%);
         }
         .delete {
             background: darkred;

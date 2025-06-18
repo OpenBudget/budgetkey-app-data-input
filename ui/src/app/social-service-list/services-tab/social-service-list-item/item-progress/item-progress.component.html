@@ -3,7 +3,7 @@
 <div class='progress'>
     <div class='complete' *ngIf='stats.completeUpdated' [style.width]='width(stats.completeUpdated)' title='ההזנה הושלמה'>{{stats.completeUpdated}}</div>
     <div class='update-needed' *ngIf='stats.updateNeeded' [style.width]='width(stats.updateNeeded)' title='נדרש עדכון'>{{stats.updateNeeded}}</div>
-    <div class='published' *ngIf='stats.publishedWIP' [style.width]='width(stats.publishedWIP)' title='ההזנה טרם הושלמה (אולם עלו לאתר)'>{{stats.publishedWIP}}</div>
-    <div class='unpublished' *ngIf='stats.unpublishedWIP' [style.width]='width(stats.unpublishedWIP)' title='ההזנה טרם הושלמה ולא עלו לאתר'>{{stats.unpublishedWIP}}</div>
-    <div class='inactive' *ngIf='stats.inactive' [style.width]='width(stats.inactive)' title='שירותים לא פעילים'>{{stats.inactive}}</div>
+    <div class='wip' *ngIf='stats.wip' [style.width]='width(stats.wip)' title='ההזנה עדיין בעבודה'>{{stats.wip}}</div>
+    <div class='inactive' *ngIf='stats.inactive' [style.width]='width(stats.inactive)' title='שירותים היסטוריים'>{{stats.inactive}}</div>
+    <div class='unpublished' *ngIf='stats.unpublished' [style.width]='width(stats.unpublished)' title='שירותים לא לפרסום'>{{stats.unpublished}}</div>
 </div>

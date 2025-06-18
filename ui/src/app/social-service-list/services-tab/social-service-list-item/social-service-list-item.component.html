@@ -33,7 +33,7 @@
             </div>
             <div class='line'>
                 <div class='stat'>
-                    <ng-container *ngIf='!item.item.deleted'>
+                    <ng-container *ngIf='!item.item.deleted && !item.item.keepPrivate'>
                         <ng-container *ngIf='item.item.complete'>
                             <ng-container *ngIf='item.item.updated'>
                                 <span class='status complete'>
@@ -50,9 +50,14 @@
                             <i class="fas fa-dot-circle "></i> בעבודה
                         </span>    
                     </ng-container>
-                    <ng-container *ngIf='item.item.deleted'>
+                    <ng-container *ngIf='item.item.deleted && !item.item.keepPrivate'>
                         <span class='status deleted'>
-                            <i class="fas fa-times-circle"></i> לא פעיל
+                            <i class="fas fa-times-circle"></i> היסטורי
+                        </span>
+                    </ng-container>
+                    <ng-container *ngIf='item.item.keepPrivate'>
+                        <span class='status unpublished'>
+                            <i class="fas fa-times-circle"></i> לא לפרסום
                         </span>
                     </ng-container>
                 </div>

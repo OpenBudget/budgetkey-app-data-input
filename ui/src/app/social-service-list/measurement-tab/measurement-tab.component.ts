@@ -2,7 +2,6 @@ import { Component, Input } from '@angular/core';
 import { ApiService, RolesService } from 'etl-server';
 import { ReplaySubject, Subject, first, switchMap, map, debounceTime } from 'rxjs';
 import { CachedApiService } from '../../cached-api.service';
-import { ItemFilter, ItemFilterActive, ItemFilterPublished, ItemFilterUpdateNeeded, ItemFilterWIP, ItemFilterComplete, ItemFilterInactive } from '../services-tab/item-filters';
 import { ItemMeasurementBaseFilter, ItemMeasurementFilter, ItemMeasurementFlagFilter } from './item-measurement-filters';
 import { ObudgetApiService } from '../../obudget-api.service';
 

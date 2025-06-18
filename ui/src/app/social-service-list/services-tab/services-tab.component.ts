@@ -2,7 +2,6 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ApiService, RolesService } from 'etl-server';
 import { ReplaySubject, Subject, first, switchMap, map, debounceTime } from 'rxjs';
 import { CachedApiService } from '../../cached-api.service';
-import { ItemFilter, ItemFilterActive, ItemFilterPublished, ItemFilterUpdateNeeded, ItemFilterWIP, ItemFilterComplete, ItemFilterInactive } from './item-filters';
 
 @Component({
   selector: 'app-services-tab',
@@ -21,13 +20,6 @@ export class ServicesTabComponent implements OnInit {
   offices: any = {};
   designatedOffice = null;
   
-  // filterAll = new ItemFilter();
-  // filterActive = new ItemFilterActive();
-  // filterPublished = new ItemFilterPublished();
-  // filterUpdateNeeded = new ItemFilterUpdateNeeded();
-  // filterWIP = new ItemFilterWIP();
-  // filterComplete = new ItemFilterComplete();
-  // filterInactive = new ItemFilterInactive();
   selectedFilter = 'active';
 
   updateDatarecords: any[] = [];
