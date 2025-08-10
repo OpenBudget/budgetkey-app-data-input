@@ -172,9 +172,9 @@ export class ObudgetApiService {
       t.tqs = t.tqs || {};
       t.tqs.required = false;;
       const start_year = parseInt((t.publication_date || '0-').split('-')[0]);
-      // if (start_year < 2021) { // TODO: change to 2025
-      //   return false;
-      // }
+      if (start_year < 2025) {
+        return false;
+      }
       if (t.tender_type !== 'exemptions') {
         t.tqs = t.tqs || {};
         return true;

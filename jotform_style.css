@@ -3,6 +3,10 @@
     text-align: right;
 }
 
+.form-textbox {
+	text-align: right;
+}
+
 .form-label-right, .form-radio-item label, .form-checkbox-item label {
     text-align: right;
 }
