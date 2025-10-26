@@ -89,7 +89,7 @@ export class MeasurementTabComponent {
         const tenders = this.obudgetApi.syncTenders(d_, false);
         for (let d of tenders) {
           let ptr = this.aggregated;
-          if (selectedOffice === null || selectedOffice === d.office) {
+          if (selectedOffice === null || selectedOffice === d_.office) {
             const id = d.tender_key;
             ptr = this.aggregate(ptr, d_.office);
             ptr = this.aggregate(ptr, d_.unit);
