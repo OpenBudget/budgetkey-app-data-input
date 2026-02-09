@@ -49,7 +49,7 @@ export class MeasurementTabComponent {
       console.log('SELECTED OFFICE = ', s);
     });
     cachedApi.queryDatarecords('hierarchy').subscribe((results) => {
-      results.map(x => x.value).forEach((el) => {
+      results.map((x: any) => x.value).forEach((el: any) => {
         this.offices[el.id] = el.name;
       });
     });
@@ -60,9 +60,9 @@ export class MeasurementTabComponent {
     })
   }
 
-  aggregate(ptr, header) {
+  aggregate(ptr: any, header: any) {
     if (header) {
-      let upd = ptr.items.filter(x => x.header === header);
+      let upd = ptr.items.filter((x: any) => x.header === header);
       if (upd.length === 0) {
         ptr.items.push({header: header, items: []});
         ptr = ptr.items[ptr.items.length - 1];

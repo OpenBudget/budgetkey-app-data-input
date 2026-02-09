@@ -172,7 +172,11 @@ export class ObudgetApiService {
       t.tqs = t.tqs || {};
       t.tqs.required = false;;
       const start_year = parseInt((t.publication_date || '0-').split('-')[0]);
-      if (start_year < 2025) {
+      const start_month = parseInt((t.publication_date || '-0-').split('-')[1]);
+      if (start_year < 2024) {
+        return false;
+      }
+      if (start_year === 2024 && start_month < 9) {
         return false;
       }
       if (t.tender_type !== 'exemptions') {
