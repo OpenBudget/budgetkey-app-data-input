@@ -1,24 +1,26 @@
-## PGDump a database (connection string in secrets) and dump it to an S3 bucket (credentials in secrets), with date and time in the filename. Run every month or on command.
-## Github Actions workflow file:
+# Dumps the Postgres database (DATABASE_URL) and uploads it to an S3-compatible bucket.
+# Runs monthly on the 1st at 00:00 UTC, or on-demand via the Actions tab.
 name: Backup PostgreSQL database to S3
 
 on:
   schedule:
     - cron: '0 0 1 * *'
+  workflow_dispatch:
 
 jobs:
   backup:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      
-      - name: Set up PostgreSQL
-        uses: harmon758/postgresql-action@v1
-        with:
-          postgresql version: '12'
-      
-      - name: Backup database
+      - name: Install PostgreSQL 16 client
+        run: |
+          set -euo pipefail
+          sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+          curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc \
+            | sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/postgresql.gpg
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client-16
+
+      - name: Dump database and upload to S3
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           S3_BUCKET: ${{ secrets.S3_BUCKET }}
@@ -27,5 +29,11 @@ jobs:
           AWS_REGION: ${{ secrets.AWS_REGION }}
           S3_ENDPOINT_URL: ${{ secrets.S3_ENDPOINT_URL }}
         run: |
-          PGPASSWORD=$(echo $DATABASE_URL | sed -E 's/^.*:\/\/.*:(.*)@.*$/\1/') 
-          aws s3 cp - s3://$S3_BUCKET/backup_$(date +%Y%m%d_%H%M%S).sql --region $AWS_REGION --endpoint-url $S3_ENDPOINT_URL
+          set -euo pipefail
+          FILENAME="backup_$(date -u +%Y%m%d_%H%M%SZ).pgdump"
+          pg_dump --format=custom --no-owner --no-privileges "$DATABASE_URL" \
+            | aws s3 cp - "s3://${S3_BUCKET}/${FILENAME}" \
+                --region "$AWS_REGION" \
+                --endpoint-url "$S3_ENDPOINT_URL" \
+                --expected-size 5368709120
+          echo "Uploaded s3://${S3_BUCKET}/${FILENAME}"
