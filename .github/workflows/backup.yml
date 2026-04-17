@@ -1,0 +1,31 @@
+## PGDump a database (connection string in secrets) and dump it to an S3 bucket (credentials in secrets), with date and time in the filename. Run every month or on command.
+## Github Actions workflow file:
+name: Backup PostgreSQL database to S3
+
+on:
+  schedule:
+    - cron: '0 0 1 * *'
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      
+      - name: Set up PostgreSQL
+        uses: harmon758/postgresql-action@v1
+        with:
+          postgresql version: '12'
+      
+      - name: Backup database
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          S3_BUCKET: ${{ secrets.S3_BUCKET }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          S3_ENDPOINT_URL: ${{ secrets.S3_ENDPOINT_URL }}
+        run: |
+          PGPASSWORD=$(echo $DATABASE_URL | sed -E 's/^.*:\/\/.*:(.*)@.*$/\1/') 
+          aws s3 cp - s3://$S3_BUCKET/backup_$(date +%Y%m%d_%H%M%S).sql --region $AWS_REGION --endpoint-url $S3_ENDPOINT_URL
